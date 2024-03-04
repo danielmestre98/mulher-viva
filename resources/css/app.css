@@ -1,0 +1,6 @@
+@import "./login.css";
+@import "../../node_modules/bootstrap/dist/css/bootstrap.min.css";
+
+body {
+    min-height: 100vh;
+}
