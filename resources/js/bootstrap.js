@@ -7,10 +7,11 @@
 import axios from "axios";
 import jQuery from "jquery";
 window.axios = axios;
-window.$ = jQuery;
 import "bootstrap";
 
 window.axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
+
+import "./leftbar";
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening

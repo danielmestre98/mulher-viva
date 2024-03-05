@@ -1,6 +1,26 @@
 @import "./login.css";
 @import "../../node_modules/bootstrap/dist/css/bootstrap.min.css";
-
+@import "../../node_modules/toastify-js/src/toastify.css";
+@import "./leftbar.css";
 body {
     min-height: 100vh;
+}
+
+:root {
+    --main-color-bg: rgb(35, 31, 32);
+    --main-color-bg2: rgb(3, 78, 162);
+}
+
+button {
+    background: none;
+    color: inherit;
+    border: none;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
+}
+
+.red {
+    color: red;
 }
