@@ -13,7 +13,9 @@
 
 <body>
     <x-leftbar />
-    @yield('content')
+    <div class="content">
+        @yield('content')
+    </div>
 
 </body>
 

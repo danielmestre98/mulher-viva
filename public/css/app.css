@@ -128,7 +128,7 @@ a.menu-item-button {
 .left-bar {
     position: fixed;
     width: 270px;
-    min-height: 100%;
+    min-height: 100vh;
     background-color: var(--main-color-bg2);
     padding: 20px;
     z-index: 1000;
@@ -273,6 +273,30 @@ a.menu-item-button {
     font-size: 9px;
 }
 
+.table {
+    margin-bottom: 0px;
+}
+
+.container-table {
+    padding-top: 90px;
+}
+
+.form-card-header {
+    background-color: #034ea2;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+.form-check-input.questions {
+    width: 23px !important;
+    height: 23px !important;
+    margin-right: 5px;
+}
+
+label {
+    font-weight: bold;
+}
+
 body {
     min-height: 100vh;
 }
@@ -294,5 +318,9 @@ button {
 
 .red {
     color: red;
+}
+
+.content {
+    margin-left: 270px;
 }
 

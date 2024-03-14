@@ -1,0 +1,15 @@
+.form-card-header {
+    background-color: #034ea2;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+.form-check-input.questions {
+    width: 23px !important;
+    height: 23px !important;
+    margin-right: 5px;
+}
+
+label {
+    font-weight: bold;
+}

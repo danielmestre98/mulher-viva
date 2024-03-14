@@ -21,6 +21,8 @@ $.validator.setDefaults({
             error.insertAfter(element.parent());
         } else if (element.hasClass("select2-hidden-accessible")) {
             error.insertAfter(element.next("span.select2"));
+        } else if (element.hasClass("form-check-input")) {
+            error.insertAfter($(element[0]).parent().parent());
         } else {
             error.insertAfter(element);
         }

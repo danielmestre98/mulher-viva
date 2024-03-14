@@ -2,6 +2,8 @@
 @import "../../node_modules/bootstrap/dist/css/bootstrap.min.css";
 @import "../../node_modules/toastify-js/src/toastify.css";
 @import "./leftbar.css";
+@import "./table.css";
+@import "./cadastro.css";
 body {
     min-height: 100vh;
 }
@@ -23,4 +25,8 @@ button {
 
 .red {
     color: red;
+}
+
+.content {
+    margin-left: 270px;
 }

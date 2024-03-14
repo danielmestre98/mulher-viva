@@ -22,6 +22,9 @@ Route::post("/", [LoginController::class, "auth"])->name("login.post");
 
 Route::middleware("auth")->group(function () {
     Route::get("/restrito/cadastros", [CadastrosController::class, "index"])->name("restrito.cadastros");
+    Route::post("/restrito/cadastros/search-new", [CadastrosController::class, "searchNewBeneficiaria"]);
+    Route::post("/restrito/cadastros/dados-new", [CadastrosController::class, "create"]);
+    Route::post("/restrito/cadastros/dados-new/submit", [CadastrosController::class, "store"])->name("restrito.benefiaria.store");
 
     Route::put("/restrito/usuario/{id}/alterar-senha", [UserController::class, "changeSelfPassword"]);
 
