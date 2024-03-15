@@ -4,6 +4,8 @@
 @import "./leftbar.css";
 @import "./table.css";
 @import "./cadastro.css";
+@import "../../node_modules/datatables.net-bs5/css/dataTables.bootstrap5.min.css";
+
 body {
     min-height: 100vh;
 }
@@ -11,6 +13,10 @@ body {
 :root {
     --main-color-bg: rgb(35, 31, 32);
     --main-color-bg2: rgb(3, 78, 162);
+}
+
+.dt-search {
+    display: none;
 }
 
 button {

@@ -94,6 +94,15 @@ a.menu-item-button {
     border-radius: 3px;
 }
 
+.left-bar .menu-group .menu-item-dropdown .box-dropdown ul li a.active {
+    background-color: rgb(35, 31, 32);
+    color: #eee;
+}
+.left-bar .menu-group .menu-item-dropdown .box-dropdown ul li a.active:hover {
+    background-color: rgb(35, 31, 32);
+    color: #eee;
+}
+
 .left-bar .menu-group .menu-item-dropdown .box-dropdown ul li a:hover {
     background-color: #ccc;
 }

@@ -10,38 +10,38 @@
             <div class="col-4">
                 <div class="input-group">
                     <div class="input-group-text"><i class="fa-solid fa-magnifying-glass"></i></div>
-                    <input type="text" class="form-control" id="autoSizingInputGroup" placeholder="Pesquisar...">
+                    <input type="text" class="form-control" id="searchBeneficiaria" placeholder="Pesquisar...">
                 </div>
             </div>
         </div>
         <div class="row">
             <div class="col-md-12">
-                <div class="table-responsive card">
-                    <table class="table table-hover">
-                        <thead>
+
+                <table class="table table-hover table-bordered" id="beneficiarias-table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Nome da Solicitante</th>
+                            <th scope="col">CPF</th>
+                            <th scope="col">NIS</th>
+                            <th scope="col">Pontuação</th>
+                            <th width="14%" scope="col">Data da Solicitação</th>
+                            <th scope="col">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($beneficiarias as $beneficiaria)
                             <tr>
-                                <th scope="col">Nome da Solicitante</th>
-                                <th scope="col">CPF</th>
-                                <th scope="col">NIS</th>
-                                <th scope="col">Pontuação</th>
-                                <th width="14%" scope="col">Data da Solicitação</th>
-                                <th scope="col">Status</th>
+                                <td>{{ $beneficiaria->nome }}</td>
+                                <td>{{ $beneficiaria->cpf }}</td>
+                                <td>{{ $beneficiaria->nis }}</td>
+                                <td>{{ $beneficiaria->pontuacao }}</td>
+                                <td>{{ date('d/m/Y H:i', strtotime($beneficiaria->created_at)) }}</td>
+                                <td>{{ $beneficiaria->statusCodes->name }}</td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($beneficiarias as $beneficiaria)
-                                <tr>
-                                    <td>{{ $beneficiaria->nome }}</td>
-                                    <td>{{ $beneficiaria->cpf }}</td>
-                                    <td>{{ $beneficiaria->nis }}</td>
-                                    <td>{{ $beneficiaria->pontuacao }}</td>
-                                    <td>{{ date('d/m/Y H:i', strtotime($beneficiaria->created_at)) }}</td>
-                                    <td>{{ $beneficiaria->statusCodes->name }}</td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
+                        @endforeach
+                    </tbody>
+                </table>
+
             </div>
         </div>
     </div>

@@ -22,6 +22,10 @@ Route::post("/", [LoginController::class, "auth"])->name("login.post");
 
 Route::middleware("auth")->group(function () {
     Route::get("/restrito/cadastros", [CadastrosController::class, "index"])->name("restrito.cadastros");
+    Route::get("/restrito/cadastros/fitro/1", [CadastrosController::class, "index"])->name("restrito.cadastros.filtro.aprovado");
+    Route::get("/restrito/cadastros/fitro/2", [CadastrosController::class, "index"])->name("restrito.cadastros.filtro.pendente");
+    Route::get("/restrito/cadastros/fitro/3", [CadastrosController::class, "index"])->name("restrito.cadastros.filtro.recusado");
+    Route::get("/restrito/cadastros/fitro/4", [CadastrosController::class, "index"])->name("restrito.cadastros.filtro.naoElegivel");
     Route::post("/restrito/cadastros/search-new", [CadastrosController::class, "searchNewBeneficiaria"]);
     Route::post("/restrito/cadastros/dados-new", [CadastrosController::class, "create"]);
     Route::post("/restrito/cadastros/dados-new/submit", [CadastrosController::class, "store"])->name("restrito.benefiaria.store");

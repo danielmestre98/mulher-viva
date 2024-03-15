@@ -11,14 +11,25 @@ use Illuminate\Support\Facades\Storage;
 
 class CadastrosController extends Controller
 {
-    function index()
+    function index($filtro = "")
     {
-        $dados = Beneficiarias::all();
+        $dados = [];
+        if ($filtro != "") {
+            $dados = Beneficiarias::where('status', $filtro)->get();
+        } else {
+            $dados = Beneficiarias::all();
+        }
         return view("cadastros.index", ["beneficiarias" => $dados]);
     }
 
     function searchNewBeneficiaria(Request $request)
     {
+        $jaExiste = Beneficiarias::where("cpf", "=", $request->valorPesquisa)->first();
+        if (!empty($jaExiste)) {
+            return response()->json([
+                "error" => "não encontrado no cadunico",
+            ], 403);
+        }
         $headers = [
             'Token' => env("API_TOKEN"),
         ];

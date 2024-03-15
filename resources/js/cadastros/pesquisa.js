@@ -2,12 +2,21 @@ import $ from "jquery";
 import Inputmask from "inputmask";
 import axios from "axios";
 import { Modal } from "bootstrap";
+import DataTable from "datatables.net-bs5";
 
 $(() => {
     const modalSearch = new Modal("#cadastrarBeneficiaria");
     const modalSucesso = new Modal("#sucessoModal");
     const modalErro = new Modal("#erroModal");
     var dadosMulher;
+
+    let table = new DataTable("#beneficiarias-table", {
+        language: {
+            url: "//cdn.datatables.net/plug-ins/2.0.2/i18n/pt-BR.json",
+        },
+        searching: true, // Disable search input
+        lengthChange: false,
+    });
 
     const newBenefSearch = $("#search-value-new").get(0);
     var cpfIm = new Inputmask("999.999.999-99");
@@ -19,6 +28,14 @@ $(() => {
         } else {
             nisIm.mask(newBenefSearch);
         }
+    });
+
+    $("#searchBeneficiaria").on("input", function () {
+        // Get value of search input
+        var searchValue = $(this).val();
+
+        // Use DataTables API to search DataTable
+        table.search(searchValue).draw();
     });
 
     $("#search-new").on("submit", function (e) {
@@ -47,10 +64,52 @@ $(() => {
             .catch((error) => {
                 if (error.response.status === 401) {
                     $("#error-text").html(
-                        "Pessoa não encontrada na base do CadÚnico"
+                        "Pessoa não encontrada na base do CadÚnico."
                     );
+                    modalErro.show();
+                } else if (error.response.status === 403) {
+                    $("#error-text").html("Pessoa já cadastrada no sistema.");
                     modalErro.show();
                 }
             });
     });
+
+    const formatDate = (date) => {
+        // Converter para objeto Date
+        var date = new Date(date);
+        // Formatar data e hora
+        var dia = ("0" + date.getDate()).slice(-2);
+        var mes = ("0" + (date.getMonth() + 1)).slice(-2);
+        var ano = date.getFullYear();
+        var hora = ("0" + date.getHours()).slice(-2);
+        var minutos = ("0" + date.getMinutes()).slice(-2);
+
+        // Resultado no formato desejado
+        var formatoDesejado =
+            dia + "/" + mes + "/" + ano + " " + hora + ":" + minutos;
+
+        return formatoDesejado; // Saída: 14/03/2024 19:29
+    };
+
+    // $("#searchBeneficiaria").on("keyup", function (e) {
+    //     axios
+    //         .post("", {
+    //             pesquisa: e.currentTarget.value,
+    //         })
+    //         .then(({ data }) => {
+    //             $("#beneficiarias-table tbody").html("");
+    //             data.forEach((item) => {
+    //                 $("#beneficiarias-table tbody").append(`
+    //                     <tr>
+    //                         <td>${item.nome}</td>
+    //                         <td>${item.cpf}</td>
+    //                         <td>${item.nis}</td>
+    //                         <td>${item.pontuacao}</td>
+    //                         <td>${formatDate(item.created_at)}</td>
+    //                         <td>${item.status_codes.name}</td>
+    //                     </tr>
+    //                 `);
+    //             });
+    //         });
+    // });
 });

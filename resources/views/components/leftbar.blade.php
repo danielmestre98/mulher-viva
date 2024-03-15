@@ -12,18 +12,23 @@
     <div class="menu-group">
         <div class="menu-item-dropdown">
             <button class="menu-item-button"><i class="fa-solid fa-person-dress"></i> <span>Mulheres</span> <i
-                    class="fa-solid fa-chevron-right fa-sm"></i></button>
-            <div class="box-dropdown">
+                    class="fa-solid fa-chevron-down fa-sm"></i></button>
+            <div class="box-dropdown" style="display: block">
                 <ul>
-                    <li><a href="">Solicitações</a></li>
-                    <li><a href="">Aprovados</a></li>
-                    <li><a href="">Pendentes</a></li>
-                    <li><a href="">Recusados</a></li>
-                    <li><a href="">Não elegíveis</a></li>
+                    <li><a @if (request()->routeIs('restrito.cadastros')) class="active" @endif
+                            href={{ route('restrito.cadastros') }}>Solicitações</a></li>
+                    <li><a @if (request()->routeIs('restrito.cadastros.filtro.aprovado')) class="active" @endif
+                            href={{ route('restrito.cadastros.filtro.aprovado') }}>Aprovados</a></li>
+                    <li><a @if (request()->routeIs('restrito.cadastros.filtro.pendente')) class="active" @endif
+                            href={{ route('restrito.cadastros.filtro.pendente') }}>Pendentes</a></li>
+                    <li><a @if (request()->routeIs('restrito.cadastros.filtro.recusado')) class="active" @endif
+                            href={{ route('restrito.cadastros.filtro.recusado') }}>Recusados</a></li>
+                    <li><a @if (request()->routeIs('restrito.cadastros.filtro.naoElegivel')) class="active" @endif
+                            href={{ route('restrito.cadastros.filtro.naoElegivel') }}>Não elegíveis</a></li>
                 </ul>
             </div>
         </div>
-        <div class="menu-item-dropdown">
+        {{-- <div class="menu-item-dropdown">
             <button class="menu-item-button"><i class="fa-solid fa-user"></i> <span>Usuários</span> <i
                     class="fa-solid fa-chevron-right fa-sm"></i></button>
             <div class="box-dropdown">
@@ -32,9 +37,9 @@
                     <li><a href="">Consultar / Alterar</a></li>
                 </ul>
             </div>
-        </div>
+        </div> --}}
     </div>
-    <hr>
+    {{-- <hr> --}}
     {{-- <div class="category-divider">Autorizações</div>
     <div class="menu-group">
         <div class="menu-item-dropdown">
@@ -49,7 +54,7 @@
         </div>
     </div>
     <hr> --}}
-    <div class="category-divider">Administração</div>
+    {{-- <div class="category-divider">Administração</div>
     <div class="menu-group">
         <div class="menu-item-dropdown">
             <button class="menu-item-button"><i class="fa-solid fa-file-lines"></i> <span>Relatórios</span> <i
@@ -61,7 +66,7 @@
                 </ul>
             </div>
         </div>
-    </div>
+    </div> --}}
     {{-- <div class="menu-group">
         <div class="menu-item">
             <a href="" class="menu-item-button">
