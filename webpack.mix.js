@@ -1,5 +1,5 @@
 const mix = require("laravel-mix");
-
+const Dotenv = require("dotenv-webpack");
 /*
  |--------------------------------------------------------------------------
  | Mix Asset Management
@@ -13,6 +13,10 @@ const mix = require("laravel-mix");
 
 mix.browserSync({
     proxy: "http://localhost:8000",
+});
+
+mix.webpackConfig({
+    plugins: [new Dotenv()],
 });
 
 mix.js("resources/js/app.js", "public/js").postCss(

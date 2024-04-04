@@ -1,8 +1,9 @@
 import $ from "jquery";
 import Inputmask from "inputmask";
-import axios from "axios";
+import axios from "../assets/axiosInstance";
 import { Modal } from "bootstrap";
 import DataTable from "datatables.net-bs5";
+import ptBR from "../assets/pt-BR.json";
 
 $(() => {
     const modalSearch = new Modal("#cadastrarBeneficiaria");
@@ -11,9 +12,7 @@ $(() => {
     var dadosMulher;
 
     let table = new DataTable("#beneficiarias-table", {
-        language: {
-            url: "//cdn.datatables.net/plug-ins/2.0.2/i18n/pt-BR.json",
-        },
+        language: ptBR,
         searching: true, // Disable search input
         lengthChange: false,
     });
@@ -28,6 +27,12 @@ $(() => {
         } else {
             nisIm.mask(newBenefSearch);
         }
+    });
+
+    $(".row-table-pesquisa").on("click", (e) => {
+        window.location.href = `${
+            process.env.APP_URL
+        }/restrito/cadastros/view/${$(e.currentTarget).attr("name")}`;
     });
 
     $("#searchBeneficiaria").on("input", function () {

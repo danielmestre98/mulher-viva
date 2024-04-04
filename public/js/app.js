@@ -3024,6 +3024,32 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/assets/axiosInstance.js":
+/*!**********************************************!*\
+  !*** ./resources/js/assets/axiosInstance.js ***!
+  \**********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/lib/axios.js");
+
+
+// Cria uma instância do Axios
+var instance = axios__WEBPACK_IMPORTED_MODULE_0__["default"].create();
+
+// Adiciona um interceptor de solicitação
+instance.interceptors.request.use(function (config) {
+  config.baseURL = "http://localhost:3000";
+  return config;
+});
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (instance);
+
+/***/ }),
+
 /***/ "./resources/js/assets/validation-defaults.js":
 /*!****************************************************!*\
   !*** ./resources/js/assets/validation-defaults.js ***!
@@ -3116,6 +3142,17 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default().validator.addMethod("cpf", functio
   if (cpf.charAt(9) != a[9] || cpf.charAt(10) != a[10] || cpf.match(expReg)) retorno = false;
   return this.optional(element) || retorno;
 }, "Informe um CPF válido.");
+jquery__WEBPACK_IMPORTED_MODULE_0___default().validator.addMethod("pdf", function (value, element) {
+  // Check if the file input has a file selected
+  if (element.files.length > 0) {
+    // Get the file extension
+    var extension = element.files[0].name.split(".").pop().toLowerCase();
+    // Check if the extension is 'pdf'
+    return extension === "pdf";
+  }
+  // No file selected, return true
+  return true;
+}, "Por favor selecione apenas arquivos PDF.");
 jquery__WEBPACK_IMPORTED_MODULE_0___default().validator.addMethod("cnpj", function (value, element) {
   cnpj = value.replace(/[^\d]+/g, "");
   if (cnpj == "") return false;
@@ -3168,8 +3205,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/lib/axios.js");
 /* harmony import */ var bootstrap__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! bootstrap */ "./node_modules/bootstrap/dist/js/bootstrap.esm.js");
 /* harmony import */ var _leftbar__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./leftbar */ "./resources/js/leftbar.js");
-/* harmony import */ var _cadastros_pesquisa__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./cadastros/pesquisa */ "./resources/js/cadastros/pesquisa.js");
-/* harmony import */ var _cadastros_confirmacao__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./cadastros/confirmacao */ "./resources/js/cadastros/confirmacao.js");
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
  * to our Laravel back-end. This library automatically handles sending the
@@ -3179,10 +3214,14 @@ __webpack_require__.r(__webpack_exports__);
 
 window.axios = axios__WEBPACK_IMPORTED_MODULE_0__["default"];
 
+
 window.axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
-
-
-
+if (window.location.href === "".concat("http://localhost:3000", "/restrito/cadastros")) {
+  __webpack_require__(/*! ./cadastros/pesquisa */ "./resources/js/cadastros/pesquisa.js");
+}
+if (window.location.href === "".concat("http://localhost:3000", "/restrito/cadastros/dados-new")) {
+  __webpack_require__(/*! ./cadastros/confirmacao */ "./resources/js/cadastros/confirmacao.js");
+}
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
@@ -3246,10 +3285,12 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(function () {
         required: true
       },
       anexoMedidaProt: {
-        required: true
+        required: true,
+        pdf: true
       },
       anexoExamePsico: {
-        required: true
+        required: true,
+        pdf: true
       },
       familiaTransfRenda: {
         required: true
@@ -3272,23 +3313,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var inputmask__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! inputmask */ "./node_modules/inputmask/dist/inputmask.js");
 /* harmony import */ var inputmask__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(inputmask__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! axios */ "./node_modules/axios/lib/axios.js");
-/* harmony import */ var bootstrap__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! bootstrap */ "./node_modules/bootstrap/dist/js/bootstrap.esm.js");
-/* harmony import */ var datatables_net_bs5__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! datatables.net-bs5 */ "./node_modules/datatables.net-bs5/js/dataTables.bootstrap5.mjs");
+/* harmony import */ var _assets_axiosInstance__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../assets/axiosInstance */ "./resources/js/assets/axiosInstance.js");
+/* harmony import */ var bootstrap__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! bootstrap */ "./node_modules/bootstrap/dist/js/bootstrap.esm.js");
+/* harmony import */ var datatables_net_bs5__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! datatables.net-bs5 */ "./node_modules/datatables.net-bs5/js/dataTables.bootstrap5.mjs");
+/* harmony import */ var _assets_pt_BR_json__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../assets/pt-BR.json */ "./resources/js/assets/pt-BR.json");
+
 
 
 
 
 
 jquery__WEBPACK_IMPORTED_MODULE_0___default()(function () {
-  var modalSearch = new bootstrap__WEBPACK_IMPORTED_MODULE_2__.Modal("#cadastrarBeneficiaria");
-  var modalSucesso = new bootstrap__WEBPACK_IMPORTED_MODULE_2__.Modal("#sucessoModal");
-  var modalErro = new bootstrap__WEBPACK_IMPORTED_MODULE_2__.Modal("#erroModal");
+  var modalSearch = new bootstrap__WEBPACK_IMPORTED_MODULE_3__.Modal("#cadastrarBeneficiaria");
+  var modalSucesso = new bootstrap__WEBPACK_IMPORTED_MODULE_3__.Modal("#sucessoModal");
+  var modalErro = new bootstrap__WEBPACK_IMPORTED_MODULE_3__.Modal("#erroModal");
   var dadosMulher;
-  var table = new datatables_net_bs5__WEBPACK_IMPORTED_MODULE_3__["default"]("#beneficiarias-table", {
-    language: {
-      url: "//cdn.datatables.net/plug-ins/2.0.2/i18n/pt-BR.json"
-    },
+  var table = new datatables_net_bs5__WEBPACK_IMPORTED_MODULE_4__["default"]("#beneficiarias-table", {
+    language: _assets_pt_BR_json__WEBPACK_IMPORTED_MODULE_5__,
     searching: true,
     // Disable search input
     lengthChange: false
@@ -3304,6 +3345,9 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(function () {
       nisIm.mask(newBenefSearch);
     }
   });
+  jquery__WEBPACK_IMPORTED_MODULE_0___default()(".row-table-pesquisa").on("click", function (e) {
+    window.location.href = "".concat("http://localhost:3000", "/restrito/cadastros/view/").concat(jquery__WEBPACK_IMPORTED_MODULE_0___default()(e.currentTarget).attr("name"));
+  });
   jquery__WEBPACK_IMPORTED_MODULE_0___default()("#searchBeneficiaria").on("input", function () {
     // Get value of search input
     var searchValue = jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).val();
@@ -3317,7 +3361,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(function () {
       tipoPesquisa: jquery__WEBPACK_IMPORTED_MODULE_0___default()("#tipo-search-new").val(),
       valorPesquisa: jquery__WEBPACK_IMPORTED_MODULE_0___default()("#search-value-new").val().replace(/\D/g, "")
     };
-    axios__WEBPACK_IMPORTED_MODULE_4__["default"].post("/restrito/cadastros/search-new", formData).then(function (_ref) {
+    _assets_axiosInstance__WEBPACK_IMPORTED_MODULE_2__["default"].post("/restrito/cadastros/search-new", formData).then(function (_ref) {
       var data = _ref.data;
       console.log(data);
       if (data.aprovada) {
@@ -44061,6 +44105,17 @@ $.each( DataTable, function ( prop, val ) {
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (DataTable);
 
+
+/***/ }),
+
+/***/ "./resources/js/assets/pt-BR.json":
+/*!****************************************!*\
+  !*** ./resources/js/assets/pt-BR.json ***!
+  \****************************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = /*#__PURE__*/JSON.parse('{"emptyTable":"Nenhum registro encontrado","info":"Mostrando de _START_ até _END_ de _TOTAL_ registros","infoFiltered":"(Filtrados de _MAX_ registros)","infoThousands":".","loadingRecords":"Carregando...","zeroRecords":"Nenhum registro encontrado","search":"Pesquisar","paginate":{"next":"Próximo","previous":"Anterior","first":"Primeiro","last":"Último"},"aria":{"sortAscending":": Ordenar colunas de forma ascendente","sortDescending":": Ordenar colunas de forma descendente"},"select":{"rows":{"1":"Selecionado 1 linha","_":"Selecionado %d linhas"},"cells":{"1":"1 célula selecionada","_":"%d células selecionadas"},"columns":{"1":"1 coluna selecionada","_":"%d colunas selecionadas"}},"buttons":{"copySuccess":{"1":"Uma linha copiada com sucesso","_":"%d linhas copiadas com sucesso"},"collection":"Coleção  <span class=\\"ui-button-icon-primary ui-icon ui-icon-triangle-1-s\\"></span>","colvis":"Visibilidade da Coluna","colvisRestore":"Restaurar Visibilidade","copy":"Copiar","copyKeys":"Pressione ctrl ou u2318 + C para copiar os dados da tabela para a área de transferência do sistema. Para cancelar, clique nesta mensagem ou pressione Esc..","copyTitle":"Copiar para a Área de Transferência","csv":"CSV","excel":"Excel","pageLength":{"-1":"Mostrar todos os registros","_":"Mostrar %d registros"},"pdf":"PDF","print":"Imprimir","createState":"Criar estado","removeAllStates":"Remover todos os estados","removeState":"Remover","renameState":"Renomear","savedStates":"Estados salvos","stateRestore":"Estado %d","updateState":"Atualizar"},"autoFill":{"cancel":"Cancelar","fill":"Preencher todas as células com","fillHorizontal":"Preencher células horizontalmente","fillVertical":"Preencher células verticalmente"},"lengthMenu":"Exibir _MENU_ resultados por página","searchBuilder":{"add":"Adicionar Condição","button":{"0":"Construtor de Pesquisa","_":"Construtor de Pesquisa (%d)"},"clearAll":"Limpar Tudo","condition":"Condição","conditions":{"date":{"after":"Depois","before":"Antes","between":"Entre","empty":"Vazio","equals":"Igual","not":"Não","notBetween":"Não Entre","notEmpty":"Não Vazio"},"number":{"between":"Entre","empty":"Vazio","equals":"Igual","gt":"Maior Que","gte":"Maior ou Igual a","lt":"Menor Que","lte":"Menor ou Igual a","not":"Não","notBetween":"Não Entre","notEmpty":"Não Vazio"},"string":{"contains":"Contém","empty":"Vazio","endsWith":"Termina Com","equals":"Igual","not":"Não","notEmpty":"Não Vazio","startsWith":"Começa Com","notContains":"Não contém","notStartsWith":"Não começa com","notEndsWith":"Não termina com"},"array":{"contains":"Contém","empty":"Vazio","equals":"Igual à","not":"Não","notEmpty":"Não vazio","without":"Não possui"}},"data":"Data","deleteTitle":"Excluir regra de filtragem","logicAnd":"E","logicOr":"Ou","title":{"0":"Construtor de Pesquisa","_":"Construtor de Pesquisa (%d)"},"value":"Valor","leftTitle":"Critérios Externos","rightTitle":"Critérios Internos"},"searchPanes":{"clearMessage":"Limpar Tudo","collapse":{"0":"Painéis de Pesquisa","_":"Painéis de Pesquisa (%d)"},"count":"{total}","countFiltered":"{shown} ({total})","emptyPanes":"Nenhum Painel de Pesquisa","loadMessage":"Carregando Painéis de Pesquisa...","title":"Filtros Ativos","showMessage":"Mostrar todos","collapseMessage":"Fechar todos"},"thousands":".","datetime":{"previous":"Anterior","next":"Próximo","hours":"Hora","minutes":"Minuto","seconds":"Segundo","amPm":["am","pm"],"unknown":"-","months":{"0":"Janeiro","1":"Fevereiro","2":"Março","3":"Abril","4":"Maio","5":"Junho","6":"Julho","7":"Agosto","8":"Setembro","9":"Outubro","10":"Novembro","11":"Dezembro"},"weekdays":["Dom","Seg","Ter","Qua","Qui","Sex","Sáb"]},"editor":{"close":"Fechar","create":{"button":"Novo","submit":"Criar","title":"Criar novo registro"},"edit":{"button":"Editar","submit":"Atualizar","title":"Editar registro"},"error":{"system":"Ocorreu um erro no sistema (<a target=\\"\\\\\\" rel=\\"nofollow\\" href=\\"\\\\\\">Mais informações</a>)."},"multi":{"noMulti":"Essa entrada pode ser editada individualmente, mas não como parte do grupo","restore":"Desfazer alterações","title":"Multiplos valores","info":"Os itens selecionados contêm valores diferentes para esta entrada. Para editar e definir todos os itens para esta entrada com o mesmo valor, clique ou toque aqui, caso contrário, eles manterão seus valores individuais."},"remove":{"button":"Remover","confirm":{"1":"Tem certeza que quer deletar 1 linha?","_":"Tem certeza que quer deletar %d linhas?"},"submit":"Remover","title":"Remover registro"}},"decimal":",","stateRestore":{"creationModal":{"button":"Criar","columns":{"search":"Busca de colunas","visible":"Visibilidade da coluna"},"name":"Nome:","order":"Ordernar","paging":"Paginação","scroller":"Posição da barra de rolagem","search":"Busca","searchBuilder":"Mecanismo de busca","select":"Selecionar","title":"Criar novo estado","toggleLabel":"Inclui:"},"emptyStates":"Nenhum estado salvo","removeConfirm":"Confirma remover %s?","removeJoiner":"e","removeSubmit":"Remover","removeTitle":"Remover estado","renameButton":"Renomear","renameLabel":"Novo nome para %s:","renameTitle":"Renomear estado","duplicateError":"Já existe um estado com esse nome!","emptyError":"Não pode ser vazio!","removeError":"Falha ao remover estado!"},"infoEmpty":"Mostrando 0 até 0 de 0 registro(s)","processing":"Carregando...","searchPlaceholder":"Buscar registros"}');
 
 /***/ })
 

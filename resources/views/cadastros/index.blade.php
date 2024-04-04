@@ -23,18 +23,23 @@
                             <th scope="col">Nome da Solicitante</th>
                             <th scope="col">CPF</th>
                             <th scope="col">NIS</th>
-                            <th scope="col">Pontuação</th>
+                            @can('super-admin')
+                                <th scope="col">Pontuação</th>
+                            @endcan
                             <th width="14%" scope="col">Data da Solicitação</th>
                             <th scope="col">Status</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($beneficiarias as $beneficiaria)
-                            <tr>
+                            <tr name="{{ $beneficiaria->id }}" class="row-table-pesquisa">
                                 <td>{{ $beneficiaria->nome }}</td>
-                                <td>{{ $beneficiaria->cpf }}</td>
+                                <td>{{ substr($beneficiaria->cpf, 0, 3) . '.' . substr($beneficiaria->cpf, 3, 3) . '.' . substr($beneficiaria->cpf, 6, 3) . '-' . substr($beneficiaria->cpf, 9, 2) }}
+                                </td>
                                 <td>{{ $beneficiaria->nis }}</td>
-                                <td>{{ $beneficiaria->pontuacao }}</td>
+                                @can('super-admin')
+                                    <td>{{ $beneficiaria->pontuacao }}</td>
+                                @endcan
                                 <td>{{ date('d/m/Y H:i', strtotime($beneficiaria->created_at)) }}</td>
                                 <td>{{ $beneficiaria->statusCodes->name }}</td>
                             </tr>

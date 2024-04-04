@@ -12,6 +12,7 @@ class Beneficiarias extends Model
     protected static $salarioMinimo =  1412;
     protected $fillable = [
         'nome',
+        'municipio_cod_ibge',
         'cpf',
         'nis',
         'nascimento',
@@ -55,7 +56,8 @@ class Beneficiarias extends Model
     static function formatarDados($dados)
     {
         $dadosFormatados = [];
-        $dadosFormatados["nome"] = $dados->solicitante->NOM_PESSOA;
+        $dadosFormatados["nome"] =  $dados->solicitante->NOM_PESSOA;
+        $dadosFormatados["municipio_cod_ibge"] = $dados->solicitante->COD_MUNIC_IBGE_2_FAM . $dados->solicitante->COD_MUNIC_IBGE_5_FAM;
         $dadosFormatados["cpf"] = $dados->solicitante->NUM_CPF_PESSOA;
         $dadosFormatados["nis"] = $dados->solicitante->NUM_NIS_PESSOA_ATUAL;
         $dadosFormatados["nascimento"] = date('d/m/Y', strtotime($dados->solicitante->DTA_NASC_PESSOA));

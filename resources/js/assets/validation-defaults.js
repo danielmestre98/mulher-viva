@@ -99,6 +99,25 @@ $.validator.addMethod(
 );
 
 $.validator.addMethod(
+    "pdf",
+    function (value, element) {
+        // Check if the file input has a file selected
+        if (element.files.length > 0) {
+            // Get the file extension
+            var extension = element.files[0].name
+                .split(".")
+                .pop()
+                .toLowerCase();
+            // Check if the extension is 'pdf'
+            return extension === "pdf";
+        }
+        // No file selected, return true
+        return true;
+    },
+    "Por favor selecione apenas arquivos PDF."
+);
+
+$.validator.addMethod(
     "cnpj",
     function (value, element) {
         cnpj = value.replace(/[^\d]+/g, "");

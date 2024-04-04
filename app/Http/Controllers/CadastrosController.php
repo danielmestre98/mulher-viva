@@ -22,6 +22,13 @@ class CadastrosController extends Controller
         return view("cadastros.index", ["beneficiarias" => $dados]);
     }
 
+    function view($idBeneficiaria)
+    {
+        $beneficiaria = Beneficiarias::find($idBeneficiaria);
+        return view("cadastros.view", ["beneficiaria" => $beneficiaria]);
+    }
+
+
     function searchNewBeneficiaria(Request $request)
     {
         $jaExiste = Beneficiarias::where("cpf", "=", $request->valorPesquisa)->first();
@@ -114,5 +121,9 @@ class CadastrosController extends Controller
         // }
 
         return redirect()->route("restrito.cadastros");
+    }
+
+    function approve($option)
+    {
     }
 }

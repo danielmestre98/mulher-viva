@@ -23,9 +23,11 @@ $(() => {
             },
             anexoMedidaProt: {
                 required: true,
+                pdf: true,
             },
             anexoExamePsico: {
                 required: true,
+                pdf: true,
             },
             familiaTransfRenda: {
                 required: true,

@@ -290,6 +290,10 @@ a.menu-item-button {
     padding-top: 90px;
 }
 
+.row-table-pesquisa {
+    cursor: pointer;
+}
+
 .form-card-header {
     background-color: #034ea2;
     color: #ffffff;

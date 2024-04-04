@@ -16,14 +16,14 @@
                             <div class="form-group">
                                 <label for="nome">Nome</label>
                                 <input readonly type="text" class="form-control" id="nome" name="nome"
-                                    value="{{ $dados['nome'] }}">
+                                    value="{{ $beneficiaria->nome }}">
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="nis">NIS</label>
                                 <input readonly type="text" class="form-control" id="nis" name="nis"
-                                    value="{{ $dados['nis'] }}">
+                                    value="{{ $beneficiaria->nis }}">
                             </div>
                         </div>
                     </div>
@@ -32,14 +32,14 @@
                             <div class="form-group">
                                 <label for="nascimento">Data de nascimento</label>
                                 <input readonly type="text" class="form-control" id="nascimento" name="nascimento"
-                                    value="{{ $dados['nascimento'] }}">
+                                    value="{{ date('d/m/Y', strtotime($beneficiaria->nascimento)) }}">
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="cpf">CPF</label>
                                 <input readonly type="text" class="form-control" id="cpf" name="cpf"
-                                    value="{{ $dados['cpf'] }}">
+                                    value="{{ substr($beneficiaria->cpf, 0, 3) . '.' . substr($beneficiaria->cpf, 3, 3) . '.' . substr($beneficiaria->cpf, 6, 3) . '-' . substr($beneficiaria->cpf, 9, 2) }}">
                             </div>
                         </div>
                     </div>
@@ -57,13 +57,15 @@
                     </h5>
                     <div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input questions" type="radio" name="criancaAbrig"
-                                id="criancaAbrigSim" value="true">
+                            <input @cannot('super-admin') disabled @endcannot
+                                @if ($beneficiaria->presenca_jovem_sit_abrigamento) checked @endif class="form-check-input questions"
+                                type="radio" name="criancaAbrig" id="criancaAbrigSim" value="true">
                             <label class="form-check-label lead" for="criancaAbrigSim">Sim</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input questions" type="radio" name="criancaAbrig"
-                                id="criancaAbrigNão" value="false">
+                            <input @cannot('super-admin') disabled @endcannot
+                                @if (!$beneficiaria->presenca_jovem_sit_abrigamento) checked @endif class="form-check-input questions"
+                                type="radio" name="criancaAbrig" id="criancaAbrigNão" value="false">
                             <label class="form-check-label lead" for="criancaAbrigNão">Não</label>
                         </div>
                     </div>
@@ -74,13 +76,15 @@
                     </h5>
                     <div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input questions" type="radio" name="adolecMedidaSocio"
-                                id="adolecMedidaSocioSim" value="true">
+                            <input @cannot('super-admin') disabled @endcannot
+                                @if ($beneficiaria->presenca_adolec_medida_socio_educativa) checked @endif class="form-check-input questions"
+                                type="radio" name="adolecMedidaSocio" id="adolecMedidaSocioSim" value="true">
                             <label class="form-check-label lead" for="adolecMedidaSocioSim">Sim</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input questions" type="radio" name="adolecMedidaSocio"
-                                id="adolecMedidaSocioNão" value="false">
+                            <input @cannot('super-admin') disabled @endcannot
+                                @if (!$beneficiaria->presenca_adolec_medida_socio_educativa) checked @endif class="form-check-input questions"
+                                type="radio" name="adolecMedidaSocio" id="adolecMedidaSocioNão" value="false">
                             <label class="form-check-label lead" for="adolecMedidaSocioNão">Não</label>
                         </div>
                     </div>
@@ -94,13 +98,15 @@
                     </h5>
                     <div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input questions" type="radio" name="mulherCondDesacolh"
-                                id="mulherCondDesacolhSim" value="true">
+                            <input @if ($beneficiaria->inic_serv_acolh_institucional) checked @endif
+                                @cannot('super-admin') disabled @endcannot class="form-check-input questions"
+                                type="radio" name="mulherCondDesacolh" id="mulherCondDesacolhSim" value="true">
                             <label class="form-check-label lead" for="mulherCondDesacolhSim">Sim</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input questions" type="radio" name="mulherCondDesacolh"
-                                id="mulherCondDesacolhNão" value="false">
+                            <input @if (!$beneficiaria->inic_serv_acolh_institucional) checked @endif
+                                @cannot('super-admin') disabled @endcannot class="form-check-input questions"
+                                type="radio" name="mulherCondDesacolh" id="mulherCondDesacolhNão" value="false">
                             <label class="form-check-label lead" for="mulherCondDesacolhNão">Não</label>
                         </div>
                     </div>
@@ -110,13 +116,15 @@
                     </h5>
                     <div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input questions" type="radio" name="familiaTransfRenda"
-                                id="familiaTransfRendaSim" value="true">
+                            <input @cannot('super-admin') disabled @endcannot
+                                @if ($beneficiaria->particip_programas_transferencia_renda) checked @endif class="form-check-input questions"
+                                type="radio" name="familiaTransfRenda" id="familiaTransfRendaSim" value="true">
                             <label class="form-check-label lead" for="familiaTransfRendaSim">Sim</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input questions" type="radio" name="familiaTransfRenda"
-                                id="familiaTransfRendaNão" value="false">
+                            <input @cannot('super-admin') disabled @endcannot
+                                @if (!$beneficiaria->particip_programas_transferencia_renda) checked @endif class="form-check-input questions"
+                                type="radio" name="familiaTransfRenda" id="familiaTransfRendaNão" value="false">
                             <label class="form-check-label lead" for="familiaTransfRendaNão">Não</label>
                         </div>
                     </div>
@@ -128,23 +136,35 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        <div class="form-group col-md-6">
-                            <label for="anexoMedidaProt"><span class="red">*</span> Anexar a medida protetetiva</label>
-                            <input type="file" class="form-control" accept=".pdf" id="anexoMedidaProt"
-                                name="anexoMedidaProt">
+                        <div class="d-grid col-6 gap-2 mx-auto">
+                            <a target="_blank"
+                                href="{{ route('restrito.view-file', [$beneficiaria->id, 'medidaProtetiva.pdf']) }}"
+                                class="btn btn-info btn-lg">Medida protetiva <i class="fa-solid fa-download"></i></a>
                         </div>
-                        <div class="form-group col-md-6">
-                            <label for="anexoExamePsico"><span class="red">*</span> Anexar o exame psicosocial</label>
-                            <input type="file" class="form-control" accept=".pdf" id="anexoExamePsico"
-                                name="anexoExamePsico">
+                        <div class="d-grid col-6 gap-2 mx-auto">
+                            <a target="_blank"
+                                href="{{ route('restrito.view-file', [$beneficiaria->id, 'examePsicosocial.pdf']) }}"
+                                class="btn btn-info btn-lg">Exame psicosocial <i class="fa-solid fa-download"></i></a>
                         </div>
                     </div>
                 </div>
             </div>
-            <textarea hidden name="jsonDados" id="jsonDados" cols="30" rows="10">{{ json_encode($dados) }}</textarea>
-            <div class="form-buttons mt-2 d-flex justify-content-end">
-                <button type="submit" class="btn btn-success btn-lg mb-3">Cadastrar beneficiária</button>
+            <div class="form-buttons mt-2 mb-3 d-flex justify-content-between">
+                <button onclick="goBack()" type="button" class="btn btn-secondary btn-lg"
+                    style="margin-right: 5px">Voltar</button>
+                @can('super-admin')
+                    <div>
+                        <button class="btn btn-danger btn-lg" style="margin-right: 5px">Negar</button>
+                        <button class="btn btn-success btn-lg">Aprovar</button>
+                    </div>
+                @endcan
             </div>
         </form>
     </div>
+
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+    </script>
 @endsection

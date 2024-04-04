@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CadastrosController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\ProtectedFilesController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -27,8 +28,13 @@ Route::middleware("auth")->group(function () {
     Route::get("/restrito/cadastros/fitro/3", [CadastrosController::class, "index"])->name("restrito.cadastros.filtro.recusado");
     Route::get("/restrito/cadastros/fitro/4", [CadastrosController::class, "index"])->name("restrito.cadastros.filtro.naoElegivel");
     Route::post("/restrito/cadastros/search-new", [CadastrosController::class, "searchNewBeneficiaria"]);
+
     Route::post("/restrito/cadastros/dados-new", [CadastrosController::class, "create"]);
     Route::post("/restrito/cadastros/dados-new/submit", [CadastrosController::class, "store"])->name("restrito.benefiaria.store");
+    Route::get("/restrito/cadastros/view/{idBeneficiaria}", [CadastrosController::class, "view"]);
+    Route::post("/restrito/cadastros/view/{idBeneficiaria}/{approve}", [CadastrosController::class, "approve"]);
+
+    Route::get("/restrito/cadastros/view-file/{idBeneficiaria}/{fileName}", [ProtectedFilesController::class, "showBeneficiariaFiles"])->name("restrito.view-file");
 
     Route::put("/restrito/usuario/{id}/alterar-senha", [UserController::class, "changeSelfPassword"]);
 
