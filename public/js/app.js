@@ -3216,11 +3216,14 @@ window.axios = axios__WEBPACK_IMPORTED_MODULE_0__["default"];
 
 
 window.axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
-if (window.location.href === "".concat("http://localhost:3000", "/restrito/cadastros")) {
+if (window.location.href === "".concat("http://localhost:3000", "/restrito/cadastros") || window.location.href.includes("/restrito/cadastros/fitro/")) {
   __webpack_require__(/*! ./cadastros/pesquisa */ "./resources/js/cadastros/pesquisa.js");
 }
 if (window.location.href === "".concat("http://localhost:3000", "/restrito/cadastros/dados-new")) {
   __webpack_require__(/*! ./cadastros/confirmacao */ "./resources/js/cadastros/confirmacao.js");
+}
+if (window.location.href.includes("/restrito/cadastros/view/")) {
+  __webpack_require__(/*! ./cadastros/view */ "./resources/js/cadastros/view.js");
 }
 
 /**
@@ -3420,6 +3423,45 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(function () {
   //             });
   //         });
   // });
+});
+
+/***/ }),
+
+/***/ "./resources/js/cadastros/view.js":
+/*!****************************************!*\
+  !*** ./resources/js/cadastros/view.js ***!
+  \****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var bootstrap__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! bootstrap */ "./node_modules/bootstrap/dist/js/bootstrap.esm.js");
+/* harmony import */ var jquery_validation__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! jquery-validation */ "./node_modules/jquery-validation/dist/jquery.validate.js");
+/* harmony import */ var jquery_validation__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(jquery_validation__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _assets_validation_defaults__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../assets/validation-defaults */ "./resources/js/assets/validation-defaults.js");
+
+
+
+
+jquery__WEBPACK_IMPORTED_MODULE_0___default()(function () {
+  jquery__WEBPACK_IMPORTED_MODULE_0___default()("#approve-submit").on("click", function () {
+    var modal = new bootstrap__WEBPACK_IMPORTED_MODULE_1__.Modal("#confirmApprove");
+    modal.show();
+  });
+  jquery__WEBPACK_IMPORTED_MODULE_0___default()("#deny-submit").on("click", function () {
+    var modal = new bootstrap__WEBPACK_IMPORTED_MODULE_1__.Modal("#confirmDeny");
+    modal.show();
+  });
+  jquery__WEBPACK_IMPORTED_MODULE_0___default()("#deny-form").validate({
+    rules: {
+      "motivo-recusa": {
+        required: true,
+        minlength: 10
+      }
+    }
+  });
 });
 
 /***/ }),

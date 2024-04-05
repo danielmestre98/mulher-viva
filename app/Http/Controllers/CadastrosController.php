@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
+use stdClass;
 
 class CadastrosController extends Controller
 {
@@ -15,9 +16,17 @@ class CadastrosController extends Controller
     {
         $dados = [];
         if ($filtro != "") {
-            $dados = Beneficiarias::where('status', $filtro)->get();
+            if (Auth::user()->hasRole("Super-Admin") || Auth::user()->hasRole("secretaria-mulher")) {
+                $dados = Beneficiarias::where('status', $filtro)->get();
+            } else {
+                $dados = Beneficiarias::where('status', $filtro)->where('municipio', Auth::user()->municipio)->get();
+            }
         } else {
-            $dados = Beneficiarias::all();
+            if (Auth::user()->hasRole("Super-Admin") || Auth::user()->hasRole("secretaria-mulher")) {
+                $dados = Beneficiarias::all();
+            } else {
+                $dados = Beneficiarias::where('municipio', Auth::user()->municipio)->get();
+            }
         }
         return view("cadastros.index", ["beneficiarias" => $dados]);
     }
@@ -66,6 +75,20 @@ class CadastrosController extends Controller
                         "familia" => $familia
                     ]);
                 }
+                //Mulher não elegível 
+                $json = json_encode($solicitante);
+                $json2 = json_encode($familia);
+                // Transforma o JSON em um objeto stdClass
+                $objeto = json_decode($json);
+                $objeto2 = json_decode($json2);
+                $class = new stdClass();
+
+                $class->solicitante = $objeto;
+                $class->familia = $objeto2;
+                $dadosFormatados = Beneficiarias::formatarDados($class);
+                $this->storeNaoElegivel($dadosFormatados);
+
+
                 return response()->json([
                     "aprovada" => false,
                 ]);
@@ -88,6 +111,23 @@ class CadastrosController extends Controller
         $dadosFormtados = Beneficiarias::formatarDados($dados);
 
         return view("cadastros.create", ["dados" => $dadosFormtados]);
+    }
+
+    function storeNaoElegivel($dados)
+    {
+        $json = json_encode($dados);
+        // Transforma o JSON em um objeto stdClass
+        $objeto = json_decode($json);
+        $objeto->presenca_jovem_sit_abrigamento = 0;
+        $objeto->presenca_adolec_medida_socio_educativa = 0;
+        $objeto->inic_serv_acolh_institucional = 0;
+        $objeto->particip_programas_transferencia_renda = 0;
+        $objeto->pontuacao = 0;
+        $objeto->status = 4;
+        $date = DateTime::createFromFormat('d/m/Y', $objeto->nascimento);
+        $objeto->nascimento = $date->format('Y-m-d');
+        Beneficiarias::create(json_decode(json_encode($objeto), true));
+        return redirect()->route("restrito.cadastros");
     }
 
     function store(Request $request)
@@ -123,7 +163,18 @@ class CadastrosController extends Controller
         return redirect()->route("restrito.cadastros");
     }
 
-    function approve($option)
+    function approve(Request $request, $id, $option)
     {
+        if ($option == 1) {
+            $beneficiaria = Beneficiarias::find($id);
+            $beneficiaria->status = 1;
+            $beneficiaria->save();
+        } else {
+            $beneficiaria = Beneficiarias::find($id);
+            $beneficiaria->status = 3;
+            $beneficiaria->motivo_recusa = $request->motivo_recusa;
+            $beneficiaria->save();
+        }
+        return redirect()->route("restrito.cadastros.filtro.aprovado");
     }
 }

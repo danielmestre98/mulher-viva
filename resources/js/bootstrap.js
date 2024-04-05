@@ -10,7 +10,10 @@ import "bootstrap";
 import "./leftbar";
 window.axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
 
-if (window.location.href === `${process.env.APP_URL}/restrito/cadastros`) {
+if (
+    window.location.href === `${process.env.APP_URL}/restrito/cadastros` ||
+    window.location.href.includes("/restrito/cadastros/fitro/")
+) {
     require("./cadastros/pesquisa");
 }
 if (
@@ -18,6 +21,9 @@ if (
     `${process.env.APP_URL}/restrito/cadastros/dados-new`
 ) {
     require("./cadastros/confirmacao");
+}
+if (window.location.href.includes("/restrito/cadastros/view/")) {
+    require("./cadastros/view");
 }
 
 /**

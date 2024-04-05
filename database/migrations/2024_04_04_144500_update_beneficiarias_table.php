@@ -12,7 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('beneficiarias', function (Blueprint $table) {
-            $table->string("municipio_cod_ibge", 20)->nullable()->after("nome");
+            $table->string("municipio", 20)->nullable()->after("nome");
+            $table->text("motivo_recusa")->nullable()->after("status");
+            $table->foreignId("created_by")->references("id")->on("users")->after("motivo_recusa");
         });
     }
 
@@ -22,7 +24,9 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('beneficiarias', function (Blueprint $table) {
-            $table->dropColumn("municipio_cod_ibge");
+            $table->dropColumn("municipio");
+            $table->dropColumn("motivo_recusa");
+            $table->dropColumn("created_by");
         });
     }
 };

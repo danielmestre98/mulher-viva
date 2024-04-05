@@ -5,6 +5,7 @@ namespace App\Models;
 use DateTime;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Beneficiarias extends Model
 {
@@ -12,7 +13,7 @@ class Beneficiarias extends Model
     protected static $salarioMinimo =  1412;
     protected $fillable = [
         'nome',
-        'municipio_cod_ibge',
+        'municipio',
         'cpf',
         'nis',
         'nascimento',
@@ -29,6 +30,7 @@ class Beneficiarias extends Model
         'particip_programas_transferencia_renda',
         'pontuacao',
         'status',
+        'created_by'
     ];
 
     static private $ensinoMedio = [
@@ -57,7 +59,7 @@ class Beneficiarias extends Model
     {
         $dadosFormatados = [];
         $dadosFormatados["nome"] =  $dados->solicitante->NOM_PESSOA;
-        $dadosFormatados["municipio_cod_ibge"] = $dados->solicitante->COD_MUNIC_IBGE_2_FAM . $dados->solicitante->COD_MUNIC_IBGE_5_FAM;
+        $dadosFormatados["municipio"] = Auth::user()->municipio;
         $dadosFormatados["cpf"] = $dados->solicitante->NUM_CPF_PESSOA;
         $dadosFormatados["nis"] = $dados->solicitante->NUM_NIS_PESSOA_ATUAL;
         $dadosFormatados["nascimento"] = date('d/m/Y', strtotime($dados->solicitante->DTA_NASC_PESSOA));
@@ -72,6 +74,7 @@ class Beneficiarias extends Model
         $dadosFormatados["mulher_nao_branca"] = ($dados->solicitante->COD_RACA_COR_PESSOA != "Branca") ? true : false;
         $dadosFormatados["presenca_pessoa_idosa"] = ($dados->solicitante->DTA_NASC_PESSOA >= 65) ? true : false;
         $dadosFormatados["presenca_pessoa_deficiente"] = ($dados->solicitante->COD_DEFICIENCIA_MEMB == 1) ? true : false;
+        $dadosFormatados["created_by"] = Auth::user()->id;
 
         foreach ($dados->familia as $value) {
             if (self::calcularIdade($value->DTA_NASC_PESSOA) >= 65) {
