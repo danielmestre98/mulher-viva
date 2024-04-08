@@ -5,6 +5,7 @@
  */
 
 import axios from "axios";
+import "@popperjs/core";
 window.axios = axios;
 import "bootstrap";
 import "./leftbar";
