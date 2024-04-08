@@ -3216,7 +3216,7 @@ window.axios = axios__WEBPACK_IMPORTED_MODULE_0__["default"];
 
 
 window.axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
-if (window.location.href === "".concat("http://localhost:3000", "/restrito/cadastros") || window.location.href.includes("/restrito/cadastros/fitro/")) {
+if (window.location.href === "".concat("http://localhost:3000", "/restrito/cadastros") || window.location.href.includes("/restrito/cadastros/fitro/") || window.location.href === "".concat("http://localhost:3000", "/restrito/cadastros/filter")) {
   __webpack_require__(/*! ./cadastros/pesquisa */ "./resources/js/cadastros/pesquisa.js");
 }
 if (window.location.href === "".concat("http://localhost:3000", "/restrito/cadastros/dados-new")) {
@@ -3327,6 +3327,28 @@ __webpack_require__.r(__webpack_exports__);
 
 
 jquery__WEBPACK_IMPORTED_MODULE_0___default()(function () {
+  if (window.location.href === "".concat("http://localhost:3000", "/restrito/cadastros/filter")) {
+    var leftbarControl = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#leftbar-control").val();
+    switch (leftbarControl) {
+      case "":
+        jquery__WEBPACK_IMPORTED_MODULE_0___default()("#all-s").addClass("active");
+        break;
+      case "1":
+        jquery__WEBPACK_IMPORTED_MODULE_0___default()("#app-s").addClass("active");
+        break;
+      case "2":
+        jquery__WEBPACK_IMPORTED_MODULE_0___default()("#pen-s").addClass("active");
+        break;
+      case "3":
+        jquery__WEBPACK_IMPORTED_MODULE_0___default()("#rec-s").addClass("active");
+        break;
+      case "4":
+        jquery__WEBPACK_IMPORTED_MODULE_0___default()("#nao-s").addClass("active");
+        break;
+      default:
+        break;
+    }
+  }
   var modalSearch = new bootstrap__WEBPACK_IMPORTED_MODULE_3__.Modal("#cadastrarBeneficiaria");
   var modalSucesso = new bootstrap__WEBPACK_IMPORTED_MODULE_3__.Modal("#sucessoModal");
   var modalErro = new bootstrap__WEBPACK_IMPORTED_MODULE_3__.Modal("#erroModal");
@@ -3357,6 +3379,13 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(function () {
 
     // Use DataTables API to search DataTable
     table.search(searchValue).draw();
+  });
+  jquery__WEBPACK_IMPORTED_MODULE_0___default()(".filtros").on("change", function (e) {
+    if (e.target.value) {
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()(".filtros").not(this).attr("disabled", true);
+    } else {
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()(".filtros").attr("disabled", false);
+    }
   });
   jquery__WEBPACK_IMPORTED_MODULE_0___default()("#search-new").on("submit", function (e) {
     e.preventDefault();
@@ -3401,28 +3430,6 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(function () {
     var formatoDesejado = dia + "/" + mes + "/" + ano + " " + hora + ":" + minutos;
     return formatoDesejado; // Saída: 14/03/2024 19:29
   };
-
-  // $("#searchBeneficiaria").on("keyup", function (e) {
-  //     axios
-  //         .post("", {
-  //             pesquisa: e.currentTarget.value,
-  //         })
-  //         .then(({ data }) => {
-  //             $("#beneficiarias-table tbody").html("");
-  //             data.forEach((item) => {
-  //                 $("#beneficiarias-table tbody").append(`
-  //                     <tr>
-  //                         <td>${item.nome}</td>
-  //                         <td>${item.cpf}</td>
-  //                         <td>${item.nis}</td>
-  //                         <td>${item.pontuacao}</td>
-  //                         <td>${formatDate(item.created_at)}</td>
-  //                         <td>${item.status_codes.name}</td>
-  //                     </tr>
-  //                 `);
-  //             });
-  //         });
-  // });
 });
 
 /***/ }),

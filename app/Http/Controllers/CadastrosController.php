@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Beneficiarias;
+use App\Models\Drads;
+use App\Models\Municipio;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -16,19 +18,41 @@ class CadastrosController extends Controller
     {
         $dados = [];
         if ($filtro != "") {
-            if (Auth::user()->hasRole("Super-Admin") || Auth::user()->hasRole("secretaria-mulher")) {
+            if (Auth::user()->can("view beneficiarias")) {
+                $drads = Drads::orderBy("nome", "ASC")->get();
+                $municipios = Municipio::orderBy("nome", "ASC")->get();
                 $dados = Beneficiarias::where('status', $filtro)->get();
+                return view("cadastros.index", ["beneficiarias" => $dados, "drads" => $drads, "municipios" => $municipios, "filtro" => $filtro]);
             } else {
                 $dados = Beneficiarias::where('status', $filtro)->where('municipio', Auth::user()->municipio)->get();
             }
         } else {
-            if (Auth::user()->hasRole("Super-Admin") || Auth::user()->hasRole("secretaria-mulher")) {
+            if (Auth::user()->can("view beneficiarias")) {
                 $dados = Beneficiarias::all();
+                $drads = Drads::orderBy("nome", "ASC")->get();
+                $municipios = Municipio::orderBy("nome", "ASC")->get();
+                return view("cadastros.index", ["beneficiarias" => $dados, "drads" => $drads, "municipios" => $municipios, "filtro" => $filtro]);
             } else {
                 $dados = Beneficiarias::where('municipio', Auth::user()->municipio)->get();
             }
         }
-        return view("cadastros.index", ["beneficiarias" => $dados]);
+        return view("cadastros.index", ["beneficiarias" => $dados, "filtro" => $filtro]);
+    }
+
+    function filter(Request $request)
+    {
+        $drads = Drads::orderBy("nome", "ASC")->get();
+        $municipios = Municipio::orderBy("nome", "ASC")->get();
+        if ($request->drads_filtro) {
+            $municipio = Municipio::where("drads_id", $request->drads_filtro)->pluck("id");
+            $beneficiarias = isset($request->filtro) ? Beneficiarias::where("status", $request->filtro)->whereIn("municipio", $municipio)->get() :
+                Beneficiarias::whereIn("municipio", $municipio)->get();
+        } else {
+            $municipio = Municipio::where("id", $request->municipio_filtro)->pluck("id");
+            $beneficiarias = isset($request->filtro) ? Beneficiarias::where("status", $request->filtro)->whereIn("municipio", $municipio)->get() :
+                Beneficiarias::whereIn("municipio", $municipio)->get();
+        }
+        return view("cadastros.index", ["beneficiarias" => $beneficiarias, "filtro" => $request->filtro, "drads" => $drads, "municipios" => $municipios, "filtros_default" => ["drads" => $request->drads_filtro, "municipio" => $request->municipio_filtro]]);
     }
 
     function view($idBeneficiaria)

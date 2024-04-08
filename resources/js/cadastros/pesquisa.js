@@ -6,6 +6,32 @@ import DataTable from "datatables.net-bs5";
 import ptBR from "../assets/pt-BR.json";
 
 $(() => {
+    if (
+        window.location.href ===
+        `${process.env.APP_URL}/restrito/cadastros/filter`
+    ) {
+        const leftbarControl = $("#leftbar-control").val();
+        switch (leftbarControl) {
+            case "":
+                $("#all-s").addClass("active");
+                break;
+            case "1":
+                $("#app-s").addClass("active");
+                break;
+            case "2":
+                $("#pen-s").addClass("active");
+                break;
+            case "3":
+                $("#rec-s").addClass("active");
+                break;
+            case "4":
+                $("#nao-s").addClass("active");
+                break;
+            default:
+                break;
+        }
+    }
+
     const modalSearch = new Modal("#cadastrarBeneficiaria");
     const modalSucesso = new Modal("#sucessoModal");
     const modalErro = new Modal("#erroModal");
@@ -41,6 +67,14 @@ $(() => {
 
         // Use DataTables API to search DataTable
         table.search(searchValue).draw();
+    });
+
+    $(".filtros").on("change", function (e) {
+        if (e.target.value) {
+            $(".filtros").not(this).attr("disabled", true);
+        } else {
+            $(".filtros").attr("disabled", false);
+        }
     });
 
     $("#search-new").on("submit", function (e) {
@@ -95,26 +129,4 @@ $(() => {
 
         return formatoDesejado; // Saída: 14/03/2024 19:29
     };
-
-    // $("#searchBeneficiaria").on("keyup", function (e) {
-    //     axios
-    //         .post("", {
-    //             pesquisa: e.currentTarget.value,
-    //         })
-    //         .then(({ data }) => {
-    //             $("#beneficiarias-table tbody").html("");
-    //             data.forEach((item) => {
-    //                 $("#beneficiarias-table tbody").append(`
-    //                     <tr>
-    //                         <td>${item.nome}</td>
-    //                         <td>${item.cpf}</td>
-    //                         <td>${item.nis}</td>
-    //                         <td>${item.pontuacao}</td>
-    //                         <td>${formatDate(item.created_at)}</td>
-    //                         <td>${item.status_codes.name}</td>
-    //                     </tr>
-    //                 `);
-    //             });
-    //         });
-    // });
 });

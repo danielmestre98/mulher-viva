@@ -25,6 +25,7 @@ Route::middleware("auth")->group(function () {
     Route::get("/restrito/cadastros", [CadastrosController::class, "index"])->name("restrito.cadastros");
     Route::get("/restrito/cadastros/fitro/{filtro}", [CadastrosController::class, "index"])->name("restrito.cadastros.filtro");
     Route::post("/restrito/cadastros/search-new", [CadastrosController::class, "searchNewBeneficiaria"]);
+    Route::post("/restrito/cadastros/filter", [CadastrosController::class, "filter"])->name("restrito.cadastros.filter.form");
 
     Route::post("/restrito/cadastros/dados-new", [CadastrosController::class, "create"]);
     Route::post("/restrito/cadastros/dados-new/submit", [CadastrosController::class, "store"])->name("restrito.benefiaria.store");

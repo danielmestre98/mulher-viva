@@ -12,7 +12,8 @@ window.axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
 
 if (
     window.location.href === `${process.env.APP_URL}/restrito/cadastros` ||
-    window.location.href.includes("/restrito/cadastros/fitro/")
+    window.location.href.includes("/restrito/cadastros/fitro/") ||
+    window.location.href === `${process.env.APP_URL}/restrito/cadastros/filter`
 ) {
     require("./cadastros/pesquisa");
 }

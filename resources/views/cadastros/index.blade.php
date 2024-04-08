@@ -1,7 +1,56 @@
 @extends('assets.page')
 
 @section('content')
-    <div class="container container-table">
+    <div class="container pt-4">
+        <p class="display-4">Beneficiárias</p>
+        <hr>
+
+        @can('view beneficiarias')
+            <div class="card mb-4">
+                <div class="card-header form-card-header">
+                    <i class="fa-solid fa-filter"></i> Filtros
+                </div>
+                <div class="card-body">
+                    {{-- {{ dd($filtros_default) }} --}}
+                    <form method="POST" action="{{ route('restrito.cadastros.filter.form') }}">
+                        @csrf
+                        <div class="row">
+                            <div class="form-group col-md-5">
+                                <label for="drads_filtro">Drads</label>
+                                <select @if (isset($filtros_default['municipio'])) disabled @endif class="form-select filtros"
+                                    id="drads_filtro" name="drads_filtro">
+                                    <option value="">Selecione a opção desejada...</option>
+                                    @foreach ($drads as $item)
+                                        <option @if (isset($filtros_default) && $filtros_default['drads'] == $item->id) selected @endif value="{{ $item->id }}">
+                                            {{ $item->nome }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="municipio_filtro">Municipio</label>
+                                <select @if (isset($filtros_default['drads'])) disabled @endif class="form-select filtros"
+                                    id="municipio_filtro" name="municipio_filtro">
+                                    <option value="">Selecione a opção desejada...</option>
+                                    @foreach ($municipios as $item)
+                                        @if ($item->id != 0)
+                                            <option @if (isset($filtros_default) && $filtros_default['municipio'] == $item->id) selected @endif
+                                                value="{{ $item->id }}">
+                                                {{ $item->nome }}</option>
+                                        @endif
+                                    @endforeach
+                                </select>
+                            </div>
+                            <input type="text" name="filtro" id="leftbar-control" hidden value={{ $filtro }}>
+
+                            <div class="col-md-1 mt-4">
+                                <button class="btn btn-primary"> Filtrar</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        @endcan
+
         <div class="row justify-content-between mb-2">
             <div class="col-2">
                 <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#cadastrarBeneficiaria">Cadastrar

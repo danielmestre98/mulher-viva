@@ -15,15 +15,15 @@
                     class="fa-solid fa-chevron-down fa-sm"></i></button>
             <div class="box-dropdown" style="display: block">
                 <ul>
-                    <li><a @if (request()->routeIs('restrito.cadastros')) class="active" @endif
+                    <li><a id="all-s" @if (request()->routeIs('restrito.cadastros')) class="active" @endif
                             href={{ route('restrito.cadastros') }}>Solicitações</a></li>
-                    <li><a @if (request()->is('restrito/cadastros/fitro/1')) class="active" @endif
+                    <li><a id="app-s" @if (request()->is('restrito/cadastros/fitro/1')) class="active" @endif
                             href={{ route('restrito.cadastros.filtro', 1) }}>Aprovados</a></li>
-                    <li><a @if (request()->is('restrito/cadastros/fitro/2')) class="active" @endif
+                    <li><a id="pen-s" @if (request()->is('restrito/cadastros/fitro/2')) class="active" @endif
                             href={{ route('restrito.cadastros.filtro', 2) }}>Pendentes</a></li>
-                    <li><a @if (request()->is('restrito/cadastros/fitro/3')) class="active" @endif
+                    <li><a id="rec-s" @if (request()->is('restrito/cadastros/fitro/3')) class="active" @endif
                             href={{ route('restrito.cadastros.filtro', 3) }}>Recusados</a></li>
-                    <li><a @if (request()->is('restrito/cadastros/fitro/4')) class="active" @endif
+                    <li><a id="nao-s" @if (request()->is('restrito/cadastros/fitro/4')) class="active" @endif
                             href={{ route('restrito.cadastros.filtro', 4) }}>Não elegíveis</a></li>
                 </ul>
             </div>
