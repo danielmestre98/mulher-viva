@@ -6,6 +6,7 @@ namespace Database\Seeders;
 
 use App\Models\Drads;
 use App\Models\Municipio;
+use App\Models\StatusCodes;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
@@ -60,5 +61,18 @@ class DatabaseSeeder extends Seeder
                 'cod_uge' => $data['cod_uge'],
             ]);
         }
+
+        StatusCodes::create([
+            "name" => "Aprovado",
+        ]);
+        StatusCodes::create([
+            "name" => "Pendente",
+        ]);
+        StatusCodes::create([
+            "name" => "Recusado",
+        ]);
+        StatusCodes::create([
+            "name" => "Não elegível",
+        ]);
     }
 }
