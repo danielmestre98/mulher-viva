@@ -24,10 +24,10 @@ Route::post("/", [LoginController::class, "auth"])->name("login.post");
 Route::middleware("auth")->group(function () {
     Route::get("/restrito/cadastros", [CadastrosController::class, "index"])->name("restrito.cadastros");
     Route::get("/restrito/cadastros/fitro/{filtro}", [CadastrosController::class, "index"])->name("restrito.cadastros.filtro");
-    Route::post("/restrito/cadastros/search-new", [CadastrosController::class, "searchNewBeneficiaria"])->name("restrito.form.new");
+    Route::post("/restrito/cadastros/search-new", [CadastrosController::class, "searchNewBeneficiaria"]);
     Route::post("/restrito/cadastros/filter", [CadastrosController::class, "filter"])->name("restrito.cadastros.filter.form");
 
-    Route::post("/restrito/cadastros/dados-new", [CadastrosController::class, "create"]);
+    Route::post("/restrito/cadastros/dados-new", [CadastrosController::class, "create"])->name("restrito.form.new");
     Route::post("/restrito/cadastros/dados-new/submit", [CadastrosController::class, "store"])->name("restrito.benefiaria.store");
     Route::get("/restrito/cadastros/view/{idBeneficiaria}", [CadastrosController::class, "view"]);
     Route::post("/restrito/cadastros/view/{idBeneficiaria}/{approve}", [CadastrosController::class, "approve"])->name("restrito.beneficiaria.approve");

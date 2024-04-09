@@ -72,9 +72,10 @@ class CadastrosController extends Controller
         }
         $headers = [
             'Token' => env("API_TOKEN"),
+            'Content-Type' => 'application/json'
         ];
 
-        $response = Http::withHeaders($headers)->post(env("API_URL"), [
+        $response = Http::withoutVerifying()->withHeaders($headers)->post(env("API_URL"), [
             'sistema' => 'mulher-viva',
             'searchType' => $request->tipoPesquisa,
             'cpf' => [
@@ -84,7 +85,6 @@ class CadastrosController extends Controller
                 $request->valorPesquisa
             ]
         ]);
-
         // Verificar a resposta
         if ($response->successful()) {
             // A requisição foi bem-sucedida (status 2xx)
@@ -125,7 +125,6 @@ class CadastrosController extends Controller
         } else {
             // A requisição falhou (status diferente de 2xx)
             $statusCode = $response->status();
-            dd($statusCode);
         }
     }
 
