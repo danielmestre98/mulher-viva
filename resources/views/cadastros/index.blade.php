@@ -69,25 +69,33 @@
                 <table class="table table-hover table-bordered" id="beneficiarias-table">
                     <thead>
                         <tr>
+                            <th @can('super-admin') style="text-align: center" @endcan width="5%" scope="col">Posição
+                                @can('super-admin')
+                                    (Município)
+                                @endcan
+                            </th>
                             <th scope="col">Nome da Solicitante</th>
-                            <th scope="col">CPF</th>
-                            <th scope="col">NIS</th>
+                            <th width="10%" scope="col">CPF</th>
+                            <th width="10%" scope="col">NIS</th>
                             @can('super-admin')
-                                <th scope="col">Pontuação</th>
+                                <th width="5%" scope="col">Pontuação</th>
+                                <th scope="col">Município</th>
                             @endcan
-                            <th width="14%" scope="col">Data da Solicitação</th>
+                            <th width="15.5%" scope="col">Data da Solicitação</th>
                             <th scope="col">Status</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($beneficiarias as $beneficiaria)
                             <tr name="{{ $beneficiaria->id }}" class="row-table-pesquisa">
+                                <td>{{ $beneficiaria->posicao ?? 'N/A' }}</td>
                                 <td>{{ $beneficiaria->nome }}</td>
                                 <td>{{ substr($beneficiaria->cpf, 0, 3) . '.' . substr($beneficiaria->cpf, 3, 3) . '.' . substr($beneficiaria->cpf, 6, 3) . '-' . substr($beneficiaria->cpf, 9, 2) }}
                                 </td>
                                 <td>{{ $beneficiaria->nis }}</td>
                                 @can('super-admin')
                                     <td>{{ $beneficiaria->pontuacao }}</td>
+                                    <td>{{ $beneficiaria->municipios->nome }}</td>
                                 @endcan
                                 <td>{{ date('d/m/Y H:i', strtotime($beneficiaria->created_at)) }}</td>
                                 <td>{{ $beneficiaria->statusCodes->name }}</td>
@@ -126,7 +134,9 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-warning">Buscar beneficiária</button>
+                        <button id="submit-button-search" type="submit" class="btn btn-warning"> <img class="loading-svg"
+                                style="display: none" height="25x" src="{{ asset('assets/img/loading.svg') }}"
+                                alt=""> <span class="text-submit">Buscar beneficiária</span> </button>
                     </div>
                 </form>
             </div>

@@ -171,7 +171,7 @@ class CadastrosController extends Controller
         // dd($request);
         $request->file('anexoMedidaProt')->storeAs("uploads/" . $beneficiaria->id, "medidaProtetiva." . $request->file('anexoMedidaProt')->getClientOriginalExtension(), "public");
         $request->file('anexoExamePsico')->storeAs("uploads/" . $beneficiaria->id, "examePsicosocial." . $request->file('anexoExamePsico')->getClientOriginalExtension(), "public");
-
+        Beneficiarias::verificarPosicoes($beneficiaria->municipio);
         return redirect()->route("restrito.cadastros.beneficiarias");
     }
 

@@ -135,8 +135,22 @@ class Beneficiarias extends Model
         return $pontuacao;
     }
 
+    static function verificarPosicoes($municipioId)
+    {
+        $beneficiarias = Beneficiarias::where('municipio', $municipioId)->orderBy("pontuacao", "DESC")->where("status", "!=", 4)->get();
+        for ($i = 0; $i < count($beneficiarias); $i++) {
+            $beneficiarias[$i]->posicao = $i + 1;
+            $beneficiarias[$i]->save();
+        }
+    }
+
     function statusCodes()
     {
         return $this->belongsTo(StatusCodes::class, "status", "id");
+    }
+
+    function municipios()
+    {
+        return $this->belongsTo(Municipio::class, "municipio", "id");
     }
 }

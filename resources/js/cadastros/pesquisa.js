@@ -41,6 +41,10 @@ $(() => {
         language: ptBR,
         searching: true, // Disable search input
         lengthChange: false,
+        order: [
+            [5, "asc"],
+            [0, "asc"],
+        ],
     });
 
     const newBenefSearch = $("#search-value-new").get(0);
@@ -81,6 +85,10 @@ $(() => {
 
     $("#search-new").on("submit", function (e) {
         e.preventDefault();
+        $("#submit-button-search").attr("disabled", true);
+        $(".text-submit").toggle();
+        $(".loading-svg").toggle();
+
         let formData = {
             tipoPesquisa: $("#tipo-search-new").val(),
             valorPesquisa: $("#search-value-new").val().replace(/\D/g, ""),
@@ -112,6 +120,11 @@ $(() => {
                     $("#error-text").html("Pessoa já cadastrada no sistema.");
                     modalErro.show();
                 }
+            })
+            .finally(() => {
+                $("#submit-button-search").attr("disabled", false);
+                $(".text-submit").toggle();
+                $(".loading-svg").toggle();
             });
     });
 

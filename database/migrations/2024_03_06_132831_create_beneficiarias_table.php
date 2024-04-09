@@ -27,8 +27,9 @@ return new class extends Migration
             $table->boolean("presenca_adolec_medida_socio_educativa");
             $table->boolean("presenca_jovem_sit_abrigamento");
             $table->boolean("particip_programas_transferencia_renda");
-            $table->string('pontuacao');
+            $table->integer('pontuacao');
             $table->integer("status");
+            $table->integer("posicao")->nullable();
             $table->timestamps();
         });
     }

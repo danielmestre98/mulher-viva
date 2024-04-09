@@ -3358,7 +3358,8 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(function () {
     language: _assets_pt_BR_json__WEBPACK_IMPORTED_MODULE_5__,
     searching: true,
     // Disable search input
-    lengthChange: false
+    lengthChange: false,
+    order: [[5, "asc"], [0, "asc"]]
   });
   var newBenefSearch = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#search-value-new").get(0);
   var cpfIm = new (inputmask__WEBPACK_IMPORTED_MODULE_1___default())("999.999.999-99");
@@ -3390,6 +3391,9 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(function () {
   });
   jquery__WEBPACK_IMPORTED_MODULE_0___default()("#search-new").on("submit", function (e) {
     e.preventDefault();
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()("#submit-button-search").attr("disabled", true);
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()(".text-submit").toggle();
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()(".loading-svg").toggle();
     var formData = {
       tipoPesquisa: jquery__WEBPACK_IMPORTED_MODULE_0___default()("#tipo-search-new").val(),
       valorPesquisa: jquery__WEBPACK_IMPORTED_MODULE_0___default()("#search-value-new").val().replace(/\D/g, "")
@@ -3415,6 +3419,10 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(function () {
         jquery__WEBPACK_IMPORTED_MODULE_0___default()("#error-text").html("Pessoa já cadastrada no sistema.");
         modalErro.show();
       }
+    })["finally"](function () {
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()("#submit-button-search").attr("disabled", false);
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()(".text-submit").toggle();
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()(".loading-svg").toggle();
     });
   });
   var formatDate = function formatDate(date) {

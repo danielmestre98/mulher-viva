@@ -286,6 +286,10 @@ a.menu-item-button {
     margin-bottom: 0px;
 }
 
+.table tr th {
+    vertical-align: middle;
+}
+
 .row-table-pesquisa {
     cursor: pointer;
 }
