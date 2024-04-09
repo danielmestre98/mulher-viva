@@ -3043,7 +3043,7 @@ var instance = axios__WEBPACK_IMPORTED_MODULE_0__["default"].create();
 
 // Adiciona um interceptor de solicitação
 instance.interceptors.request.use(function (config) {
-  config.baseURL = "http://localhost:3000";
+  config.baseURL = "https://portal.seds.sp.gov.br/mulher-viva";
   return config;
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (instance);
@@ -3212,14 +3212,15 @@ __webpack_require__.r(__webpack_exports__);
  */
 
 
+
 window.axios = axios__WEBPACK_IMPORTED_MODULE_0__["default"];
 
 
 window.axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
-if (window.location.href === "".concat("http://localhost:3000", "/restrito/cadastros") || window.location.href.includes("/restrito/cadastros/fitro/") || window.location.href === "".concat("http://localhost:3000", "/restrito/cadastros/filter")) {
+if (window.location.href === "".concat("https://portal.seds.sp.gov.br/mulher-viva", "/restrito/cadastros") || window.location.href.includes("/restrito/cadastros/fitro/") || window.location.href === "".concat("https://portal.seds.sp.gov.br/mulher-viva", "/restrito/cadastros/filter")) {
   __webpack_require__(/*! ./cadastros/pesquisa */ "./resources/js/cadastros/pesquisa.js");
 }
-if (window.location.href === "".concat("http://localhost:3000", "/restrito/cadastros/dados-new")) {
+if (window.location.href === "".concat("https://portal.seds.sp.gov.br/mulher-viva", "/restrito/cadastros/dados-new")) {
   __webpack_require__(/*! ./cadastros/confirmacao */ "./resources/js/cadastros/confirmacao.js");
 }
 if (window.location.href.includes("/restrito/cadastros/view/")) {
@@ -3327,7 +3328,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 jquery__WEBPACK_IMPORTED_MODULE_0___default()(function () {
-  if (window.location.href === "".concat("http://localhost:3000", "/restrito/cadastros/filter")) {
+  if (window.location.href === "".concat("https://portal.seds.sp.gov.br/mulher-viva", "/restrito/cadastros/filter")) {
     var leftbarControl = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#leftbar-control").val();
     switch (leftbarControl) {
       case "":
@@ -3371,7 +3372,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(function () {
     }
   });
   jquery__WEBPACK_IMPORTED_MODULE_0___default()(".row-table-pesquisa").on("click", function (e) {
-    window.location.href = "".concat("http://localhost:3000", "/restrito/cadastros/view/").concat(jquery__WEBPACK_IMPORTED_MODULE_0___default()(e.currentTarget).attr("name"));
+    window.location.href = "".concat("https://portal.seds.sp.gov.br/mulher-viva", "/restrito/cadastros/view/").concat(jquery__WEBPACK_IMPORTED_MODULE_0___default()(e.currentTarget).attr("name"));
   });
   jquery__WEBPACK_IMPORTED_MODULE_0___default()("#searchBeneficiaria").on("input", function () {
     // Get value of search input
