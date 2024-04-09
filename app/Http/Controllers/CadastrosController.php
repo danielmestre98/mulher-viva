@@ -120,8 +120,6 @@ class CadastrosController extends Controller
             return response()->json([
                 "error" => "não encontrado no cadunico",
             ], 401);
-
-            // Faça algo com os dados...
         } else {
             // A requisição falhou (status diferente de 2xx)
             $statusCode = $response->status();
@@ -161,27 +159,13 @@ class CadastrosController extends Controller
         $dadosCadastroUnico->inic_serv_acolh_institucional = json_decode($request->mulherCondDesacolh);
         $dadosCadastroUnico->particip_programas_transferencia_renda = json_decode($request->familiaTransfRenda);
         $dadosCadastroUnico->pontuacao = Beneficiarias::calcularPontuacao($dadosCadastroUnico);
-        $dadosCadastroUnico->status = 2;
+        $dadosCadastroUnico->status = 1;
         $date = DateTime::createFromFormat('d/m/Y', $dadosCadastroUnico->nascimento);
         $dadosCadastroUnico->nascimento = $date->format('Y-m-d');
         $beneficiaria =  Beneficiarias::create(json_decode(json_encode($dadosCadastroUnico), true));
         // dd($request);
-        $anexoMedidaProt = $request->file('anexoMedidaProt')->storeAs("uploads/" . $beneficiaria->id, "medidaProtetiva." . $request->file('anexoMedidaProt')->getClientOriginalExtension(), "public");
-        $anexoExamePsico = $request->file('anexoExamePsico')->storeAs("uploads/" . $beneficiaria->id, "examePsicosocial." . $request->file('anexoExamePsico')->getClientOriginalExtension(), "public");
-
-        // // Check if the file is valid
-        // if ($anexoMedidaProt->isValid() && $anexoExamePsico->isValid()) {
-        //     // Store the file in the public disk
-        //     $path = Storage::disk('public')->put('uploads/' . $beneficiaria->id . "/medidaProtetiva." . $anexoMedidaProt->getClientOriginalExtension(), $anexoMedidaProt,);
-        //     $path2 = Storage::disk('public')->put('uploads/' . $beneficiaria->id, $anexoExamePsico);
-
-        //     dd($path);
-
-        //     // $path contains the relative path of the stored file, e.g., 'uploads/example.jpg'
-        //     // You can use this path to access the file in your application
-        // } else {
-        //     // Handle invalid file
-        // }
+        $request->file('anexoMedidaProt')->storeAs("uploads/" . $beneficiaria->id, "medidaProtetiva." . $request->file('anexoMedidaProt')->getClientOriginalExtension(), "public");
+        $request->file('anexoExamePsico')->storeAs("uploads/" . $beneficiaria->id, "examePsicosocial." . $request->file('anexoExamePsico')->getClientOriginalExtension(), "public");
 
         return redirect()->route("restrito.cadastros");
     }
