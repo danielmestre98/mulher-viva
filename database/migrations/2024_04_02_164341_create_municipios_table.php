@@ -12,11 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('municipios', function (Blueprint $table) {
-            $table->id();
+            $table->bigInteger("id");
             $table->string("nome")->nullable();
             $table->integer("ibge")->nullable();
             $table->integer("drads_id")->nullable();
             $table->integer("uf")->nullable();
+
+            $table->primary('id', 'your_table_primary_id');
         });
     }
 

@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->string("cpf", 20)->after("email");
-            $table->foreignId("municipio")->after("cpf")->references("id")->on("municipios");
+            $table->bigInteger("municipio")->after("cpf");
+            $table->foreign("municipio")->after("cpf")->references("id")->on("municipios");
         });
     }
 

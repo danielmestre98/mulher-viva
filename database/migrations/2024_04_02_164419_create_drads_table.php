@@ -12,15 +12,18 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('drads', function (Blueprint $table) {
-            $table->id();
+            $table->bigInteger("id");
             $table->string("nome")->nullable();
             $table->string("bairro")->nullable();
             $table->string("endereco")->nullable();
             $table->string("telefone")->nullable();
             $table->string("cep")->nullable();
             $table->string("diretor")->nullable();
-            $table->foreignId("id_municipio")->references("id")->on("municipios");
+            $table->bigInteger('id_municipio');
             $table->integer("cod_uge")->nullable();
+
+            $table->foreign("id_municipio")->references("id")->on("municipios");
+            $table->primary('id', 'your_table_primary_id');
         });
     }
 

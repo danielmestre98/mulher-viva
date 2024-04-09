@@ -3,8 +3,12 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Models\Drads;
+use App\Models\Municipio;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class DatabaseSeeder extends Seeder
 {
@@ -15,13 +19,46 @@ class DatabaseSeeder extends Seeder
     {
         // \App\Models\User::factory(10)->create();
 
-        \App\Models\User::factory()->create([
-            'name' => 'Daniel',
-            'email' => 'daniel.mestre@sp.gov.br',
-            'email_verified_at' => now(),
-            'password' => Hash::make("teste"),
-            'role' => 1
 
-        ]);
+        $csvMunicipios = Storage::disk("local")->get("/seeders/municipios.csv");
+        $rowsMunicipios = array_map('str_getcsv', explode("\n", $csvMunicipios));
+        $header = array_shift($rowsMunicipios);
+        $header = str_replace("\"", "", $header[0]);
+        $header = explode(";", $header);
+
+        foreach ($rowsMunicipios as $row) {
+            $row = explode(";", $row[0]);
+            $data = array_combine($header, $row);
+            Municipio::insert([
+                'id' => $data['id'],
+                'nome' => $data['nome'],
+                'ibge' => $data['ibge'],
+                'drads_id' => $data['drads_id'],
+                'uf' => $data['uf'],
+            ]);
+        }
+
+
+        $csvDrads = Storage::disk("local")->get("/seeders/drads.csv");
+        $rowsDrads = array_map('str_getcsv', explode("\n", $csvDrads));
+        $header = array_shift($rowsDrads);
+        $header = str_replace("\"", "", $header[0]);
+        $header = explode(";", $header);
+        foreach ($rowsDrads as $row) {
+            $row = explode(";", $row[0]);
+            $data = array_combine($header, $row);
+            $data["cep"] = str_replace("\"", "", $data["cep"]);
+            Drads::create([
+                'id' => $data['id'],
+                'nome' => $data['nome'],
+                'bairro' => $data['bairro'],
+                'endereco' => $data['endereco'],
+                'telefone' => $data['telefone'],
+                'cep' => $data['cep'],
+                'diretor' => $data['diretor'],
+                'id_municipio' => $data['id_municipio'],
+                'cod_uge' => $data['cod_uge'],
+            ]);
+        }
     }
 }

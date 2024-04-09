@@ -21,7 +21,6 @@ class PermissionsSeeder extends Seeder
         $viewBenef = Permission::create(['name' => 'view beneficiarias']);
         $viewMunicBenef = Permission::create(['name' => 'view municBeneficiarias']);
         $createBenef = Permission::create(['name' => 'create beneficiarias']);
-        $approveBenef = Permission::create(['name' => 'approve beneficiarias']);
         $cadOrdemJud = Permission::create(['name' => 'create ordemJud']);
 
         $createUser = Permission::create(['name' => 'create user']);
@@ -32,18 +31,13 @@ class PermissionsSeeder extends Seeder
 
         $admin = Role::create(['name' => 'Super-Admin']);
 
-        $secretariaMulher = Role::create(['name' => 'secretaria-mulher']);
-        $secretariaMulher->givePermissionTo($approveBenef);
-        $secretariaMulher->givePermissionTo($cadOrdemJud);
-        $secretariaMulher->givePermissionTo($viewBenef);
-        $secretariaMulher->givePermissionTo($createBenef);
-
         $municipio = Role::create(['name' => 'municipio']);
         $municipio->givePermissionTo($viewMunicBenef);
         $municipio->givePermissionTo($createBenef);
 
         $user = \App\Models\User::factory()->create([
             'name' => 'Daniel',
+            'cpf' => "43734045851",
             'email' => 'daniel.mestre@sp.gov.br',
             'email_verified_at' => now(),
             'password' => Hash::make("12345"),
@@ -52,16 +46,8 @@ class PermissionsSeeder extends Seeder
         $user->assignRole($admin);
 
         $user = \App\Models\User::factory()->create([
-            'name' => 'Secretaria Mulher',
-            'email' => 'secretaria.mulher@sp.gov.br',
-            'email_verified_at' => now(),
-            'password' => Hash::make("12345"),
-            'municipio' => 565
-        ]);
-        $user->assignRole($secretariaMulher);
-
-        $user = \App\Models\User::factory()->create([
             'name' => 'Municipio',
+            'cpf' => "11111111111",
             'email' => 'municipio@sp.gov.br',
             'email_verified_at' => now(),
             'password' => Hash::make("12345"),
