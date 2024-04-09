@@ -125,7 +125,7 @@ class CadastrosController extends Controller
         } else {
             // A requisição falhou (status diferente de 2xx)
             $statusCode = $response->status();
-            // Lida com o erro...
+            dd($statusCode);
         }
     }
 
