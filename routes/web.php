@@ -22,17 +22,17 @@ Route::post("/", [LoginController::class, "auth"])->name("login.post");
 
 
 Route::middleware("auth")->group(function () {
-    Route::get("/restrito/cadastros", [CadastrosController::class, "index"])->name("restrito.cadastros");
-    Route::get("/restrito/cadastros/fitro/{filtro}", [CadastrosController::class, "index"])->name("restrito.cadastros.filtro");
-    Route::post("/restrito/cadastros/search-new", [CadastrosController::class, "searchNewBeneficiaria"]);
-    Route::post("/restrito/cadastros/filter", [CadastrosController::class, "filter"])->name("restrito.cadastros.filter.form");
+    Route::get("/restrito/cadastros/beneficiarias", [CadastrosController::class, "index"])->name("restrito.cadastros.beneficiarias");
+    Route::get("/restrito/cadastros/beneficiarias/fitro/{filtro}", [CadastrosController::class, "index"])->name("restrito.cadastros.beneficiarias.filtro");
+    Route::post("/restrito/cadastros/beneficiarias/search-new", [CadastrosController::class, "searchNewBeneficiaria"]);
+    Route::post("/restrito/cadastros/beneficiarias/filter", [CadastrosController::class, "filter"])->name("restrito.cadastros.beneficiarias.filter.form");
 
-    Route::post("/restrito/cadastros/dados-new", [CadastrosController::class, "create"])->name("restrito.form.new");
-    Route::post("/restrito/cadastros/dados-new/submit", [CadastrosController::class, "store"])->name("restrito.benefiaria.store");
-    Route::get("/restrito/cadastros/view/{idBeneficiaria}", [CadastrosController::class, "view"]);
-    Route::post("/restrito/cadastros/view/{idBeneficiaria}/{approve}", [CadastrosController::class, "approve"])->name("restrito.beneficiaria.approve");
+    Route::post("/restrito/cadastros/beneficiarias/dados-new", [CadastrosController::class, "create"])->name("restrito.form.new.beneficiaria");
+    Route::post("/restrito/cadastros/beneficiarias/dados-new/submit", [CadastrosController::class, "store"])->name("restrito.benefiaria.store");
+    Route::get("/restrito/cadastros/beneficiarias/view/{idBeneficiaria}", [CadastrosController::class, "view"]);
+    Route::post("/restrito/cadastros/beneficiarias/view/{idBeneficiaria}/{approve}", [CadastrosController::class, "approve"])->name("restrito.beneficiaria.approve");
 
-    Route::get("/restrito/cadastros/view-file/{idBeneficiaria}/{fileName}", [ProtectedFilesController::class, "showBeneficiariaFiles"])->name("restrito.view-file");
+    Route::get("/restrito/cadastros/beneficiarias/view-file/{idBeneficiaria}/{fileName}", [ProtectedFilesController::class, "showBeneficiariaFiles"])->name("restrito.view-file");
 
     Route::put("/restrito/usuario/{id}/alterar-senha", [UserController::class, "changeSelfPassword"]);
 

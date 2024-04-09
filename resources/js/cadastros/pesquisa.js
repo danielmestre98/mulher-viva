@@ -8,7 +8,7 @@ import ptBR from "../assets/pt-BR.json";
 $(() => {
     if (
         window.location.href ===
-        `${process.env.APP_URL}/restrito/cadastros/filter`
+        `${process.env.APP_URL}/restrito/cadastros/beneficiarias/filter`
     ) {
         const leftbarControl = $("#leftbar-control").val();
         switch (leftbarControl) {
@@ -58,7 +58,9 @@ $(() => {
     $(".row-table-pesquisa").on("click", (e) => {
         window.location.href = `${
             process.env.APP_URL
-        }/restrito/cadastros/view/${$(e.currentTarget).attr("name")}`;
+        }/restrito/cadastros/beneficiarias/view/${$(e.currentTarget).attr(
+            "name"
+        )}`;
     });
 
     $("#searchBeneficiaria").on("input", function () {
@@ -84,7 +86,7 @@ $(() => {
             valorPesquisa: $("#search-value-new").val().replace(/\D/g, ""),
         };
         axios
-            .post("/restrito/cadastros/search-new", formData)
+            .post("/restrito/cadastros/beneficiarias/search-new", formData)
             .then(({ data }) => {
                 console.log(data);
                 if (data.aprovada) {

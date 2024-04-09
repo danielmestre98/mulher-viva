@@ -12,7 +12,7 @@
                 </div>
                 <div class="card-body">
                     {{-- {{ dd($filtros_default) }} --}}
-                    <form method="POST" action="{{ route('restrito.cadastros.filter.form') }}">
+                    <form method="POST" action="{{ route('restrito.cadastros.beneficiarias.filter.form') }}">
                         @csrf
                         <div class="row">
                             <div class="form-group col-md-5">
@@ -140,7 +140,7 @@
                     <h1 class="modal-title fs-5" id="sucessoModalLabel">Buscar beneficiária</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form id="approve-new" method="POST" action="{{ route('restrito.form.new') }}">
+                <form id="approve-new" method="POST" action="{{ route('restrito.form.new.beneficiaria') }}">
                     @csrf
                     <div class="modal-body">
                         <p class="lead text-center">Beneficiária encontrada e Elegível</p>

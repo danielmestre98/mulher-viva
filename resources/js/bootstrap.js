@@ -12,19 +12,21 @@ import "./leftbar";
 window.axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
 
 if (
-    window.location.href === `${process.env.APP_URL}/restrito/cadastros` ||
-    window.location.href.includes("/restrito/cadastros/fitro/") ||
-    window.location.href === `${process.env.APP_URL}/restrito/cadastros/filter`
+    window.location.href ===
+        `${process.env.APP_URL}/restrito/cadastros/beneficiarias` ||
+    window.location.href.includes("/restrito/cadastros/beneficiarias/fitro/") ||
+    window.location.href ===
+        `${process.env.APP_URL}/restrito/cadastros/beneficiarias/filter`
 ) {
     require("./cadastros/pesquisa");
 }
 if (
     window.location.href ===
-    `${process.env.APP_URL}/restrito/cadastros/dados-new`
+    `${process.env.APP_URL}/restrito/cadastros/beneficiarias/dados-new`
 ) {
     require("./cadastros/confirmacao");
 }
-if (window.location.href.includes("/restrito/cadastros/view/")) {
+if (window.location.href.includes("/restrito/cadastros/beneficiarias/view/")) {
     require("./cadastros/view");
 }
 

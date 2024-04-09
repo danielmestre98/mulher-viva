@@ -3,7 +3,7 @@
         <b>Senha alterada com sucesso!</b>
     </div>
     <div class="logo-sp">
-        <a class="title" href="">
+        <a class="title" href="{{ route('restrito.cadastros.beneficiarias') }}">
             <h2>Programa Mulher Viva</h2>
         </a>
     </div>
@@ -15,12 +15,12 @@
                     class="fa-solid fa-chevron-down fa-sm"></i></button>
             <div class="box-dropdown" style="display: block">
                 <ul>
-                    <li><a id="all-s" @if (request()->routeIs('restrito.cadastros')) class="active" @endif
-                            href={{ route('restrito.cadastros') }}>Solicitações</a></li>
-                    <li><a id="app-s" @if (request()->is('restrito/cadastros/fitro/1')) class="active" @endif
-                            href={{ route('restrito.cadastros.filtro', 1) }}>Aprovadas</a></li>
-                    <li><a id="nao-s" @if (request()->is('restrito/cadastros/fitro/4')) class="active" @endif
-                            href={{ route('restrito.cadastros.filtro', 4) }}>Não elegíveis</a></li>
+                    <li><a id="all-s" @if (request()->routeIs('restrito.cadastros.beneficiarias')) class="active" @endif
+                            href={{ route('restrito.cadastros.beneficiarias') }}>Solicitações</a></li>
+                    <li><a id="app-s" @if (request()->is('restrito/cadastros/beneficiarias/fitro/1')) class="active" @endif
+                            href={{ route('restrito.cadastros.beneficiarias.filtro', 1) }}>Aprovadas</a></li>
+                    <li><a id="nao-s" @if (request()->is('restrito/cadastros/beneficiarias/fitro/4')) class="active" @endif
+                            href={{ route('restrito.cadastros.beneficiarias.filtro', 4) }}>Não elegíveis</a></li>
                 </ul>
             </div>
         </div>
@@ -78,14 +78,14 @@
         <div class="user-card">
             <div class="user-info">
                 <div class="user-img">
-                    <img src="{{ asset('assets/img/default-user-image.png') }}" alt="">
+                    {{-- <img src="{{ asset('assets/img/default-user-image.png') }}" alt=""> --}}
                 </div>
                 <div class="user-card-info">
                     <div class="nome">
                         <p><b>{{ $user->name }}</b></p>
                     </div>
                     <div class="nivel">
-                        <p>Usuário</p>
+                        <p>{{ ucfirst(str_replace('Super-', '', $user->getRoleNames()[0])) }}</p>
                     </div>
                 </div>
             </div>

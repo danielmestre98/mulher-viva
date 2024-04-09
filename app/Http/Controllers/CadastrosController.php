@@ -41,8 +41,13 @@ class CadastrosController extends Controller
 
     function filter(Request $request)
     {
+
         $drads = Drads::orderBy("nome", "ASC")->get();
         $municipios = Municipio::orderBy("nome", "ASC")->get();
+        if (!$request->drads_filtro && !$request->municipio_filtro) {
+            $beneficiarias = isset($request->filtro) ? Beneficiarias::where("status", $request->filtro)->get() :
+                Beneficiarias::all();
+        } else
         if ($request->drads_filtro) {
             $municipio = Municipio::where("drads_id", $request->drads_filtro)->pluck("id");
             $beneficiarias = isset($request->filtro) ? Beneficiarias::where("status", $request->filtro)->whereIn("municipio", $municipio)->get() :
@@ -148,7 +153,7 @@ class CadastrosController extends Controller
         $date = DateTime::createFromFormat('d/m/Y', $objeto->nascimento);
         $objeto->nascimento = $date->format('Y-m-d');
         Beneficiarias::create(json_decode(json_encode($objeto), true));
-        return redirect()->route("restrito.cadastros");
+        return redirect()->route("restrito.cadastros.beneficiarias");
     }
 
     function store(Request $request)
@@ -167,7 +172,7 @@ class CadastrosController extends Controller
         $request->file('anexoMedidaProt')->storeAs("uploads/" . $beneficiaria->id, "medidaProtetiva." . $request->file('anexoMedidaProt')->getClientOriginalExtension(), "public");
         $request->file('anexoExamePsico')->storeAs("uploads/" . $beneficiaria->id, "examePsicosocial." . $request->file('anexoExamePsico')->getClientOriginalExtension(), "public");
 
-        return redirect()->route("restrito.cadastros");
+        return redirect()->route("restrito.cadastros.beneficiarias");
     }
 
     function approve(Request $request, $id, $option)

@@ -17,7 +17,7 @@ class LoginController extends Controller
     {
         $credentials = $request->only("email", "password");
         if (auth()->attempt($credentials)) {
-            return redirect()->route("restrito.cadastros");
+            return redirect()->route("restrito.cadastros.beneficiarias");
         }
         return view("login", ["error" => "Usuário ou senha inválidos."]);
     }
