@@ -11,6 +11,8 @@ import "bootstrap";
 import "./leftbar";
 window.axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
 
+require("./user/checkPassword");
+
 if (
     window.location.href ===
         `${process.env.APP_URL}/restrito/cadastros/beneficiarias` ||
@@ -28,6 +30,26 @@ if (
 }
 if (window.location.href.includes("/restrito/cadastros/beneficiarias/view/")) {
     require("./cadastros/view");
+}
+if (
+    window.location.href ==
+    `${process.env.APP_URL}/restrito/cadastros/usuarios/criar`
+) {
+    require("./user/create");
+}
+
+if (
+    window.location.href == `${process.env.APP_URL}/restrito/cadastros/usuarios`
+) {
+    require("./user/list");
+}
+
+if (
+    window.location.href.includes(
+        `${process.env.APP_URL}/restrito/cadastros/usuarios/`
+    )
+) {
+    require("./user/view");
 }
 
 /**

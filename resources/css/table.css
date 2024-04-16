@@ -9,3 +9,7 @@
 .row-table-pesquisa {
     cursor: pointer;
 }
+
+#users-table {
+    vertical-align: middle;
+}

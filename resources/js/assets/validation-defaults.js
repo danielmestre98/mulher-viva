@@ -61,13 +61,14 @@ $.validator.addMethod(
 
         value = value.replace(".", "");
         value = value.replace(".", "");
-        cpf = value.replace("-", "");
+        var cpf = value.replace("-", "");
         while (cpf.length < 11) cpf = "0" + cpf;
         var expReg = /^0+$|^1+$|^2+$|^3+$|^4+$|^5+$|^6+$|^7+$|^8+$|^9+$/;
         var a = [];
         var b = new Number();
+        var x;
         var c = 11;
-        for (i = 0; i < 11; i++) {
+        for (var i = 0; i < 11; i++) {
             a[i] = cpf.charAt(i);
             if (i < 9) b += a[i] * --c;
         }
@@ -78,7 +79,7 @@ $.validator.addMethod(
         }
         b = 0;
         c = 11;
-        for (y = 0; y < 10; y++) b += a[y] * c--;
+        for (var y = 0; y < 10; y++) b += a[y] * c--;
         if ((x = b % 11) < 2) {
             a[10] = 0;
         } else {

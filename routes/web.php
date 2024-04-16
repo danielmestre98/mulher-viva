@@ -34,7 +34,19 @@ Route::middleware("auth")->group(function () {
 
     Route::get("/restrito/cadastros/beneficiarias/view-file/{idBeneficiaria}/{fileName}", [ProtectedFilesController::class, "showBeneficiariaFiles"])->name("restrito.view-file");
 
-    Route::put("/restrito/usuario/{id}/alterar-senha", [UserController::class, "changeSelfPassword"]);
+    Route::get("/restrito/check-password", [UserController::class, "checkResetPassword"]);
+    Route::get("/restrito/csrf-token", function () {
+        return response()->json(csrf_token());
+    });
+
+    Route::get("/restrito/cadastros/usuarios", [UserController::class, "index"])->name("restrito.usuarios");
+    Route::get("/restrito/cadastros/usuarios/criar", [UserController::class, "create"])->name("restrito.usuarios.create");
+    Route::post("/restrito/cadastros/usuarios/criar", [UserController::class, "store"]);
+    Route::delete("/restrito/cadastros/usuarios/{id}", [UserController::class, "delete"]);
+    Route::get("/restrito/cadastros/usuarios/{id}", [UserController::class, "edit"])->name("restrito.usuarios.view");
+    Route::put("/restrito/cadastros/usuarios/{id}", [UserController::class, "update"]);
+
+    Route::post("/restrito/usuario/alterar-senha", [UserController::class, "changeSelfPassword"])->name("restrito.usuario.alterar.senha");
 
     Route::get("/logout", [LoginController::class, "logout"])->name("logout");
 });

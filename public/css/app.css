@@ -294,6 +294,10 @@ a.menu-item-button {
     cursor: pointer;
 }
 
+#users-table {
+    vertical-align: middle;
+}
+
 .form-card-header {
     background-color: #034ea2;
     color: #ffffff;

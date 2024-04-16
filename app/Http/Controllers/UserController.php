@@ -2,20 +2,76 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Municipio;
 use App\Models\User;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
-    function changeSelfPassword(Request $request, $userId): mixed
+    function index()
     {
-        if ($userId == Auth::user()->id) {
-            $user = User::find($userId);
-            $user->password = $request->password;
-            $user->save();
-            return response()->json(["success" => "Senha alterada com sucesso!"]);
+        $users = User::all();
+        return view("user.list", ["users" => $users]);
+    }
+
+    function changeSelfPassword(Request $request): mixed
+    {
+        $user = User::find(Auth::user()->id);
+        $user->password = bcrypt($request->password);
+        $user->reset_password = 0;
+        $user->save();
+        return redirect()->back();
+    }
+
+    function edit($id)
+    {
+        $user = User::find($id);
+        return view("user.view", ["user" => $user]);
+    }
+
+
+    function create(): View
+    {
+        $municipios = Municipio::all();
+        return view("user.create", ["municipios" => $municipios]);
+    }
+
+    function store(Request $request)
+    {
+        $user = new User();
+        $user->name = $request->nome;
+        $user->cpf = str_replace("-", "",  str_replace(".", "",  $request->cpf));
+        $user->municipio = $request->municipio;
+        $user->email = $request->email;
+        $user->password = $request->password;
+        $user->save();
+        $user->assignRole("municipio");
+        return redirect()->route("restrito.cadastros.beneficiarias");
+    }
+
+    function delete($userId)
+    {
+        $user = User::find($userId);
+        $user->delete();
+    }
+
+    function update(Request $request, $id)
+    {
+        $user = User::find($id);
+        $user->password = bcrypt($request->password);
+        $user->reset_password = 1;
+        $user->save();
+        return  true;
+    }
+
+    function checkResetPassword()
+    {
+        if (Auth::user()->reset_password == 1) {
+            return json_encode(true);
+        } else {
+            return json_encode(false);
         }
-        return response()->json(["error" => "Erro interno entre em contato com o administrador."], 500);
     }
 }

@@ -11,9 +11,14 @@
     <div class="category-divider">Cadastros</div>
     <div class="menu-group">
         <div class="menu-item-dropdown">
-            <button class="menu-item-button"><i class="fa-solid fa-person-dress"></i> <span>Mulheres</span> <i
-                    class="fa-solid fa-chevron-down fa-sm"></i></button>
-            <div class="box-dropdown" style="display: block">
+            <button class="menu-item-button"><i class="fa-solid fa-person-dress"></i> <span>Mulheres</span>
+                @if (request()->is('*/cadastros/beneficiarias*'))
+                    <i class="fa-solid fa-chevron-down fa-sm"></i>
+                @else
+                    <i class="fa-solid fa-chevron-right fa-sm"></i>
+                @endif
+            </button>
+            <div class="box-dropdown" @if (request()->is('*/cadastros/beneficiarias*')) style="display: block" @endif>
                 <ul>
                     <li><a id="all-s" @if (request()->routeIs('restrito.cadastros.beneficiarias')) class="active" @endif
                             href={{ route('restrito.cadastros.beneficiarias') }}>Solicitações</a></li>
@@ -21,6 +26,23 @@
                             href={{ route('restrito.cadastros.beneficiarias.filtro', 1) }}>Aprovadas</a></li>
                     <li><a id="nao-s" @if (request()->is('restrito/cadastros/beneficiarias/fitro/4')) class="active" @endif
                             href={{ route('restrito.cadastros.beneficiarias.filtro', 4) }}>Não elegíveis</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="menu-item-dropdown">
+            <button class="menu-item-button"><i class="fa-solid fa-user"></i> <span>Usuários</span>
+                @if (request()->is('*/cadastros/usuarios*'))
+                    <i class="fa-solid fa-chevron-down fa-sm"></i>
+                @else
+                    <i class="fa-solid fa-chevron-right fa-sm"></i>
+                @endif
+            </button>
+            <div class="box-dropdown" @if (request()->is('*/cadastros/usuarios*')) style="display: block" @endif>
+                <ul>
+                    <li><a @if (request()->routeIs('restrito.usuarios.create')) class="active" @endif
+                            href="{{ route('restrito.usuarios.create') }}">Novo</a></li>
+                    <li><a @if (request()->routeIs('restrito.usuarios')) class="active" @endif
+                            href="{{ route('restrito.usuarios') }}">Consultar / Alterar</a></li>
                 </ul>
             </div>
         </div>
@@ -102,13 +124,13 @@
     </div>
 </div>
 <div class="modal fade" id="modalSenha" tabindex="-1" aria-labelledby="modalSenhaLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="modalSenhaLabel">Alteração de senha</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form method="POST" action="#" id="form-senha">
+            <form method="POST" action="{{ route('restrito.usuario.alterar.senha') }}" id="form-senha">
                 @csrf
                 <div class="modal-body">
                     <div class="form-group mb-2">
@@ -130,3 +152,34 @@
         </div>
     </div>
 </div>
+@if (auth()->user()->reset_password == true)
+    <div class="modal fade" id="modalResetPassword" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="modalResetPasswordLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="modalResetPasswordLabel">Criar nova senha</h1>
+                </div>
+                <form action="{{ route('restrito.usuario.alterar.senha') }}" method="POST" id="form-senha-reset">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="form-group mb-2">
+                            <label for="novaSenhaReset"><span class="red">*</span> Nova senha</label>
+                            <input type="password" id="novaSenhaReset" name="novaSenhaReset" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="confirmSenhaReset"><span class="red">*</span> Confirme a senha</label>
+                            <input type="password" id="confirmSenhaReset" name="confirmSenhaReset"
+                                class="form-control">
+                        </div>
+                        <p>Campos com <span class="red">*</span> são obrigatórios.</p>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Salvar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+@endif
