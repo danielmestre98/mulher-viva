@@ -11,7 +11,8 @@
     <div class="category-divider">Cadastros</div>
     <div class="menu-group">
         <div class="menu-item-dropdown">
-            <button class="menu-item-button"><i class="fa-solid fa-person-dress"></i> <span>Mulheres</span>
+            <button class="menu-item-button"><span> <i class="fa-solid fa-person-dress"></i>
+                    <span>Mulheres</span></span>
                 @if (request()->is('*/cadastros/beneficiarias*'))
                     <i class="fa-solid fa-chevron-down fa-sm"></i>
                 @else
@@ -29,8 +30,16 @@
                 </ul>
             </div>
         </div>
+        <div class="menu-group">
+            <div class="menu-item">
+                <a href="{{ route('restrito.judicializacoes') }}" class="menu-item-button">
+                    <span> <i class="fa-solid fa-gavel"></i>
+                        <span>Judicializações</span></span>
+                </a>
+            </div>
+        </div>
         <div class="menu-item-dropdown">
-            <button class="menu-item-button"><i class="fa-solid fa-user"></i> <span>Usuários</span>
+            <button class="menu-item-button"> <span><i class="fa-solid fa-user"></i> <span>Usuários</span></span>
                 @if (request()->is('*/cadastros/usuarios*'))
                     <i class="fa-solid fa-chevron-down fa-sm"></i>
                 @else

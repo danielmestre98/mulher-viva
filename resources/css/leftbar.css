@@ -158,3 +158,14 @@ a.menu-item-button {
 .left-bar .left-bar-footer .user-card .user-card-info .nivel {
     font-size: 9px;
 }
+
+.menu-item-button {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.menu-item-button i {
+    width: 16px;
+    height: 16px;
+}

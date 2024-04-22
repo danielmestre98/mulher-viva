@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CadastrosController;
+use App\Http\Controllers\JudicializacaoController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProtectedFilesController;
 use App\Http\Controllers\UserController;
@@ -31,6 +32,12 @@ Route::middleware("auth")->group(function () {
     Route::post("/restrito/cadastros/beneficiarias/dados-new/submit", [CadastrosController::class, "store"])->name("restrito.benefiaria.store");
     Route::get("/restrito/cadastros/beneficiarias/view/{idBeneficiaria}", [CadastrosController::class, "view"]);
     Route::post("/restrito/cadastros/beneficiarias/view/{idBeneficiaria}/{approve}", [CadastrosController::class, "approve"])->name("restrito.beneficiaria.approve");
+
+    Route::get("/restrito/cadastros/judicializacoes", [JudicializacaoController::class, "index"])->name("restrito.judicializacoes");
+    Route::get("/restrito/cadastros/judicializacoes/create", [JudicializacaoController::class, "create"])->name("restrito.judicializacoes.create");
+    Route::post("/restrito/cadastros/judicializacoes/create", [JudicializacaoController::class, "store"])->name("restrito.judicializacoes.store");
+    Route::get("/restrito/cadastros/judicializacoes/view/{id}", [JudicializacaoController::class, "view"]);
+    Route::get("/restrito/cadastros/judicializacoes/view/{id}/pdf", [JudicializacaoController::class, "viewPdf"])->name("restrito.judicializacoes.view.pdf");
 
     Route::get("/restrito/cadastros/beneficiarias/view-file/{idBeneficiaria}/{fileName}", [ProtectedFilesController::class, "showBeneficiariaFiles"])->name("restrito.view-file");
 

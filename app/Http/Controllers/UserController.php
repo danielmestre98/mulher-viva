@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -19,7 +20,7 @@ class UserController extends Controller
     function changeSelfPassword(Request $request): mixed
     {
         $user = User::find(Auth::user()->id);
-        $user->password = bcrypt($request->password);
+        $user->password = Hash::make($request->novaSenhaReset ?? $request->novaSenha);
         $user->reset_password = 0;
         $user->save();
         return redirect()->back();

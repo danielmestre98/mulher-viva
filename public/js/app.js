@@ -3237,6 +3237,12 @@ if (window.location.href == "".concat("http://localhost:3000", "/restrito/cadast
 if (window.location.href.includes("".concat("http://localhost:3000", "/restrito/cadastros/usuarios/"))) {
   __webpack_require__(/*! ./user/view */ "./resources/js/user/view.js");
 }
+if (window.location.href == "".concat("http://localhost:3000", "/restrito/cadastros/judicializacoes")) {
+  __webpack_require__(/*! ./judicializacao/index */ "./resources/js/judicializacao/index.js");
+}
+if (window.location.href == "".concat("http://localhost:3000", "/restrito/cadastros/judicializacoes/create")) {
+  __webpack_require__(/*! ./judicializacao/create */ "./resources/js/judicializacao/create.js");
+}
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
@@ -3488,6 +3494,96 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(function () {
         minlength: 10
       }
     }
+  });
+});
+
+/***/ }),
+
+/***/ "./resources/js/judicializacao/create.js":
+/*!***********************************************!*\
+  !*** ./resources/js/judicializacao/create.js ***!
+  \***********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var inputmask__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! inputmask */ "./node_modules/inputmask/dist/inputmask.js");
+/* harmony import */ var inputmask__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(inputmask__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var jquery_validation__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! jquery-validation */ "./node_modules/jquery-validation/dist/jquery.validate.js");
+/* harmony import */ var jquery_validation__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(jquery_validation__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _assets_validation_defaults__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../assets/validation-defaults */ "./resources/js/assets/validation-defaults.js");
+
+
+
+
+jquery__WEBPACK_IMPORTED_MODULE_0___default()(function () {
+  var cpfIm = new (inputmask__WEBPACK_IMPORTED_MODULE_1___default())("999.999.999-99");
+  var rgIm = new (inputmask__WEBPACK_IMPORTED_MODULE_1___default())("99.999.999-9");
+  cpfIm.mask(jquery__WEBPACK_IMPORTED_MODULE_0___default()("#cpf").get(0));
+  rgIm.mask(jquery__WEBPACK_IMPORTED_MODULE_0___default()("#rg").get(0));
+  jquery__WEBPACK_IMPORTED_MODULE_0___default()("#form-judicializacao").validate({
+    rules: {
+      nome: {
+        required: true
+      },
+      cpf: {
+        required: true,
+        cpf: true
+      },
+      rg: {
+        required: true
+      },
+      municipio: {
+        required: true
+      },
+      numero_processo: {
+        required: true
+      },
+      data_processo: {
+        required: true
+      },
+      anexoDespacho: {
+        required: true,
+        pdf: true
+      }
+    }
+  });
+});
+
+/***/ }),
+
+/***/ "./resources/js/judicializacao/index.js":
+/*!**********************************************!*\
+  !*** ./resources/js/judicializacao/index.js ***!
+  \**********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var datatables_net_bs5__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! datatables.net-bs5 */ "./node_modules/datatables.net-bs5/js/dataTables.bootstrap5.mjs");
+/* harmony import */ var _assets_pt_BR_json__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../assets/pt-BR.json */ "./resources/js/assets/pt-BR.json");
+
+
+
+jquery__WEBPACK_IMPORTED_MODULE_0___default()(function () {
+  var table = new datatables_net_bs5__WEBPACK_IMPORTED_MODULE_1__["default"]("#beneficiarias-table", {
+    language: _assets_pt_BR_json__WEBPACK_IMPORTED_MODULE_2__,
+    searching: true,
+    lengthChange: false
+  });
+  jquery__WEBPACK_IMPORTED_MODULE_0___default()("#searchBeneficiaria").on("input", function () {
+    // Get value of search input
+    var searchValue = jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).val();
+
+    // Use DataTables API to search DataTable
+    table.search(searchValue).draw();
+  });
+  jquery__WEBPACK_IMPORTED_MODULE_0___default()(".row-table-pesquisa").on("click", function (e) {
+    window.location.href = "".concat("http://localhost:3000", "/restrito/cadastros/judicializacoes/view/").concat(jquery__WEBPACK_IMPORTED_MODULE_0___default()(e.currentTarget).attr("name"));
   });
 });
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
+
 class ProtectedFilesController extends Controller
 {
     function showBeneficiariaFiles($beneficiariaId, $fileName)

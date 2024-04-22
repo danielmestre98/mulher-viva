@@ -52,6 +52,20 @@ if (
     require("./user/view");
 }
 
+if (
+    window.location.href ==
+    `${process.env.APP_URL}/restrito/cadastros/judicializacoes`
+) {
+    require("./judicializacao/index");
+}
+
+if (
+    window.location.href ==
+    `${process.env.APP_URL}/restrito/cadastros/judicializacoes/create`
+) {
+    require("./judicializacao/create");
+}
+
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
  * for events that are broadcast by Laravel. Echo and event broadcasting
