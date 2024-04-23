@@ -30,31 +30,33 @@
                 </ul>
             </div>
         </div>
-        <div class="menu-group">
-            <div class="menu-item">
-                <a href="{{ route('restrito.judicializacoes') }}" class="menu-item-button">
-                    <span> <i class="fa-solid fa-gavel"></i>
-                        <span>Judicializações</span></span>
-                </a>
+        @can('super-admin')
+            <div class="menu-group">
+                <div class="menu-item">
+                    <a href="{{ route('restrito.judicializacoes') }}" class="menu-item-button">
+                        <span> <i class="fa-solid fa-gavel"></i>
+                            <span>Judicializações</span></span>
+                    </a>
+                </div>
             </div>
-        </div>
-        <div class="menu-item-dropdown">
-            <button class="menu-item-button"> <span><i class="fa-solid fa-user"></i> <span>Usuários</span></span>
-                @if (request()->is('*/cadastros/usuarios*'))
-                    <i class="fa-solid fa-chevron-down fa-sm"></i>
-                @else
-                    <i class="fa-solid fa-chevron-right fa-sm"></i>
-                @endif
-            </button>
-            <div class="box-dropdown" @if (request()->is('*/cadastros/usuarios*')) style="display: block" @endif>
-                <ul>
-                    <li><a @if (request()->routeIs('restrito.usuarios.create')) class="active" @endif
-                            href="{{ route('restrito.usuarios.create') }}">Novo</a></li>
-                    <li><a @if (request()->routeIs('restrito.usuarios')) class="active" @endif
-                            href="{{ route('restrito.usuarios') }}">Consultar / Alterar</a></li>
-                </ul>
+            <div class="menu-item-dropdown">
+                <button class="menu-item-button"> <span><i class="fa-solid fa-user"></i> <span>Usuários</span></span>
+                    @if (request()->is('*/cadastros/usuarios*'))
+                        <i class="fa-solid fa-chevron-down fa-sm"></i>
+                    @else
+                        <i class="fa-solid fa-chevron-right fa-sm"></i>
+                    @endif
+                </button>
+                <div class="box-dropdown" @if (request()->is('*/cadastros/usuarios*')) style="display: block" @endif>
+                    <ul>
+                        <li><a @if (request()->routeIs('restrito.usuarios.create')) class="active" @endif
+                                href="{{ route('restrito.usuarios.create') }}">Novo</a></li>
+                        <li><a @if (request()->routeIs('restrito.usuarios')) class="active" @endif
+                                href="{{ route('restrito.usuarios') }}">Consultar / Alterar</a></li>
+                    </ul>
+                </div>
             </div>
-        </div>
+        @endcan
         {{-- <div class="menu-item-dropdown">
             <button class="menu-item-button"><i class="fa-solid fa-user"></i> <span>Usuários</span> <i
                     class="fa-solid fa-chevron-right fa-sm"></i></button>
