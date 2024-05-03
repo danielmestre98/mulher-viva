@@ -30,8 +30,10 @@ Route::middleware("auth")->group(function () {
 
     Route::post("/restrito/cadastros/beneficiarias/dados-new", [CadastrosController::class, "create"])->name("restrito.form.new.beneficiaria");
     Route::post("/restrito/cadastros/beneficiarias/dados-new/submit", [CadastrosController::class, "store"])->name("restrito.benefiaria.store");
-    Route::get("/restrito/cadastros/beneficiarias/view/{idBeneficiaria}", [CadastrosController::class, "view"]);
+    Route::get("/restrito/cadastros/beneficiarias/view/{idBeneficiaria}", [CadastrosController::class, "view"])->name("restrito.beneficiarias.view");
     Route::post("/restrito/cadastros/beneficiarias/view/{idBeneficiaria}/{approve}", [CadastrosController::class, "approve"])->name("restrito.beneficiaria.approve");
+    Route::post("/restrito/cadastros/beneficiarias/edit-permission/{idBeneficiaria}", [CadastrosController::class, "editPermission"])->name("restrito.beneficiaria.add.edit");
+    Route::post("/restrito/cadastros/beneficiarias/view-edit/{idBeneficiaria}", [CadastrosController::class, "update"]);
 
     Route::get("/restrito/cadastros/judicializacoes", [JudicializacaoController::class, "index"])->name("restrito.judicializacoes");
     Route::get("/restrito/cadastros/judicializacoes/create", [JudicializacaoController::class, "create"])->name("restrito.judicializacoes.create");

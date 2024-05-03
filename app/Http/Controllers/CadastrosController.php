@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Beneficiarias;
 use App\Models\Drads;
+use App\Models\EditPermission;
 use App\Models\Municipio;
 use DateTime;
 use Illuminate\Http\Request;
@@ -63,7 +64,14 @@ class CadastrosController extends Controller
     function view($idBeneficiaria)
     {
         $beneficiaria = Beneficiarias::find($idBeneficiaria);
-        return view("cadastros.view", ["beneficiaria" => $beneficiaria]);
+        $editPermissions = EditPermission::where("beneficiaria", $idBeneficiaria)->where("used", false)->get();
+        $optPermissions = [];
+
+        foreach ($editPermissions as $permission) {
+            $optPermissions[] = $permission->field;
+        }
+
+        return view("cadastros.view", ["beneficiaria" => $beneficiaria, "editPermissions" => $optPermissions]);
     }
 
 
@@ -134,7 +142,10 @@ class CadastrosController extends Controller
     function create(Request $request)
     {
         $dados = json_decode($request->jsonMulher);
+
         $dadosFormtados = Beneficiarias::formatarDados($dados);
+        // dd($dadosFormtados);
+
 
         return view("cadastros.create", ["dados" => $dadosFormtados]);
     }
@@ -188,5 +199,44 @@ class CadastrosController extends Controller
             $beneficiaria->save();
         }
         return redirect()->route("restrito.cadastros.filtro.aprovado");
+    }
+
+    function editPermission(Request $request, $idBeneficiaria)
+    {
+        $permissions = $request->except("_token");
+
+        foreach ($permissions as $key => $permission) {
+            $option = intval(str_replace("opt", "", $key));
+            EditPermission::create([
+                'beneficiaria' => $idBeneficiaria,
+                'field' => $option,
+                'used' => false,
+                'created_by' => Auth::user()->id
+            ]);
+        }
+        return true;
+    }
+
+    function update(Request $request, $idBeneficiaria)
+    {
+        $inputs = $request->except("medidaProtetiva", "examePsicosocial");
+
+        foreach ($inputs as $key => $value) {
+            $inputs[$key] = json_decode($value);
+        }
+        $beneficiaria = Beneficiarias::find($idBeneficiaria);
+        if (!empty($request->file('medidaProtetiva'))) {
+            $request->file('medidaProtetiva')->storeAs("uploads/" . $beneficiaria->id, "medidaProtetiva." . $request->file('medidaProtetiva')->getClientOriginalExtension(), "public");
+        }
+        if (!empty($request->file('examePsicosocial'))) {
+            $request->file('examePsicosocial')->storeAs("uploads/" . $beneficiaria->id, "examePsicosocial." . $request->file('examePsicosocial')->getClientOriginalExtension(), "public");
+        }
+        $beneficiaria->update($inputs);
+        $pontuacaoNova = Beneficiarias::calcularPontuacao($beneficiaria);
+        $beneficiaria->pontuacao = $pontuacaoNova;
+        $beneficiaria->save();
+
+
+        EditPermission::where("beneficiaria", $idBeneficiaria)->update(["used" => true]);
     }
 }

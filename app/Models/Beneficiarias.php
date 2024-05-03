@@ -30,7 +30,10 @@ class Beneficiarias extends Model
         'particip_programas_transferencia_renda',
         'pontuacao',
         'status',
-        'created_by'
+        'created_by',
+        'qtd_filhos_ate_7_anos',
+        'qtd_filhos_ate_12_anos',
+        'qtd_filhos_ate_18_anos',
     ];
 
     static private $ensinoMedio = [
@@ -74,14 +77,27 @@ class Beneficiarias extends Model
         $dadosFormatados["mulher_nao_branca"] = ($dados->solicitante->COD_RACA_COR_PESSOA != "Branca") ? true : false;
         $dadosFormatados["presenca_pessoa_idosa"] = ($dados->solicitante->DTA_NASC_PESSOA >= 65) ? true : false;
         $dadosFormatados["presenca_pessoa_deficiente"] = ($dados->solicitante->COD_DEFICIENCIA_MEMB == 1) ? true : false;
+        $dadosFormatados["qtd_filhos_ate_7_anos"] = 0;
+        $dadosFormatados["qtd_filhos_ate_12_anos"] = 0;
+        $dadosFormatados["qtd_filhos_ate_18_anos"] = 0;
         $dadosFormatados["created_by"] = Auth::user()->id;
 
         foreach ($dados->familia as $value) {
-            if (self::calcularIdade($value->DTA_NASC_PESSOA) >= 65) {
+            $idade = self::calcularIdade($value->DTA_NASC_PESSOA);
+            if ($idade) {
                 $dadosFormatados["presenca_pessoa_idosa"] = true;
             }
             if ($value->COD_DEFICIENCIA_MEMB == 1) {
                 $dadosFormatados["presenca_pessoa_deficiente"] = true;
+            }
+            if ($idade < 7) {
+                $dadosFormatados["qtd_filhos_ate_7_anos"]++;
+            }
+            if ($idade >= 7 && $idade < 12) {
+                $dadosFormatados["qtd_filhos_ate_12_anos"]++;
+            }
+            if ($idade >= 12 && $idade < 18) {
+                $dadosFormatados["qtd_filhos_ate_18_anos"]++;
             }
         }
         return $dadosFormatados;
@@ -90,10 +106,10 @@ class Beneficiarias extends Model
     static function calcularPontuacao($dados)
     {
         $pontuacao = 0;
-        if ($dados->renda_media_familia <= self::$salarioMinimo * 1 / 4) {
+        if ($dados->renda_media_familia <= 218) {
+            $pontuacao += 5;
+        } else if ($dados->renda_media_familia >= 218.01 && $dados->renda_media_familia <= self::$salarioMinimo * 1 / 4) {
             $pontuacao += 3;
-        } else if ($dados->renda_media_familia >= self::$salarioMinimo * 1 / 4 && $dados->renda_media_familia <= self::$salarioMinimo * 1 / 2) {
-            $pontuacao += 2;
         } else {
             $pontuacao += 1;
         }
@@ -105,10 +121,10 @@ class Beneficiarias extends Model
             $pontuacao += 3;
         }
         if ($dados->presenca_pessoa_idosa) {
-            $pontuacao += 1;
+            $pontuacao += 3;
         }
         if ($dados->presenca_pessoa_deficiente) {
-            $pontuacao += 1;
+            $pontuacao += 3;
         }
         if ($dados->presenca_jovem_sit_abrigamento) {
             $pontuacao += 1;
@@ -118,18 +134,29 @@ class Beneficiarias extends Model
         }
         if ($dados->particip_programas_transferencia_renda) {
             $pontuacao += 1;
+        } else {
+            $pontuacao += 3;
         }
         if (!$dados->terminou_ensino_medio) {
             $pontuacao += 1;
         }
         if ($dados->inic_serv_acolh_institucional) {
-            $pontuacao += 1;
+            $pontuacao += 5;
         }
         if ($dados->mulher_nao_branca) {
             $pontuacao += 1;
         }
         if ($dados->situacao_rua) {
             $pontuacao += 1;
+        }
+        if ($dados->qtd_filhos_ate_7_anos) {
+            $pontuacao += 5 * $dados->qtd_filhos_ate_7_anos;
+        }
+        if ($dados->qtd_filhos_ate_12_anos) {
+            $pontuacao += 3 * $dados->qtd_filhos_ate_12_anos;
+        }
+        if ($dados->qtd_filhos_ate_18_anos) {
+            $pontuacao += 1 * $dados->qtd_filhos_ate_18_anos;
         }
 
         return $pontuacao;

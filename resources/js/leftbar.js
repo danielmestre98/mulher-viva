@@ -10,13 +10,14 @@ $(() => {
     $(".menu-item-dropdown").on("click", "button", function () {
         const menu = $($(this).parent()).children()[1];
         $(".menu-item-button").not(this).removeClass("active");
-        $(".menu-item-dropdown button .fa-chevron-down")
-            .not($(this).children()[2])
-            .removeClass("fa-chevron-down")
-            .addClass("fa-chevron-right");
+        // $(".menu-item-dropdown button .fa-chevron-down")
+        //     .not($(this).children()[2])
+        //     .removeClass("fa-chevron-down")
+        //     .addClass("fa-chevron-right");
         $(".box-dropdown").not(menu).slideUp();
-        $($(this).children()[2]).toggleClass("fa-chevron-right");
-        $($(this).children()[2]).toggleClass("fa-chevron-down");
+        console.log($(this).children());
+        $($(this).children("i")).toggleClass("fa-chevron-right");
+        $($(this).children("i")).toggleClass("fa-chevron-down");
         $(this).toggleClass("active");
         $(menu).slideToggle();
     });

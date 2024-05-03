@@ -3050,6 +3050,62 @@ instance.interceptors.request.use(function (config) {
 
 /***/ }),
 
+/***/ "./resources/js/assets/formHelper.js":
+/*!*******************************************!*\
+  !*** ./resources/js/assets/formHelper.js ***!
+  \*******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+function prepareMultipartFormData(inputs) {
+  var formData = new FormData();
+  inputs.forEach(function (input) {
+    if (input.type === "file") {
+      // If input is a file input, append each file to FormData
+      var files = input.files;
+      if (files.length > 0) {
+        for (var i = 0; i < files.length; i++) {
+          formData.append(input.name, files[i]);
+        }
+      }
+    } else if (input.type === "radio" || input.type === "checkbox") {
+      // If input is a radio or checkbox and it's checked, append its value to FormData
+      if (input.checked) {
+        formData.append(input.name, input.value);
+      }
+    } else {
+      // For other input types (text, textarea, etc.), append their values to FormData
+      formData.append(input.name, input.value);
+    }
+  });
+
+  // Convert FormData to JSON object
+  var jsonObject = {};
+  formData.forEach(function (value, key) {
+    // Check if the key already exists in the jsonObject
+    if (Object.prototype.hasOwnProperty.call(jsonObject, key)) {
+      // If key already exists, convert the value to an array
+      if (!Array.isArray(jsonObject[key])) {
+        jsonObject[key] = [jsonObject[key]];
+      }
+      jsonObject[key].push(value);
+    } else {
+      // If key does not exist, add it to the jsonObject
+      jsonObject[key] = value;
+    }
+  });
+
+  // Return the JSON object representing the form data
+  return jsonObject;
+}
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (prepareMultipartFormData);
+
+/***/ }),
+
 /***/ "./resources/js/assets/validation-defaults.js":
 /*!****************************************************!*\
   !*** ./resources/js/assets/validation-defaults.js ***!
@@ -3474,6 +3530,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var jquery_validation__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! jquery-validation */ "./node_modules/jquery-validation/dist/jquery.validate.js");
 /* harmony import */ var jquery_validation__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(jquery_validation__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var _assets_validation_defaults__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../assets/validation-defaults */ "./resources/js/assets/validation-defaults.js");
+/* harmony import */ var _assets_axiosInstance__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../assets/axiosInstance */ "./resources/js/assets/axiosInstance.js");
+/* harmony import */ var _assets_formHelper__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../assets/formHelper */ "./resources/js/assets/formHelper.js");
+
+
 
 
 
@@ -3493,6 +3553,47 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(function () {
         required: true,
         minlength: 10
       }
+    }
+  });
+  if (jquery__WEBPACK_IMPORTED_MODULE_0___default()("#allowChange").get(0)) {
+    var modalChange = new bootstrap__WEBPACK_IMPORTED_MODULE_1__.Modal("#allowChange");
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()("#allowChangeButton").on("click", function () {
+      modalChange.show();
+    });
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()("#add-edit-form").validate({
+      submitHandler: function submitHandler(form) {
+        var action = jquery__WEBPACK_IMPORTED_MODULE_0___default()(form).attr("action");
+        var inputs = {};
+        jquery__WEBPACK_IMPORTED_MODULE_0___default()(form).find("input:checked").each(function () {
+          inputs[jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).attr("name")] = jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).attr("value");
+        });
+        console.log(inputs);
+        _assets_axiosInstance__WEBPACK_IMPORTED_MODULE_4__["default"].post(action, inputs).then(function (_ref) {
+          var data = _ref.data;
+          modalChange.hide();
+          jquery__WEBPACK_IMPORTED_MODULE_0___default()("#liveAlertPlaceholder .alert").fadeIn();
+          setTimeout(function () {
+            jquery__WEBPACK_IMPORTED_MODULE_0___default()("#liveAlertPlaceholder .alert").fadeOut();
+          }, 5000);
+          jquery__WEBPACK_IMPORTED_MODULE_0___default()(form).trigger("reset");
+        });
+      }
+    });
+  }
+  jquery__WEBPACK_IMPORTED_MODULE_0___default()("#edit-benef").validate({
+    submitHandler: function submitHandler(form) {
+      var segments = window.location.href.split("/");
+      var beneficiaria = segments.pop();
+      var inputs = jquery__WEBPACK_IMPORTED_MODULE_0___default()(form).find("input:not(:disabled):not(:hidden):not(:radio):not([readonly]), input[type='radio']:checked:not([disabled])").toArray();
+      var formData = (0,_assets_formHelper__WEBPACK_IMPORTED_MODULE_5__["default"])(inputs);
+      console.log(formData);
+      _assets_axiosInstance__WEBPACK_IMPORTED_MODULE_4__["default"].post("".concat("http://localhost:3000", "/restrito/cadastros/beneficiarias/view-edit/").concat(beneficiaria), formData, {
+        headers: {
+          "Content-Type": "multipart/form-data"
+        }
+      }).then(function () {
+        window.location.reload();
+      });
     }
   });
 });
@@ -3617,10 +3718,14 @@ jquery__WEBPACK_IMPORTED_MODULE_2___default()(function () {
   jquery__WEBPACK_IMPORTED_MODULE_2___default()(".menu-item-dropdown").on("click", "button", function () {
     var menu = jquery__WEBPACK_IMPORTED_MODULE_2___default()(jquery__WEBPACK_IMPORTED_MODULE_2___default()(this).parent()).children()[1];
     jquery__WEBPACK_IMPORTED_MODULE_2___default()(".menu-item-button").not(this).removeClass("active");
-    jquery__WEBPACK_IMPORTED_MODULE_2___default()(".menu-item-dropdown button .fa-chevron-down").not(jquery__WEBPACK_IMPORTED_MODULE_2___default()(this).children()[2]).removeClass("fa-chevron-down").addClass("fa-chevron-right");
+    // $(".menu-item-dropdown button .fa-chevron-down")
+    //     .not($(this).children()[2])
+    //     .removeClass("fa-chevron-down")
+    //     .addClass("fa-chevron-right");
     jquery__WEBPACK_IMPORTED_MODULE_2___default()(".box-dropdown").not(menu).slideUp();
-    jquery__WEBPACK_IMPORTED_MODULE_2___default()(jquery__WEBPACK_IMPORTED_MODULE_2___default()(this).children()[2]).toggleClass("fa-chevron-right");
-    jquery__WEBPACK_IMPORTED_MODULE_2___default()(jquery__WEBPACK_IMPORTED_MODULE_2___default()(this).children()[2]).toggleClass("fa-chevron-down");
+    console.log(jquery__WEBPACK_IMPORTED_MODULE_2___default()(this).children());
+    jquery__WEBPACK_IMPORTED_MODULE_2___default()(jquery__WEBPACK_IMPORTED_MODULE_2___default()(this).children("i")).toggleClass("fa-chevron-right");
+    jquery__WEBPACK_IMPORTED_MODULE_2___default()(jquery__WEBPACK_IMPORTED_MODULE_2___default()(this).children("i")).toggleClass("fa-chevron-down");
     jquery__WEBPACK_IMPORTED_MODULE_2___default()(this).toggleClass("active");
     jquery__WEBPACK_IMPORTED_MODULE_2___default()(menu).slideToggle();
   });

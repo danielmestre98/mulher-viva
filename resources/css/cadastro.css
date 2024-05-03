@@ -13,3 +13,51 @@
 label {
     font-weight: bold;
 }
+
+.permission-option {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #000;
+    border-radius: 5px;
+    margin-bottom: 5px;
+}
+
+.permission-option input {
+    width: 20px;
+    height: 20px;
+    margin-top: 0px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.permission-option label {
+    cursor: pointer;
+    width: 100%;
+    padding: 5px 3px;
+    display: block;
+    height: 100%;
+}
+
+.check-lg {
+    display: flex;
+    align-items: center;
+}
+
+.check-lg input {
+    margin-right: 5px;
+}
+
+#liveAlertPlaceholder {
+    display: flex;
+    justify-content: center;
+    position: fixed;
+    top: 50px;
+    text-align: center;
+    width: 100vw;
+    z-index: 9999;
+}
+
+#liveAlertPlaceholder .alert {
+    width: 300px;
+}
