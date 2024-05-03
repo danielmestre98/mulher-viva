@@ -78,7 +78,8 @@ class CadastrosController extends Controller
     function searchNewBeneficiaria(Request $request)
     {
         $jaExiste = Beneficiarias::where("cpf", "=", $request->valorPesquisa)->first();
-        if (!empty($jaExiste)) {
+        $jaExiste2 = Beneficiarias::where("nis", "=", $request->valorPesquisa)->first();
+        if (!empty($jaExiste) || !empty($jaExiste2)) {
             return response()->json([
                 "error" => "não encontrado no cadunico",
             ], 403);
