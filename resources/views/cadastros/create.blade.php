@@ -50,7 +50,7 @@
                     <i class="fa-solid fa-question fa-lg"></i> Questionário
                 </div>
                 <div class="card-body">
-                    <h5 class=" mb-1"><span class="red">*</span> EXISTE PRESENÇA NO NÚCLEO FAMILIAR DE CRIANÇA OU
+                    <h5 class=" mb-1"><span class="red">*</span>1 - EXISTE PRESENÇA NO NÚCLEO FAMILIAR DE CRIANÇA OU
                         ADOLESCENTE
                         EM SITUAÇÃO DE
                         ABRIGAMENTO?
@@ -68,7 +68,8 @@
                         </div>
                     </div>
 
-                    <h5 class="mt-2 mb-1"><span class="red">*</span> EXISTE PRESENÇA NO NÚCLEO FAMILIAR DE ADOLESCENTE EM
+                    <h5 class="mt-2 mb-1"><span class="red">*</span>2 - EXISTE PRESENÇA NO NÚCLEO FAMILIAR DE ADOLESCENTE
+                        EM
                         SITUAÇÃO DE CUMPRIMENTO DE
                         MEDIDA SÓCIO EDUCATIVA NA MODALIDADE INTERNAÇÃO?
                     </h5>
@@ -86,7 +87,8 @@
                     </div>
 
 
-                    <h5 class="mt-2 mb-1"><span class="red">*</span> MULHER BENEFICIÁRIA QUE ESTÁ EM CONDIÇÕES DE INICIAR
+                    <h5 class="mt-2 mb-1"><span class="red">*</span>3 - MULHER BENEFICIÁRIA QUE ESTÁ EM CONDIÇÕES DE
+                        INICIAR
                         O
                         PROCESSO DE DESACOLHIMENTO
                         DE SERVIÇO DE ACOLHIMENTO INSTITUCIONAL
@@ -105,7 +107,8 @@
                         </div>
                     </div>
 
-                    <h5 class="mt-2 mb-1"><span class="red">*</span> FAMÍLIA BENEFICIÁRIA DE PROGRAMAS DE TRANSFERÊNCIA
+                    <h5 class="mt-2 mb-1"><span class="red">*</span>4 - FAMÍLIA BENEFICIÁRIA DE PROGRAMAS DE
+                        TRANSFERÊNCIA
                         DE RENDA?
                     </h5>
                     <div>

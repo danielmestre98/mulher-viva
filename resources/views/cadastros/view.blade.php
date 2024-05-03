@@ -54,7 +54,8 @@
 
                     </div>
                     <div class="card-body">
-                        <h5 class=" mb-1"><span class="red">*</span> EXISTE PRESENÇA NO NÚCLEO FAMILIAR DE CRIANÇA OU
+                        <h5 class=" mb-1"><span class="red">*</span> 1 - EXISTE PRESENÇA NO NÚCLEO FAMILIAR DE CRIANÇA
+                            OU
                             ADOLESCENTE
                             EM SITUAÇÃO DE
                             ABRIGAMENTO?
@@ -80,7 +81,7 @@
                             </div>
                         </div>
 
-                        <h5 class="mt-2 mb-1"><span class="red">*</span> EXISTE PRESENÇA NO NÚCLEO FAMILIAR DE
+                        <h5 class="mt-2 mb-1"><span class="red">*</span>2 - EXISTE PRESENÇA NO NÚCLEO FAMILIAR DE
                             ADOLESCENTE EM
                             SITUAÇÃO DE CUMPRIMENTO DE
                             MEDIDA SÓCIO EDUCATIVA NA MODALIDADE INTERNAÇÃO?
@@ -109,7 +110,7 @@
                         </div>
 
 
-                        <h5 class="mt-2 mb-1"><span class="red">*</span> MULHER BENEFICIÁRIA QUE ESTÁ EM CONDIÇÕES DE
+                        <h5 class="mt-2 mb-1"><span class="red">*</span>3 - MULHER BENEFICIÁRIA QUE ESTÁ EM CONDIÇÕES DE
                             INICIAR
                             O
                             PROCESSO DE DESACOLHIMENTO
@@ -137,7 +138,7 @@
                             </div>
                         </div>
 
-                        <h5 class="mt-2 mb-1"><span class="red">*</span> FAMÍLIA BENEFICIÁRIA DE PROGRAMAS DE
+                        <h5 class="mt-2 mb-1"><span class="red">*</span>4 - FAMÍLIA BENEFICIÁRIA DE PROGRAMAS DE
                             TRANSFERÊNCIA
                             DE RENDA?
                         </h5>
@@ -175,7 +176,13 @@
                             <div class="d-grid col-6 gap-2 mx-auto">
                                 <a target="_blank"
                                     href="{{ route('restrito.view-file', [$beneficiaria->id, 'medidaProtetiva.pdf']) }}"
-                                    class="btn btn-info btn-lg">Medida protetiva <i class="fa-solid fa-download"></i></a>
+                                    class="d-flex align-items-center flex-column">
+                                    <img src="{{ asset('assets/img/pdf.png') }}" alt="">
+
+                                    <p class="m-0 lead">
+                                        Medida protetiva
+                                    </p>
+                                </a>
                                 @if (array_search(5, $editPermissions) !== false)
                                     <input type="file" name="medidaProtetiva" class="form-control">
                                 @endif
@@ -183,7 +190,11 @@
                             <div class="d-grid col-6 gap-2 mx-auto">
                                 <a style="height: 48px" target="_blank"
                                     href="{{ route('restrito.view-file', [$beneficiaria->id, 'examePsicosocial.pdf']) }}"
-                                    class="btn btn-info btn-lg">Exame psicosocial <i class="fa-solid fa-download"></i></a>
+                                    class="d-flex align-items-center flex-column">
+                                    <img src="{{ asset('assets/img/pdf.png') }}" alt="">
+                                    <p class="m-0 lead">
+                                        Exame psicosocial</p>
+                                </a>
                                 @if (array_search(6, $editPermissions) !== false)
                                     <input type="file" name="examePsicosocial" class="form-control">
                                 @endif
@@ -248,18 +259,20 @@
                                 <p style="font-size: 30px" class="display-6 text-center"> Quais campos você deseja <b>
                                         permitir</b> a
                                     alteração:</p>
-                                <p class="mb-0 lead">Questionário:</p>
+                                <p class="mb-0" style="font-size: 20px"><b>Questionário:</b></p>
                                 <div class="permission-option">
-                                    <label class="form-check-label" for="opt1">
-                                        Existe presença no núcleo familiar de criança ou adolescente em situação de abrigamento?
+                                    <label class="form-check-label" style="font-weight: 400" for="opt1">
+                                        1 - Existe presença no núcleo familiar de criança ou adolescente em situação de
+                                        abrigamento?
                                     </label>
                                     <input class="form-check-input " type="checkbox" value="1" name="opt1"
                                         id="opt1">
                                 </div>
 
                                 <div class="permission-option">
-                                    <label class="form-check-label" for="opt2">
-                                        Existe presença no núcleo familiar de adolescente em situação de cumprimento de medida
+                                    <label class="form-check-label" style="font-weight: 400" for="opt2">
+                                        2 - Existe presença no núcleo familiar de adolescente em situação de cumprimento de
+                                        medida
                                         sócio educativa na modalidade internação?
                                     </label>
                                     <input class="form-check-input " type="checkbox" value="1" name="opt2"
@@ -267,8 +280,8 @@
                                 </div>
 
                                 <div class="permission-option">
-                                    <label class="form-check-label" for="opt3">
-                                        Mulher beneficiária que está em condições de iniciar o processo de desacolhimento de
+                                    <label class="form-check-label" style="font-weight: 400" for="opt3">
+                                        3 - Mulher beneficiária que está em condições de iniciar o processo de desacolhimento de
                                         serviço de acolhimento institucional para mulheres em situação de violência?
                                     </label>
                                     <input class="form-check-input " type="checkbox" value="1" name="opt3"
@@ -276,23 +289,23 @@
                                 </div>
 
                                 <div class="permission-option mb-2">
-                                    <label class="form-check-label" for="opt4">
-                                        Família beneficiária de programas de transferência de renda?
+                                    <label class="form-check-label" style="font-weight: 400" for="opt4">
+                                        4 - Família beneficiária de programas de transferência de renda?
                                     </label>
                                     <input class="form-check-input " type="checkbox" value="1" name="opt4"
                                         id="opt4">
                                 </div>
 
-                                <p class="mb-0 lead">Anexos:</p>
+                                <p class="mb-0" style="font-size: 20px"><b>Anexos:</b></p>
                                 <div class="permission-option">
-                                    <label class="form-check-label" for="opt5">
+                                    <label class="form-check-label " style="font-weight: 400" for="opt5">
                                         Medida protetiva
                                     </label>
                                     <input class="form-check-input " type="checkbox" value="1" name="opt5"
                                         id="opt5">
                                 </div>
                                 <div class="permission-option">
-                                    <label class="form-check-label" for="opt6">
+                                    <label class="form-check-label" style="font-weight: 400" for="opt6">
                                         Exame psicosocial
                                     </label>
                                     <input class="form-check-input " type="checkbox" value="1" name="opt6"

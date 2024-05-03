@@ -88,7 +88,7 @@ class CadastrosController extends Controller
             'Content-Type' => 'application/json'
         ];
 
-        $response = Http::withoutVerifying()->withHeaders($headers)->post(env("API_URL"), [
+        $response = Http::withoutVerifying()->timeout(60000)->withHeaders($headers)->post(env("API_URL"), [
             'sistema' => 'mulher-viva',
             'searchType' => $request->tipoPesquisa,
             'cpf' => [
