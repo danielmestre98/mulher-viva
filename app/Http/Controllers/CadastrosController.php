@@ -175,7 +175,7 @@ class CadastrosController extends Controller
         $dadosCadastroUnico->inic_serv_acolh_institucional = json_decode($request->mulherCondDesacolh);
         $dadosCadastroUnico->particip_programas_transferencia_renda = json_decode($request->familiaTransfRenda);
         $dadosCadastroUnico->pontuacao = Beneficiarias::calcularPontuacao($dadosCadastroUnico);
-        $dadosCadastroUnico->status = 1;
+        $dadosCadastroUnico->status = 5;
         $date = DateTime::createFromFormat('d/m/Y', $dadosCadastroUnico->nascimento);
         $dadosCadastroUnico->nascimento = $date->format('Y-m-d');
         $beneficiaria =  Beneficiarias::create(json_decode(json_encode($dadosCadastroUnico), true));

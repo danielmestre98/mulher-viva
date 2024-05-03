@@ -74,5 +74,8 @@ class DatabaseSeeder extends Seeder
         StatusCodes::create([
             "name" => "Não elegível",
         ]);
+        StatusCodes::create([
+            "name" => "Cadastrada",
+        ]);
     }
 }

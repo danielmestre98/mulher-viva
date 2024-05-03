@@ -23,14 +23,6 @@ class UserSeeder extends Seeder
         ]);
         $user->assignRole("Super-Admin");
 
-        $user = \App\Models\User::factory()->create([
-            'name' => 'Secretaria Mulher',
-            'email' => 'secretaria.mulher@sp.gov.br',
-            'cpf' => '11111111111',
-            'email_verified_at' => now(),
-            'password' => Hash::make("12345"),
-            'municipio' => 565
-        ]);
         $user->assignRole("secretaria-mulher");
 
         $user = \App\Models\User::factory()->create([
