@@ -48,6 +48,14 @@ Route::middleware("auth")->group(function () {
         return response()->json(csrf_token());
     });
 
+    Route::get("/restrito/drads-municipio/{idDrads}", function ($idDrads) {
+        if ($idDrads != 0) {
+            $municipios = \App\Models\Municipio::where("drads_id", $idDrads)->orderBy("nome", "ASC")->get();
+            return response()->json($municipios);
+        }
+        return \App\Models\Municipio::all()->toJson();
+    });
+
     Route::get("/restrito/cadastros/usuarios", [UserController::class, "index"])->name("restrito.usuarios");
     Route::get("/restrito/cadastros/usuarios/criar", [UserController::class, "create"])->name("restrito.usuarios.create");
     Route::post("/restrito/cadastros/usuarios/criar", [UserController::class, "store"]);

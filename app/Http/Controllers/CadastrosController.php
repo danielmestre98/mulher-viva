@@ -45,16 +45,12 @@ class CadastrosController extends Controller
 
         $drads = Drads::orderBy("nome", "ASC")->get();
         $municipios = Municipio::orderBy("nome", "ASC")->get();
+
         if (!$request->drads_filtro && !$request->municipio_filtro) {
             $beneficiarias = isset($request->filtro) ? Beneficiarias::where("status", $request->filtro)->get() :
                 Beneficiarias::all();
-        } else
-        if ($request->drads_filtro) {
-            $municipio = Municipio::where("drads_id", $request->drads_filtro)->pluck("id");
-            $beneficiarias = isset($request->filtro) ? Beneficiarias::where("status", $request->filtro)->whereIn("municipio", $municipio)->get() :
-                Beneficiarias::whereIn("municipio", $municipio)->get();
         } else {
-            $municipio = Municipio::where("id", $request->municipio_filtro)->pluck("id");
+            $municipio = Municipio::where("drads_id", $request->drads_filtro)->orWhere("id", $request->municipio_filtro)->pluck("id");
             $beneficiarias = isset($request->filtro) ? Beneficiarias::where("status", $request->filtro)->whereIn("municipio", $municipio)->get() :
                 Beneficiarias::whereIn("municipio", $municipio)->get();
         }

@@ -77,5 +77,8 @@ class DatabaseSeeder extends Seeder
         StatusCodes::create([
             "name" => "Cadastrada",
         ]);
+        StatusCodes::create([
+            "name" => "Pré-Aprovada",
+        ]);
     }
 }

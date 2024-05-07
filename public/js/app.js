@@ -3455,13 +3455,24 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(function () {
     // Use DataTables API to search DataTable
     table.search(searchValue).draw();
   });
-  jquery__WEBPACK_IMPORTED_MODULE_0___default()(".filtros").on("change", function (e) {
-    if (e.target.value) {
-      jquery__WEBPACK_IMPORTED_MODULE_0___default()(".filtros").not(this).attr("disabled", true);
-    } else {
-      jquery__WEBPACK_IMPORTED_MODULE_0___default()(".filtros").attr("disabled", false);
-    }
+  jquery__WEBPACK_IMPORTED_MODULE_0___default()("#drads_filtro").on("change", function (e) {
+    _assets_axiosInstance__WEBPACK_IMPORTED_MODULE_2__["default"].get("/restrito/drads-municipio/".concat(e.target.value || 0)).then(function (data) {
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()("#municipio_filtro option").remove();
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()("#municipio_filtro").append("<option value=\"\">Selecione a op\xE7\xE3o desejada...</option>");
+      data.data.forEach(function (municipio) {
+        jquery__WEBPACK_IMPORTED_MODULE_0___default()("#municipio_filtro").append("<option value=\"".concat(municipio.id, "\">").concat(municipio.nome, "</option>"));
+      });
+    });
   });
+
+  // $(".filtros").on("change", function (e) {
+  //     if (e.target.value) {
+  //         $(".filtros").not(this).attr("disabled", true);
+  //     } else {
+  //         $(".filtros").attr("disabled", false);
+  //     }
+  // });
+
   jquery__WEBPACK_IMPORTED_MODULE_0___default()("#search-new").on("submit", function (e) {
     e.preventDefault();
     jquery__WEBPACK_IMPORTED_MODULE_0___default()("#submit-button-search").attr("disabled", true);

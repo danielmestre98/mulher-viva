@@ -17,8 +17,7 @@
                         <div class="row">
                             <div class="form-group col-md-5">
                                 <label for="drads_filtro">Drads</label>
-                                <select @if (isset($filtros_default['municipio'])) disabled @endif class="form-select filtros"
-                                    id="drads_filtro" name="drads_filtro">
+                                <select class="form-select filtros" id="drads_filtro" name="drads_filtro">
                                     <option value="">Selecione a opção desejada...</option>
                                     @foreach ($drads as $item)
                                         <option @if (isset($filtros_default) && $filtros_default['drads'] == $item->id) selected @endif value="{{ $item->id }}">
@@ -28,8 +27,7 @@
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="municipio_filtro">Municipio</label>
-                                <select @if (isset($filtros_default['drads'])) disabled @endif class="form-select filtros"
-                                    id="municipio_filtro" name="municipio_filtro">
+                                <select class="form-select filtros" id="municipio_filtro" name="municipio_filtro">
                                     <option value="">Selecione a opção desejada...</option>
                                     @foreach ($municipios as $item)
                                         @if ($item->id != 0)

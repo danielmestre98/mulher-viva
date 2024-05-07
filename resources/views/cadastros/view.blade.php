@@ -172,32 +172,45 @@
                         <i class="fa-solid fa-paperclip"></i> Anexos
                     </div>
                     <div class="card-body">
-                        <div class="row">
+                        <div class="row align-items-center">
                             <div class="d-grid col-6 gap-2 mx-auto">
-                                <a target="_blank"
-                                    href="{{ route('restrito.view-file', [$beneficiaria->id, 'medidaProtetiva.pdf']) }}"
-                                    class="d-flex align-items-center flex-column">
-                                    <img src="{{ asset('assets/img/pdf.png') }}" alt="">
-
-                                    <p class="m-0 lead">
-                                        Medida protetiva
-                                    </p>
-                                </a>
                                 @if (array_search(5, $editPermissions) !== false)
-                                    <input type="file" name="medidaProtetiva" class="form-control">
+                                    <div class="form-group">
+                                        <label for="medidaProtetiva">Medida protetiva</label>
+                                        <input type="file" name="medidaProtetiva" id="medidaProtetiva"
+                                            class="form-control">
+                                    </div>
+                                @else
+                                    <a target="_blank"
+                                        href="{{ route('restrito.view-file', [$beneficiaria->id, 'medidaProtetiva.pdf']) }}"
+                                        class="d-flex align-items-center flex-column">
+                                        <img src="{{ asset('assets/img/pdf.png') }}" alt="">
+
+                                        <p class="m-0 lead">
+                                            Medida protetiva
+                                        </p>
+                                    </a>
                                 @endif
+
+
                             </div>
                             <div class="d-grid col-6 gap-2 mx-auto">
-                                <a style="height: 48px" target="_blank"
-                                    href="{{ route('restrito.view-file', [$beneficiaria->id, 'examePsicosocial.pdf']) }}"
-                                    class="d-flex align-items-center flex-column">
-                                    <img src="{{ asset('assets/img/pdf.png') }}" alt="">
-                                    <p class="m-0 lead">
-                                        Exame psicosocial</p>
-                                </a>
                                 @if (array_search(6, $editPermissions) !== false)
-                                    <input type="file" name="examePsicosocial" class="form-control">
+                                    <div class="form-group">
+                                        <label for="medidaProtetiva">Exame psicosocial</label>
+                                        <input type="file" name="examePsicosocial" class="form-control">
+                                    </div>
+                                @else
+                                    <a target="_blank"
+                                        href="{{ route('restrito.view-file', [$beneficiaria->id, 'examePsicosocial.pdf']) }}"
+                                        class="d-flex align-items-center flex-column">
+                                        <img src="{{ asset('assets/img/pdf.png') }}" alt="">
+                                        <p class="m-0 lead">
+                                            Exame psicosocial</p>
+                                    </a>
                                 @endif
+
+
                             </div>
                         </div>
                     </div>
@@ -208,13 +221,15 @@
                     style="margin-right: 5px">Voltar</button>
 
                 <div>
-                    @can('super-admin')
-                        <button type="button" id="allowChangeButton" class="btn btn-warning btn-lg"
-                            style="margin-right: 5px">Dar permissão para
-                            edições</button>
-                    @endcan
-                    @if (!empty($editPermissions))
-                        <button id="saveEdit" type="submit" class="btn btn-primary btn-lg">Salvar</button>
+                    @if ($beneficiaria->status != 4)
+                        @can('super-admin')
+                            <button type="button" id="allowChangeButton" class="btn btn-warning btn-lg"
+                                style="margin-right: 5px">Dar permissão para
+                                edições</button>
+                        @endcan
+                        @if (!empty($editPermissions))
+                            <button id="saveEdit" type="submit" class="btn btn-primary btn-lg">Salvar</button>
+                        @endif
                     @endif
                 </div>
             </div>

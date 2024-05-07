@@ -75,13 +75,29 @@ $(() => {
         table.search(searchValue).draw();
     });
 
-    $(".filtros").on("change", function (e) {
-        if (e.target.value) {
-            $(".filtros").not(this).attr("disabled", true);
-        } else {
-            $(".filtros").attr("disabled", false);
-        }
+    $("#drads_filtro").on("change", function (e) {
+        axios
+            .get(`/restrito/drads-municipio/${e.target.value || 0}`)
+            .then((data) => {
+                $("#municipio_filtro option").remove();
+                $("#municipio_filtro").append(
+                    `<option value="">Selecione a opção desejada...</option>`
+                );
+                data.data.forEach((municipio) => {
+                    $("#municipio_filtro").append(
+                        `<option value="${municipio.id}">${municipio.nome}</option>`
+                    );
+                });
+            });
     });
+
+    // $(".filtros").on("change", function (e) {
+    //     if (e.target.value) {
+    //         $(".filtros").not(this).attr("disabled", true);
+    //     } else {
+    //         $(".filtros").attr("disabled", false);
+    //     }
+    // });
 
     $("#search-new").on("submit", function (e) {
         e.preventDefault();
