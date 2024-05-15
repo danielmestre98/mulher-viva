@@ -10,27 +10,25 @@
     <hr>
     <div class="category-divider">Cadastros</div>
     <div class="menu-group">
-        <div class="menu-item-dropdown">
-            <button class="menu-item-button"><span> <i class="fa-solid fa-person-dress"></i>
+        <div class="menu-item">
+            <a href="{{ route('restrito.cadastros.beneficiarias') }}" class="menu-item-button">
+                <span> <i class="fa-solid fa-person-dress"></i>
                     <span>Mulheres</span></span>
-                @if (request()->is('*/cadastros/beneficiarias*'))
-                    <i class="fa-solid fa-chevron-down fa-sm"></i>
-                @else
-                    <i class="fa-solid fa-chevron-right fa-sm"></i>
-                @endif
-            </button>
-            <div class="box-dropdown" @if (request()->is('*/cadastros/beneficiarias*')) style="display: block" @endif>
-                <ul>
-                    <li><a id="all-s" @if (request()->routeIs('restrito.cadastros.beneficiarias')) class="active" @endif
-                            href={{ route('restrito.cadastros.beneficiarias') }}>Solicitações</a></li>
-                    <li><a id="app-s" @if (request()->is('restrito/cadastros/beneficiarias/fitro/1')) class="active" @endif
-                            href={{ route('restrito.cadastros.beneficiarias.filtro', 1) }}>Aprovadas</a></li>
-                    <li><a id="nao-s" @if (request()->is('restrito/cadastros/beneficiarias/fitro/4')) class="active" @endif
-                            href={{ route('restrito.cadastros.beneficiarias.filtro', 4) }}>Não elegíveis</a></li>
-                </ul>
+            </a>
+        </div>
+    </div>
+    @can('approve list')
+        <div class="menu-group">
+            <div class="menu-item">
+                <a href="{{ route('restrito.list') }}" class="menu-item-button">
+                    <span> <i class="fa-solid fa-list-check"></i>
+                        <span>Lista</span></span>
+                </a>
             </div>
         </div>
-        @can('super-admin')
+    @endcan
+    <div class="menu-group">
+        @can('cadastrar judicializacao')
             <div class="menu-group">
                 <div class="menu-item">
                     <a href="{{ route('restrito.judicializacoes') }}" class="menu-item-button">
@@ -39,6 +37,8 @@
                     </a>
                 </div>
             </div>
+        @endcan
+        @can('create user')
             <div class="menu-item-dropdown">
                 <button class="menu-item-button"> <span><i class="fa-solid fa-user"></i> <span>Usuários</span></span>
                     @if (request()->is('*/cadastros/usuarios*'))
@@ -57,7 +57,9 @@
                 </div>
             </div>
         @endcan
-        {{-- <div class="menu-item-dropdown">
+    </div>
+
+    {{-- <div class="menu-item-dropdown">
             <button class="menu-item-button"><i class="fa-solid fa-user"></i> <span>Usuários</span> <i
                     class="fa-solid fa-chevron-right fa-sm"></i></button>
             <div class="box-dropdown">
@@ -67,7 +69,6 @@
                 </ul>
             </div>
         </div> --}}
-    </div>
     {{-- <hr> --}}
     {{-- <div class="category-divider">Autorizações</div>
     <div class="menu-group">

@@ -5,17 +5,16 @@
         <p class="display-4">Beneficiárias</p>
         <hr>
 
-        @can('view beneficiarias')
-            <div class="card mb-4">
-                <div class="card-header form-card-header">
-                    <i class="fa-solid fa-filter"></i> Filtros
-                </div>
-                <div class="card-body">
-                    {{-- {{ dd($filtros_default) }} --}}
-                    <form method="POST" action="{{ route('restrito.cadastros.beneficiarias.filter.form') }}">
-                        @csrf
+        <div class="card mb-4">
+            <div class="card-header form-card-header">
+                <i class="fa-solid fa-filter"></i> Filtros
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{{ route('restrito.cadastros.beneficiarias.filter.form') }}">
+                    @csrf
+                    @can('view beneficiarias')
                         <div class="row">
-                            <div class="form-group col-md-5">
+                            <div class="form-group col-md-6">
                                 <label for="drads_filtro">Drads</label>
                                 <select class="form-select filtros" id="drads_filtro" name="drads_filtro">
                                     <option value="">Selecione a opção desejada...</option>
@@ -38,16 +37,27 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <input type="text" name="filtro" id="leftbar-control" hidden value={{ $filtro }}>
-
-                            <div class="col-md-1 mt-4">
-                                <button class="btn btn-primary"> Filtrar</button>
-                            </div>
                         </div>
-                    </form>
-                </div>
+                    @endcan
+                    <div class="d-flex justify-content-between">
+                        <div class="form-group col-md-4">
+                            <label for="status_filtro">Status</label>
+                            <select class="form-select filtros" id="status_filtro" name="status_filtro">
+                                <option value="">Selecione a opção desejada...</option>
+                                @foreach ($status as $item)
+                                    <option @if (isset($filtros_default) && $filtros_default['status'] == $item->id) selected @endif value="{{ $item->id }}">
+                                        {{ $item->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="col-md-2 mt-4">
+                            <button class="btn btn-primary" style="float: right"> Filtrar</button>
+                        </div>
+                    </div>
+                </form>
             </div>
-        @endcan
+        </div>
 
         <div class="row justify-content-between mb-2">
             <div class="col-2">
@@ -66,15 +76,10 @@
                 <table class="table table-hover table-bordered" id="beneficiarias-table">
                     <thead>
                         <tr>
-                            <th @can('super-admin') style="text-align: center" @endcan width="5%" scope="col">Posição
-                                @can('super-admin')
-                                    (Município)
-                                @endcan
-                            </th>
                             <th scope="col">Nome da Solicitante</th>
                             <th width="10%" scope="col">CPF</th>
                             <th width="10%" scope="col">NIS</th>
-                            @can('super-admin')
+                            @can('view benefPontuacao')
                                 <th width="5%" scope="col">Pontuação</th>
                                 <th scope="col">Município</th>
                             @endcan
@@ -83,21 +88,27 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($beneficiarias as $beneficiaria)
+                        @for ($i = 0; $i < count($beneficiarias); $i++)
+                            @php
+                                $beneficiaria = $beneficiarias[$i];
+                            @endphp
+
                             <tr name="{{ $beneficiaria->id }}" class="row-table-pesquisa">
-                                <td>{{ $beneficiaria->posicao ?? 'N/A' }}</td>
+
                                 <td>{{ $beneficiaria->nome }}</td>
                                 <td>{{ substr($beneficiaria->cpf, 0, 3) . '.' . substr($beneficiaria->cpf, 3, 3) . '.' . substr($beneficiaria->cpf, 6, 3) . '-' . substr($beneficiaria->cpf, 9, 2) }}
                                 </td>
                                 <td>{{ $beneficiaria->nis }}</td>
-                                @can('super-admin')
+
+                                @can('view benefPontuacao')
                                     <td>{{ $beneficiaria->pontuacao }}</td>
                                     <td>{{ $beneficiaria->municipios->nome }}</td>
                                 @endcan
+
                                 <td>{{ date('d/m/Y H:i', strtotime($beneficiaria->created_at)) }}</td>
                                 <td>{{ $beneficiaria->statusCodes->name }}</td>
                             </tr>
-                        @endforeach
+                        @endfor
                     </tbody>
                 </table>
 

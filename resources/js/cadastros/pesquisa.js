@@ -41,10 +41,7 @@ $(() => {
         language: ptBR,
         searching: true, // Disable search input
         lengthChange: false,
-        order: [
-            [5, "asc"],
-            [0, "asc"],
-        ],
+        order: [[0, "asc"]],
     });
 
     const newBenefSearch = $("#search-value-new").get(0);
@@ -160,4 +157,20 @@ $(() => {
 
         return formatoDesejado; // Saída: 14/03/2024 19:29
     };
+
+    const buttonApprove = $("#approve-list-btn").get(0);
+
+    if (buttonApprove) {
+        $(buttonApprove).on("click", function () {
+            const modal = new Modal("#approveList");
+            modal.show();
+        });
+        $("#send-approve").on("click", function () {
+            axios
+                .get("/restrito/cadastros/beneficiarias/approve-list")
+                .then(() => {
+                    window.location.reload();
+                });
+        });
+    }
 });

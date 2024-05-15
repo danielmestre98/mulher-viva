@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use DateTime;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
@@ -164,11 +165,26 @@ class Beneficiarias extends Model
 
     static function verificarPosicoes($municipioId)
     {
-        $beneficiarias = Beneficiarias::where('municipio', $municipioId)->orderBy("pontuacao", "DESC")->where("status", "!=", 4)->get();
-        for ($i = 0; $i < count($beneficiarias); $i++) {
-            $beneficiarias[$i]->posicao = $i + 1;
-            $beneficiarias[$i]->save();
+        $status = [5, 6];
+        $beneficiariasAprovadas = Beneficiarias::where('municipio', $municipioId)->orderBy("pontuacao", "DESC")->where("status", 1)->get();
+        $beneficiarias = Beneficiarias::where('municipio', $municipioId)->orderBy("pontuacao", "DESC")->whereIn("status", $status)->get();
+        $lista = new Collection();
+        $posicao = 1;
+        for ($i = 0; $i < count($beneficiariasAprovadas); $i++) {
+            $beneficiariasAprovadas[$i]->posicao = $posicao;
+            $beneficiariasAprovadas[$i]->save();
+            $lista->add($beneficiariasAprovadas[$i]);
+            $posicao++;
         }
+
+        for ($i = 0; $i < count($beneficiarias); $i++) {
+            $beneficiarias[$i]->posicao = $posicao;
+            $beneficiarias[$i]->save();
+            $lista->add($beneficiarias[$i]);
+            $posicao++;
+        }
+
+        ListasBeneficiarias::checkList(Auth::user()->municipio, $lista);
     }
 
     function statusCodes()
@@ -179,5 +195,10 @@ class Beneficiarias extends Model
     function municipios()
     {
         return $this->belongsTo(Municipio::class, "municipio", "id");
+    }
+
+    public function listas()
+    {
+        return $this->belongsToMany(ListasBeneficiarias::class, 'lista_beneficiaria_relation', "beneficiara", "lista");
     }
 }

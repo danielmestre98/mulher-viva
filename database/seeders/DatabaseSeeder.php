@@ -80,5 +80,8 @@ class DatabaseSeeder extends Seeder
         StatusCodes::create([
             "name" => "Pré-Aprovada",
         ]);
+        StatusCodes::create([
+            "name" => "Excluída",
+        ]);
     }
 }

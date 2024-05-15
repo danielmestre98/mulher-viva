@@ -21,7 +21,12 @@ class PermissionsSeeder extends Seeder
         $viewBenef = Permission::create(['name' => 'view beneficiarias']);
         $viewMunicBenef = Permission::create(['name' => 'view municBeneficiarias']);
         $createBenef = Permission::create(['name' => 'create beneficiarias']);
+        $approveList = Permission::create(['name' => 'approve list']);
         $cadOrdemJud = Permission::create(['name' => 'create ordemJud']);
+        $giveEditPermissions = Permission::create(['name' => "give edit permissions"]);
+        $viewPontuacao = Permission::create(['name' => "view benefPontuacao"]);
+
+        $judicializacao = Permission::create(['name' => "cadastrar judicializacao"]);
 
         $createUser = Permission::create(['name' => 'create user']);
         $editUser = Permission::create(['name' => 'edit user']);
@@ -29,18 +34,33 @@ class PermissionsSeeder extends Seeder
 
         $viewReports = Permission::create(['name' => "view reports"]);
 
+
         $admin = Role::create(['name' => 'Super-Admin']);
+        $adminCds = Role::create(['name' => 'Admin-CDS']);
+        $adminCds->givePermissionTo($viewBenef, $viewMunicBenef, $createBenef, $cadOrdemJud, $giveEditPermissions, $createUser, $editUser, $removeUser, $viewReports, $viewPontuacao, $judicializacao);
+
 
         $municipio = Role::create(['name' => 'municipio']);
         $municipio->givePermissionTo($viewMunicBenef);
         $municipio->givePermissionTo($createBenef);
+        $municipio->givePermissionTo($approveList);
 
         $user = \App\Models\User::factory()->create([
             'name' => 'Daniel',
             'cpf' => "43734045851",
             'email' => 'daniel.mestre@sp.gov.br',
             'email_verified_at' => now(),
-            'password' => Hash::make("12345"),
+            'password' => Hash::make("123456"),
+            'municipio' => 565
+        ]);
+        $user->assignRole($adminCds);
+
+        $user = \App\Models\User::factory()->create([
+            'name' => 'Daniel Super',
+            'cpf' => "43734045851",
+            'email' => 'daniel.super@sp.gov.br',
+            'email_verified_at' => now(),
+            'password' => Hash::make("123456"),
             'municipio' => 565
         ]);
         $user->assignRole($admin);
@@ -50,7 +70,7 @@ class PermissionsSeeder extends Seeder
             'cpf' => "11111111111",
             'email' => 'municipio@sp.gov.br',
             'email_verified_at' => now(),
-            'password' => Hash::make("12345"),
+            'password' => Hash::make("123456"),
             'municipio' => 565
         ]);
         $user->assignRole($municipio);

@@ -62,21 +62,17 @@
                         </h5>
                         <div>
                             <div class="form-check form-check-inline">
-                                <input
-                                    @if (array_search(1, $editPermissions) === false) @cannot('super-admin') disabled @endcannot
-                                    @if ($beneficiaria->status != 2) disabled @endif
-                                    @endif
-                                @if ($beneficiaria->presenca_jovem_sit_abrigamento) checked @endif class="form-check-input questions"
-                                type="radio" name="presenca_jovem_sit_abrigamento" id="criancaAbrigSim" value="true">
+                                <input @if (array_search(1, $editPermissions) === false) disabled @endif
+                                    @if ($beneficiaria->presenca_jovem_sit_abrigamento) checked @endif class="form-check-input questions"
+                                    type="radio" name="presenca_jovem_sit_abrigamento" id="criancaAbrigSim"
+                                    value="true">
                                 <label class="form-check-label lead" for="criancaAbrigSim">Sim</label>
                             </div>
                             <div class="form-check form-check-inline">
-                                <input
-                                    @if (array_search(1, $editPermissions) === false) @cannot('super-admin') disabled @endcannot
-                                    @if ($beneficiaria->status != 2) disabled @endif
-                                    @endif
-                                @if (!$beneficiaria->presenca_jovem_sit_abrigamento) checked @endif class="form-check-input questions"
-                                type="radio" name="presenca_jovem_sit_abrigamento" id="criancaAbrigNão" value="false">
+                                <input @if (array_search(1, $editPermissions) === false) disabled @endif
+                                    @if (!$beneficiaria->presenca_jovem_sit_abrigamento) checked @endif class="form-check-input questions"
+                                    type="radio" name="presenca_jovem_sit_abrigamento" id="criancaAbrigNão"
+                                    value="false">
                                 <label class="form-check-label lead" for="criancaAbrigNão">Não</label>
                             </div>
                         </div>
@@ -88,23 +84,17 @@
                         </h5>
                         <div>
                             <div class="form-check form-check-inline">
-                                <input
-                                    @if (array_search(2, $editPermissions) === false) @cannot('super-admin') disabled @endcannot
-                                    @if ($beneficiaria->status != 2) disabled @endif
-                                    @endif
-                                @if ($beneficiaria->presenca_adolec_medida_socio_educativa) checked @endif class="form-check-input questions"
-                                type="radio" name="presenca_adolec_medida_socio_educativa" id="adolecMedidaSocioSim"
-                                value="true">
+                                <input @if (array_search(2, $editPermissions) === false) disabled @endif
+                                    @if ($beneficiaria->presenca_adolec_medida_socio_educativa) checked @endif class="form-check-input questions"
+                                    type="radio" name="presenca_adolec_medida_socio_educativa" id="adolecMedidaSocioSim"
+                                    value="true">
                                 <label class="form-check-label lead" for="adolecMedidaSocioSim">Sim</label>
                             </div>
                             <div class="form-check form-check-inline">
-                                <input
-                                    @if (array_search(2, $editPermissions) === false) @cannot('super-admin') disabled @endcannot
-                                    @if ($beneficiaria->status != 2) disabled @endif
-                                    @endif
-                                @if (!$beneficiaria->presenca_adolec_medida_socio_educativa) checked @endif class="form-check-input questions"
-                                type="radio" name="presenca_adolec_medida_socio_educativa" id="adolecMedidaSocioNão"
-                                value="false">
+                                <input @if (array_search(2, $editPermissions) === false) disabled @endif
+                                    @if (!$beneficiaria->presenca_adolec_medida_socio_educativa) checked @endif class="form-check-input questions"
+                                    type="radio" name="presenca_adolec_medida_socio_educativa" id="adolecMedidaSocioNão"
+                                    value="false">
                                 <label class="form-check-label lead" for="adolecMedidaSocioNão">Não</label>
                             </div>
                         </div>
@@ -119,21 +109,17 @@
                         </h5>
                         <div>
                             <div class="form-check form-check-inline">
-                                <input
-                                    @if (array_search(3, $editPermissions) === false) @cannot('super-admin') disabled @endcannot 
-                                    @if ($beneficiaria->status != 2) disabled @endif
-                                    @endif
-                                @if ($beneficiaria->inic_serv_acolh_institucional) checked @endif class="form-check-input questions"
-                                type="radio" name="inic_serv_acolh_institucional" id="mulherCondDesacolhSim"
-                                value="true">
+                                <input @if (array_search(3, $editPermissions) === false) disabled @endif
+                                    @if ($beneficiaria->inic_serv_acolh_institucional) checked @endif class="form-check-input questions"
+                                    type="radio" name="inic_serv_acolh_institucional" id="mulherCondDesacolhSim"
+                                    value="true">
                                 <label class="form-check-label lead" for="mulherCondDesacolhSim">Sim</label>
                             </div>
                             <div class="form-check form-check-inline">
-                                <input @if (array_search(3, $editPermissions) === false) @if ($beneficiaria->status != 2) disabled @endif
-                                    @cannot('super-admin') disabled @endcannot @endif
-                                @if (!$beneficiaria->inic_serv_acolh_institucional) checked @endif class="form-check-input questions"
-                                type="radio" name="inic_serv_acolh_institucional" id="mulherCondDesacolhNão"
-                                value="false">
+                                <input @if (array_search(3, $editPermissions) === false) disabled @endif
+                                    @if (!$beneficiaria->inic_serv_acolh_institucional) checked @endif class="form-check-input questions"
+                                    type="radio" name="inic_serv_acolh_institucional" id="mulherCondDesacolhNão"
+                                    value="false">
                                 <label class="form-check-label lead" for="mulherCondDesacolhNão">Não</label>
                             </div>
                         </div>
@@ -144,23 +130,17 @@
                         </h5>
                         <div>
                             <div class="form-check form-check-inline">
-                                <input
-                                    @if (array_search(4, $editPermissions) === false) @cannot('super-admin') disabled @endcannot
-                                    @if ($beneficiaria->status != 2) disabled @endif
-                                    @endif
-                                @if ($beneficiaria->particip_programas_transferencia_renda) checked @endif class="form-check-input questions"
-                                type="radio" name="particip_programas_transferencia_renda" id="familiaTransfRendaSim"
-                                value="true">
+                                <input @if (array_search(4, $editPermissions) === false) disabled @endif
+                                    @if ($beneficiaria->particip_programas_transferencia_renda) checked @endif class="form-check-input questions"
+                                    type="radio" name="particip_programas_transferencia_renda"
+                                    id="familiaTransfRendaSim" value="true">
                                 <label class="form-check-label lead" for="familiaTransfRendaSim">Sim</label>
                             </div>
                             <div class="form-check form-check-inline">
-                                <input
-                                    @if (array_search(4, $editPermissions) === false) @cannot('super-admin') disabled @endcannot
-                                    @if ($beneficiaria->status != 2) disabled @endif
-                                    @endif
-                                @if (!$beneficiaria->particip_programas_transferencia_renda) checked @endif class="form-check-input questions"
-                                type="radio" name="particip_programas_transferencia_renda" id="familiaTransfRendaNão"
-                                value="false">
+                                <input @if (array_search(4, $editPermissions) === false) disabled @endif
+                                    @if (!$beneficiaria->particip_programas_transferencia_renda) checked @endif class="form-check-input questions"
+                                    type="radio" name="particip_programas_transferencia_renda"
+                                    id="familiaTransfRendaNão" value="false">
                                 <label class="form-check-label lead" for="familiaTransfRendaNão">Não</label>
                             </div>
                         </div>
@@ -222,7 +202,7 @@
 
                 <div>
                     @if ($beneficiaria->status != 4)
-                        @can('super-admin')
+                        @can('give edit permissions')
                             <button type="button" id="allowChangeButton" class="btn btn-warning btn-lg"
                                 style="margin-right: 5px">Dar permissão para
                                 edições</button>
@@ -259,7 +239,7 @@
             </div>
         </div>
 
-        @can('super-admin')
+        @can('give edit permissions')
             <div class="modal fade" id="allowChange" tabindex="-1" aria-labelledby="allowChangeLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered modal-lg">
                     <div class="modal-content">

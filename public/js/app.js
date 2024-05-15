@@ -3278,6 +3278,9 @@ __webpack_require__(/*! ./user/checkPassword */ "./resources/js/user/checkPasswo
 if (window.location.href === "".concat("http://localhost:3000", "/restrito/cadastros/beneficiarias") || window.location.href.includes("/restrito/cadastros/beneficiarias/fitro/") || window.location.href === "".concat("http://localhost:3000", "/restrito/cadastros/beneficiarias/filter")) {
   __webpack_require__(/*! ./cadastros/pesquisa */ "./resources/js/cadastros/pesquisa.js");
 }
+if (window.location.href === "".concat("http://localhost:3000", "/restrito/lista")) {
+  __webpack_require__(/*! ./cadastros/list */ "./resources/js/cadastros/list.js");
+}
 if (window.location.href === "".concat("http://localhost:3000", "/restrito/cadastros/beneficiarias/dados-new")) {
   __webpack_require__(/*! ./cadastros/confirmacao */ "./resources/js/cadastros/confirmacao.js");
 }
@@ -3378,6 +3381,59 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(function () {
 
 /***/ }),
 
+/***/ "./resources/js/cadastros/list.js":
+/*!****************************************!*\
+  !*** ./resources/js/cadastros/list.js ***!
+  \****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _assets_axiosInstance__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../assets/axiosInstance */ "./resources/js/assets/axiosInstance.js");
+/* harmony import */ var bootstrap__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! bootstrap */ "./node_modules/bootstrap/dist/js/bootstrap.esm.js");
+/* harmony import */ var datatables_net_bs5__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! datatables.net-bs5 */ "./node_modules/datatables.net-bs5/js/dataTables.bootstrap5.mjs");
+/* harmony import */ var _assets_pt_BR_json__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../assets/pt-BR.json */ "./resources/js/assets/pt-BR.json");
+
+
+
+
+
+jquery__WEBPACK_IMPORTED_MODULE_0___default()(function () {
+  var table = new datatables_net_bs5__WEBPACK_IMPORTED_MODULE_3__["default"]("#beneficiarias-table", {
+    language: _assets_pt_BR_json__WEBPACK_IMPORTED_MODULE_4__,
+    searching: true,
+    // Disable search input
+    lengthChange: false,
+    order: [[0, "asc"]]
+  });
+  jquery__WEBPACK_IMPORTED_MODULE_0___default()("#searchBeneficiaria").on("input", function () {
+    // Get value of search input
+    var searchValue = jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).val();
+
+    // Use DataTables API to search DataTable
+    table.search(searchValue).draw();
+  });
+  jquery__WEBPACK_IMPORTED_MODULE_0___default()(".row-table-pesquisa").on("click", function (e) {
+    window.location.href = "".concat("http://localhost:3000", "/restrito/cadastros/beneficiarias/view/").concat(jquery__WEBPACK_IMPORTED_MODULE_0___default()(e.currentTarget).attr("name"));
+  });
+  var buttonApprove = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#approve-list-btn").get(0);
+  if (buttonApprove) {
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()(buttonApprove).on("click", function () {
+      var modal = new bootstrap__WEBPACK_IMPORTED_MODULE_2__.Modal("#approveList");
+      modal.show();
+    });
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()("#send-approve").on("click", function () {
+      _assets_axiosInstance__WEBPACK_IMPORTED_MODULE_1__["default"].get("/restrito/lista/approve").then(function () {
+        window.location.reload();
+      });
+    });
+  }
+});
+
+/***/ }),
+
 /***/ "./resources/js/cadastros/pesquisa.js":
 /*!********************************************!*\
   !*** ./resources/js/cadastros/pesquisa.js ***!
@@ -3432,7 +3488,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(function () {
     searching: true,
     // Disable search input
     lengthChange: false,
-    order: [[5, "asc"], [0, "asc"]]
+    order: [[0, "asc"]]
   });
   var newBenefSearch = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#search-value-new").get(0);
   var cpfIm = new (inputmask__WEBPACK_IMPORTED_MODULE_1___default())("999.999.999-99");
@@ -3523,6 +3579,18 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(function () {
     var formatoDesejado = dia + "/" + mes + "/" + ano + " " + hora + ":" + minutos;
     return formatoDesejado; // Saída: 14/03/2024 19:29
   };
+  var buttonApprove = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#approve-list-btn").get(0);
+  if (buttonApprove) {
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()(buttonApprove).on("click", function () {
+      var modal = new bootstrap__WEBPACK_IMPORTED_MODULE_3__.Modal("#approveList");
+      modal.show();
+    });
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()("#send-approve").on("click", function () {
+      _assets_axiosInstance__WEBPACK_IMPORTED_MODULE_2__["default"].get("/restrito/cadastros/beneficiarias/approve-list").then(function () {
+        window.location.reload();
+      });
+    });
+  }
 });
 
 /***/ }),

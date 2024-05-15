@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CadastrosController;
 use App\Http\Controllers\JudicializacaoController;
+use App\Http\Controllers\ListController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProtectedFilesController;
 use App\Http\Controllers\UserController;
@@ -27,6 +28,7 @@ Route::middleware("auth")->group(function () {
     Route::get("/restrito/cadastros/beneficiarias/fitro/{filtro}", [CadastrosController::class, "index"])->name("restrito.cadastros.beneficiarias.filtro");
     Route::post("/restrito/cadastros/beneficiarias/search-new", [CadastrosController::class, "searchNewBeneficiaria"]);
     Route::post("/restrito/cadastros/beneficiarias/filter", [CadastrosController::class, "filter"])->name("restrito.cadastros.beneficiarias.filter.form");
+    Route::get("/restrito/cadastros/beneficiarias/approve-list", [CadastrosController::class, "approveList"])->name("restrito.cadastros.beneficiarias.approve.list");
 
     Route::post("/restrito/cadastros/beneficiarias/dados-new", [CadastrosController::class, "create"])->name("restrito.form.new.beneficiaria");
     Route::post("/restrito/cadastros/beneficiarias/dados-new/submit", [CadastrosController::class, "store"])->name("restrito.benefiaria.store");
@@ -34,6 +36,9 @@ Route::middleware("auth")->group(function () {
     Route::post("/restrito/cadastros/beneficiarias/view/{idBeneficiaria}/{approve}", [CadastrosController::class, "approve"])->name("restrito.beneficiaria.approve");
     Route::post("/restrito/cadastros/beneficiarias/edit-permission/{idBeneficiaria}", [CadastrosController::class, "editPermission"])->name("restrito.beneficiaria.add.edit");
     Route::post("/restrito/cadastros/beneficiarias/view-edit/{idBeneficiaria}", [CadastrosController::class, "update"]);
+
+    Route::get("/restrito/lista", [ListController::class, "index"])->name("restrito.list");
+    Route::get("/restrito/lista/approve", [ListController::class, "approveList"])->name("restrito.list.approve");
 
     Route::get("/restrito/cadastros/judicializacoes", [JudicializacaoController::class, "index"])->name("restrito.judicializacoes");
     Route::get("/restrito/cadastros/judicializacoes/create", [JudicializacaoController::class, "create"])->name("restrito.judicializacoes.create");

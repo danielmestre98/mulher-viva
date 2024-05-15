@@ -5,7 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Beneficiarias;
 use App\Models\Drads;
 use App\Models\EditPermission;
+use App\Models\ListasBeneficiarias;
+use App\Models\StatusCodes;
 use App\Models\Municipio;
+use App\Models\Vagas;
+use Carbon\Carbon;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,29 +19,21 @@ use stdClass;
 
 class CadastrosController extends Controller
 {
-    function index($filtro = "")
+    function index()
     {
         $dados = [];
-        if ($filtro != "") {
-            if (Auth::user()->can("view beneficiarias")) {
-                $drads = Drads::orderBy("nome", "ASC")->get();
-                $municipios = Municipio::orderBy("nome", "ASC")->get();
-                $dados = Beneficiarias::where('status', $filtro)->get();
-                return view("cadastros.index", ["beneficiarias" => $dados, "drads" => $drads, "municipios" => $municipios, "filtro" => $filtro]);
-            } else {
-                $dados = Beneficiarias::where('status', $filtro)->where('municipio', Auth::user()->municipio)->get();
-            }
+        $status = StatusCodes::all();
+
+        if (Auth::user()->can("view beneficiarias")) {
+            $drads = Drads::orderBy("nome", "ASC")->get();
+            $municipios = Municipio::orderBy("nome", "ASC")->get();
+            $dados = Beneficiarias::all();
+            return view("cadastros.index", ["beneficiarias" => $dados, "drads" => $drads, "municipios" => $municipios, "status" => $status]);
         } else {
-            if (Auth::user()->can("view beneficiarias")) {
-                $dados = Beneficiarias::all();
-                $drads = Drads::orderBy("nome", "ASC")->get();
-                $municipios = Municipio::orderBy("nome", "ASC")->get();
-                return view("cadastros.index", ["beneficiarias" => $dados, "drads" => $drads, "municipios" => $municipios, "filtro" => $filtro]);
-            } else {
-                $dados = Beneficiarias::where('municipio', Auth::user()->municipio)->get();
-            }
+            $dados = Beneficiarias::where('municipio', Auth::user()->municipio)->orderBy("pontuacao", "desc")->get();
         }
-        return view("cadastros.index", ["beneficiarias" => $dados, "filtro" => $filtro]);
+
+        return view("cadastros.index", ["beneficiarias" => $dados, "status" => $status]);
     }
 
     function filter(Request $request)
@@ -45,16 +41,24 @@ class CadastrosController extends Controller
 
         $drads = Drads::orderBy("nome", "ASC")->get();
         $municipios = Municipio::orderBy("nome", "ASC")->get();
+        $status = StatusCodes::all();
 
-        if (!$request->drads_filtro && !$request->municipio_filtro) {
-            $beneficiarias = isset($request->filtro) ? Beneficiarias::where("status", $request->filtro)->get() :
-                Beneficiarias::all();
+        if (!$request->drads_filtro && !$request->municipio_filtro && !$request->status_filtro) {
+            $beneficiarias = Beneficiarias::all();
         } else {
-            $municipio = Municipio::where("drads_id", $request->drads_filtro)->orWhere("id", $request->municipio_filtro)->pluck("id");
-            $beneficiarias = isset($request->filtro) ? Beneficiarias::where("status", $request->filtro)->whereIn("municipio", $municipio)->get() :
-                Beneficiarias::whereIn("municipio", $municipio)->get();
+            $beneficiarias = Beneficiarias::query();
+            if ($request->status_filtro) {
+                $beneficiarias->where("status", $request->status_filtro);
+            }
+
+            if ($request->drads_filtro || $request->municipio_filtro) {
+
+                $municipio = Municipio::where("drads_id", $request->drads_filtro)->orWhere("id", $request->municipio_filtro)->pluck("id");
+                $beneficiarias->whereIn("municipio", $municipio);
+            }
+            $beneficiarias =  $beneficiarias->get();
         }
-        return view("cadastros.index", ["beneficiarias" => $beneficiarias, "filtro" => $request->filtro, "drads" => $drads, "municipios" => $municipios, "filtros_default" => ["drads" => $request->drads_filtro, "municipio" => $request->municipio_filtro]]);
+        return view("cadastros.index", ["beneficiarias" => $beneficiarias, "filtro" => $request->filtro, "drads" => $drads, "status" => $status, "municipios" => $municipios, "filtros_default" => ["drads" => $request->drads_filtro, "municipio" => $request->municipio_filtro, "status" => $request->status_filtro]]);
     }
 
     function view($idBeneficiaria)
@@ -183,21 +187,6 @@ class CadastrosController extends Controller
         return redirect()->route("restrito.cadastros.beneficiarias");
     }
 
-    function approve(Request $request, $id, $option)
-    {
-        if ($option == 1) {
-            $beneficiaria = Beneficiarias::find($id);
-            $beneficiaria->status = 1;
-            $beneficiaria->save();
-        } else {
-            $beneficiaria = Beneficiarias::find($id);
-            $beneficiaria->status = 3;
-            $beneficiaria->motivo_recusa = $request->motivo_recusa;
-            $beneficiaria->save();
-        }
-        return redirect()->route("restrito.cadastros.filtro.aprovado");
-    }
-
     function editPermission(Request $request, $idBeneficiaria)
     {
         $permissions = $request->except("_token");
@@ -232,6 +221,7 @@ class CadastrosController extends Controller
         $pontuacaoNova = Beneficiarias::calcularPontuacao($beneficiaria);
         $beneficiaria->pontuacao = $pontuacaoNova;
         $beneficiaria->save();
+        Beneficiarias::verificarPosicoes($beneficiaria->municipio);
 
 
         EditPermission::where("beneficiaria", $idBeneficiaria)->update(["used" => true]);

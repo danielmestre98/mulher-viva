@@ -22,6 +22,10 @@ if (
 ) {
     require("./cadastros/pesquisa");
 }
+if (window.location.href === `${process.env.APP_URL}/restrito/lista`) {
+    require("./cadastros/list");
+}
+
 if (
     window.location.href ===
     `${process.env.APP_URL}/restrito/cadastros/beneficiarias/dados-new`
