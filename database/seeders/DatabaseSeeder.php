@@ -7,6 +7,7 @@ namespace Database\Seeders;
 use App\Models\Drads;
 use App\Models\Municipio;
 use App\Models\StatusCodes;
+use App\Models\Vagas;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
@@ -83,5 +84,9 @@ class DatabaseSeeder extends Seeder
         StatusCodes::create([
             "name" => "Excluída",
         ]);
+
+        for ($i = 0; $i < 645; $i++) {
+            Vagas::create(["municipio" => $i + 1]);
+        }
     }
 }
