@@ -13,7 +13,7 @@
 
             </div>
             <div class="col-2">
-                @if (!$approved)
+                @if (!$approved && count($beneficiarias) > 0)
                     <button style="width: 100%" class="btn btn-success" id="approve-list-btn">Aprovar Lista</button>
                 @endif
             </div>
