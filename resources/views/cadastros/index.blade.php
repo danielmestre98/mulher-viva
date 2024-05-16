@@ -190,4 +190,39 @@
             </div>
         </div>
     </div>
+
+    @if (isset($action))
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // Select the element with id "action-text" and set its HTML content
+                var actionTextElement = document.getElementById('action-text');
+                actionTextElement.innerHTML = 'Beneficiária excluida com sucesso.';
+
+                // Select the element with class "alert" inside "#liveAlertPlaceholder"
+                var alertElement = document.querySelector('#liveAlertPlaceholder .alert');
+
+                // Fade in the alert element (display it with opacity transition)
+                alertElement.style.display = 'block';
+                alertElement.style.opacity = '1';
+
+                // Set a timeout to fade out the alert element after 5 seconds (5000 milliseconds)
+                setTimeout(function() {
+                    // Fade out the alert element (reduce opacity over time)
+                    var fadeOutInterval = setInterval(function() {
+                        // Get the current opacity of the alert element
+                        var currentOpacity = parseFloat(window.getComputedStyle(alertElement).opacity);
+
+                        // Reduce opacity gradually
+                        alertElement.style.opacity = (currentOpacity - 0.4).toFixed(2);
+
+                        // Stop fading out when opacity reaches 0
+                        if (currentOpacity <= 0) {
+                            clearInterval(fadeOutInterval);
+                            alertElement.style.display = 'none'; // Hide the element after fading out
+                        }
+                    }, 100); // Interval for fading out (100 milliseconds)
+                }, 5000); // Timeout duration (5000 milliseconds)
+            })
+        </script>
+    @endif
 @endsection

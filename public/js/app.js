@@ -3649,6 +3649,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(function () {
         console.log(inputs);
         _assets_axiosInstance__WEBPACK_IMPORTED_MODULE_4__["default"].post(action, inputs).then(function (_ref) {
           var data = _ref.data;
+          jquery__WEBPACK_IMPORTED_MODULE_0___default()("#action-text").html("Permissão concedida.");
           modalChange.hide();
           jquery__WEBPACK_IMPORTED_MODULE_0___default()("#liveAlertPlaceholder .alert").fadeIn();
           setTimeout(function () {
@@ -3673,6 +3674,30 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(function () {
       }).then(function () {
         window.location.reload();
       });
+    }
+  });
+  jquery__WEBPACK_IMPORTED_MODULE_0___default()("#delete-benef").on("click", function () {
+    var modal = new bootstrap__WEBPACK_IMPORTED_MODULE_1__.Modal("#confirmDelete");
+    modal.show();
+  });
+  jquery__WEBPACK_IMPORTED_MODULE_0___default()("#delete-form").validate({
+    rules: {
+      motivo_delete: {
+        required: true,
+        minlength: 10
+      }
+    },
+    submitHandler: function submitHandler(form) {
+      var motivo = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#motivo_delete").val();
+      var route = jquery__WEBPACK_IMPORTED_MODULE_0___default()(form).attr("action");
+      _assets_axiosInstance__WEBPACK_IMPORTED_MODULE_4__["default"]["delete"](route, {
+        data: {
+          motivo: motivo
+        }
+      }).then(function () {
+        window.location.href = "".concat("http://localhost:3000", "/restrito/cadastros/beneficiarias?action=success");
+      });
+      console.log(route);
     }
   });
 });

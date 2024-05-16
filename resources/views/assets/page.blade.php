@@ -20,7 +20,9 @@
     </div>
     <div id="liveAlertPlaceholder">
         <div style="display: none" class="alert alert-success alert-dismissible fade show" role="alert">
-            Permissão concedida.
+            <p class="mb-0" id="action-text">
+
+            </p>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     </div>

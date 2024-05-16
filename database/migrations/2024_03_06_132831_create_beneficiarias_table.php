@@ -30,6 +30,7 @@ return new class extends Migration
             $table->integer('pontuacao');
             $table->integer("status");
             $table->integer("posicao")->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

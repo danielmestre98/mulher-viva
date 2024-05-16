@@ -36,6 +36,7 @@ Route::middleware("auth")->group(function () {
     Route::post("/restrito/cadastros/beneficiarias/view/{idBeneficiaria}/{approve}", [CadastrosController::class, "approve"])->name("restrito.beneficiaria.approve");
     Route::post("/restrito/cadastros/beneficiarias/edit-permission/{idBeneficiaria}", [CadastrosController::class, "editPermission"])->name("restrito.beneficiaria.add.edit");
     Route::post("/restrito/cadastros/beneficiarias/view-edit/{idBeneficiaria}", [CadastrosController::class, "update"]);
+    Route::delete("/restrito/cadastros/beneficiarias/{idBeneficiaria}", [CadastrosController::class, "destroy"])->name("restrito.beneficiaria.delete");
 
     Route::get("/restrito/lista", [ListController::class, "index"])->name("restrito.list");
     Route::get("/restrito/lista/approve", [ListController::class, "approveList"])->name("restrito.list.approve");

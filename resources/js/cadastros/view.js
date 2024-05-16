@@ -42,6 +42,7 @@ $(() => {
                     });
                 console.log(inputs);
                 axios.post(action, inputs).then(({ data }) => {
+                    $("#action-text").html("Permissão concedida.");
                     modalChange.hide();
                     $("#liveAlertPlaceholder .alert").fadeIn();
                     setTimeout(function () {
@@ -76,6 +77,32 @@ $(() => {
                 .then(() => {
                     window.location.reload();
                 });
+        },
+    });
+
+    $("#delete-benef").on("click", function () {
+        const modal = new Modal("#confirmDelete");
+        modal.show();
+    });
+
+    $("#delete-form").validate({
+        rules: {
+            motivo_delete: {
+                required: true,
+                minlength: 10,
+            },
+        },
+        submitHandler: (form) => {
+            const motivo = $("#motivo_delete").val();
+            const route = $(form).attr("action");
+            axios
+                .delete(route, {
+                    data: { motivo: motivo },
+                })
+                .then(() => {
+                    window.location.href = `${process.env.APP_URL}/restrito/cadastros/beneficiarias?action=success`;
+                });
+            console.log(route);
         },
     });
 });

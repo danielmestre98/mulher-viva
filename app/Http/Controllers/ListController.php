@@ -31,8 +31,13 @@ class ListController extends Controller
         $beneficiarias = Beneficiarias::whereIn("status", [5, 6])->where("municipio", $municipio)->orderBy("posicao", "ASC")->get();
         $vagas = Vagas::where("municipio", $municipio)->pluck("quantidade");
         $selecionadas = new Collection();
+        // dd(count($jaAprovadas));
+        if (empty($jaAprovadas) && empty($beneficiarias)) {
+            return view("cadastros.lista", ["beneficiarias" => [], "mesReferencia" => $mesReferenciaDisplay, "approved" => false]);
+        }
         for ($i = 0; $i < $vagas[0] - count($jaAprovadas) ?? 0; $i++) {
-            $selecionadas->add($beneficiarias[$i]);
+            if (isset($beneficiarias[$i]))
+                $selecionadas->add($beneficiarias[$i]);
         }
         $listaCompleta = $selecionadas->merge($jaAprovadas);
         return view("cadastros.lista", ["beneficiarias" => $listaCompleta, "mesReferencia" => $mesReferenciaDisplay, "approved" => $alreadyApproved]);

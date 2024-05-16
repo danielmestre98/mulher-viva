@@ -2,7 +2,10 @@
 
 @section('content')
     <div class="container">
-        <h4 class="display-4 pt-4">Informações da beneficiária</h4>
+        <h4 class="display-4 pt-4 d-flex justify-content-between">
+            <p class="mb-0"> Informações da beneficiária</p>
+            <button id="delete-benef" class="btn btn-danger btn-lg"><i class="fa-solid fa-trash-can fa-2x"></i></button>
+        </h4>
         <hr>
         <form action="#" method="put" id="edit-benef">
             @csrf
@@ -319,27 +322,27 @@
             </div>
         @endcan
 
-        <div class="modal fade" id="confirmDeny" tabindex="-1" aria-labelledby="confirmDenyLabel" aria-hidden="true">
+        <div class="modal fade" id="confirmDelete" tabindex="-1" aria-labelledby="confirmDeleteLabel"
+            aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="confirmDenyLabel">Confirmação</h1>
+                        <h1 class="modal-title fs-5" id="confirmDeleteLabel">Confirmação</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <form id="deny-form" method="POST"
-                        action="{{ route('restrito.beneficiaria.approve', [$beneficiaria->id, 0]) }}">
+                    <form id="delete-form" action="{{ route('restrito.beneficiaria.delete', [$beneficiaria->id]) }}">
                         @csrf
                         <div class="modal-body">
-                            <p class="lead text-center">Tem certeza que deseja reprovar essa solicitação?</p>
+                            <p class="lead text-center">Tem certeza que deletar essa beneficiária?</p>
                             <div class="form-group">
-                                <label for="motivo_recusa">Motivo</label>
-                                <textarea class="form-control" id="motivo_recusa" name="motivo_recusa" rows="3"></textarea>
+                                <label for="motivo_delete">Motivo</label>
+                                <textarea class="form-control" id="motivo_delete" name="motivo_delete" rows="3"></textarea>
                             </div>
                         </div>
 
                         <div class="modal-footer">
-                            <button type="button" data-bs-dismiss="modal" class="btn btn-danger">Não</button>
-                            <button type="submit" class="btn btn-success">Sim</button>
+                            <button type="button" data-bs-dismiss="modal" class="btn btn-secondary">Não</button>
+                            <button type="submit" class="btn btn-danger">Sim</button>
                         </div>
 
                     </form>

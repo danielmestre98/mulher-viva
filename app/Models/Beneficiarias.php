@@ -6,11 +6,13 @@ use DateTime;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 
 class Beneficiarias extends Model
 {
     use HasFactory;
+    use SoftDeletes;
     protected static $salarioMinimo =  1412;
     protected $fillable = [
         'nome',

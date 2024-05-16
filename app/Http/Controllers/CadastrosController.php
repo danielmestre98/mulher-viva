@@ -19,18 +19,23 @@ use stdClass;
 
 class CadastrosController extends Controller
 {
-    function index()
+    function index(Request $request)
     {
         $dados = [];
         $status = StatusCodes::all();
+        $action = $request->get('action');
 
         if (Auth::user()->can("view beneficiarias")) {
             $drads = Drads::orderBy("nome", "ASC")->get();
             $municipios = Municipio::orderBy("nome", "ASC")->get();
-            $dados = Beneficiarias::all();
+            $dados = Beneficiarias::where("status", "!=", 7)->get();
             return view("cadastros.index", ["beneficiarias" => $dados, "drads" => $drads, "municipios" => $municipios, "status" => $status]);
         } else {
-            $dados = Beneficiarias::where('municipio', Auth::user()->municipio)->orderBy("pontuacao", "desc")->get();
+            $dados = Beneficiarias::where('municipio', Auth::user()->municipio)->where("status", "!=", 7)->orderBy("pontuacao", "desc")->get();
+        }
+
+        if ($action == "success") {
+            return view("cadastros.index", ["beneficiarias" => $dados, "status" => $status, "action" => "success"]);
         }
 
         return view("cadastros.index", ["beneficiarias" => $dados, "status" => $status]);
@@ -225,5 +230,25 @@ class CadastrosController extends Controller
 
 
         EditPermission::where("beneficiaria", $idBeneficiaria)->update(["used" => true]);
+    }
+
+    function destroy(Request $request, $idBeneficiaria)
+    {
+        $beneficiaria = Beneficiarias::find($idBeneficiaria);
+        $mesReferencia = Carbon::now();
+        //data de fechamento do sistema MUDAR EM CASO DE DATA DIFERENTE
+        if (date("d") > 15) {
+            $mesReferencia = $mesReferencia->addMonth();
+        }
+        $mesReferencia = $mesReferencia->format("Y-m");
+        $lista = ListasBeneficiarias::where("municipio", $beneficiaria->municipio)->where("mes_referencia", $mesReferencia)->first();
+        $beneficiaria->status = 7;
+        $beneficiaria->motivo_recusa = $request->motivo;
+        $beneficiaria->save();
+        if (!empty($lista)) {
+            Beneficiarias::verificarPosicoes($beneficiaria->municipio);
+        }
+        // $beneficiaria->delete();
+        return true;
     }
 }
