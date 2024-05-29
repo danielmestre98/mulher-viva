@@ -3342,6 +3342,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var jquery_validation__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! jquery-validation */ "./node_modules/jquery-validation/dist/jquery.validate.js");
 /* harmony import */ var jquery_validation__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(jquery_validation__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var _assets_validation_defaults__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../assets/validation-defaults */ "./resources/js/assets/validation-defaults.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! axios */ "./node_modules/axios/lib/axios.js");
+
 
 
 
@@ -3353,8 +3355,28 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(function () {
   cpfIm.mask("#cpf");
   // $("#nis").
 
+  axios__WEBPACK_IMPORTED_MODULE_4__["default"].get("https://brasilapi.com.br/api/banks/v1").then(function (_ref) {
+    var data = _ref.data;
+    data.forEach(function (element) {
+      if (element.code) {
+        jquery__WEBPACK_IMPORTED_MODULE_0___default()("#banco").append("<option value=\"".concat(element.code, "\">").concat(element.fullName, "</option>"));
+      }
+    });
+  });
   jquery__WEBPACK_IMPORTED_MODULE_0___default()("#submit-benef").validate({
     rules: {
+      banco: {
+        required: true
+      },
+      agencia: {
+        required: true
+      },
+      conta: {
+        required: true
+      },
+      tipo_conta: {
+        required: true
+      },
       criancaAbrig: {
         required: true
       },
@@ -3699,6 +3721,10 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(function () {
       });
       console.log(route);
     }
+  });
+  _assets_axiosInstance__WEBPACK_IMPORTED_MODULE_4__["default"].get("https://brasilapi.com.br/api/banks/v1/" + jquery__WEBPACK_IMPORTED_MODULE_0___default()("#banco").val()).then(function (_ref2) {
+    var data = _ref2.data;
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()("#banco").val(data.name);
   });
 });
 

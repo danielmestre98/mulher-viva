@@ -31,24 +31,76 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label for="nascimento">Data de nascimento</label>
                                 <input readonly type="text" class="form-control" id="nascimento" name="nascimento"
                                     value="{{ date('d/m/Y', strtotime($beneficiaria->nascimento)) }}">
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label for="cpf">CPF</label>
                                 <input readonly type="text" class="form-control" id="cpf" name="cpf"
                                     value="{{ substr($beneficiaria->cpf, 0, 3) . '.' . substr($beneficiaria->cpf, 3, 3) . '.' . substr($beneficiaria->cpf, 6, 3) . '-' . substr($beneficiaria->cpf, 9, 2) }}">
                             </div>
                         </div>
+                        <div class="col-md-2">
+                            <label for="tipo_telefone">Tipo Telefone</label>
+                            <input readonly type="text" class="form-control" id="tipo_telefone" name="tipo_telefone"
+                                value="@if ($beneficiaria->tipo_telefone == 'RES') Residencial @elseif($beneficiaria->tipo_telefone == 'CEL')Celular @elseif($beneficiaria->tipo_telefone == 'COM')Comercial @endif ">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="telefone">Telefone</label>
+                            <input readonly type="text" class="form-control" id="telefone" name="telefone"
+                                value="{{ $beneficiaria->telefone }}">
+                        </div>
                     </div>
                 </div>
             </div>
             @if ($beneficiaria->status != 4)
+                <div class="card mt-3">
+                    <div class="card-header form-card-header">
+                        <i class="fa-solid fa-dollar-sign"></i> Dados bancários
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <label for="banco"><span class="red">*</span> Banco</label>
+                                    <input readonly type="text" class="form-control" id="banco"
+                                        value="{{ $beneficiaria->banco }}" name="banco">
+                                </div>
+                                <div class="col-md-2">
+                                    <label for="tipo_conta"><span class="red">*</span> Tipo conta</label>
+                                    <input readonly type="text" value="{{ $beneficiaria->tipo_conta }}"
+                                        class="form-control">
+                                </div>
+                                <div class="col-md-2">
+                                    <label for="agencia"><span class="red">*</span> Agência</label>
+                                    <input readonly type="text" value="{{ $beneficiaria->agencia }}" class="form-control"
+                                        id="agencia" name="agencia">
+                                </div>
+                                <div class="col-md-2">
+                                    <label for="conta"><span class="red">*</span> Conta</label>
+                                    <input readonly type="text" value="{{ $beneficiaria->conta }}" class="form-control"
+                                        id="conta" name="conta">
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-check" style="margin-top: 30px">
+                                        <input disabled @if ($beneficiaria->pix) checked @endif
+                                            class="form-check-input" type="checkbox" value="1" name="pix"
+                                            id="pix">
+                                        <label class="form-check-label" for="pix">
+                                            Possuí chave pix? (CPF)
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="card mt-3">
                     <div class="card-header form-card-header">
                         <div>
@@ -89,21 +141,22 @@
                             <div class="form-check form-check-inline">
                                 <input @if (array_search(2, $editPermissions) === false) disabled @endif
                                     @if ($beneficiaria->presenca_adolec_medida_socio_educativa) checked @endif class="form-check-input questions"
-                                    type="radio" name="presenca_adolec_medida_socio_educativa" id="adolecMedidaSocioSim"
-                                    value="true">
+                                    type="radio" name="presenca_adolec_medida_socio_educativa"
+                                    id="adolecMedidaSocioSim" value="true">
                                 <label class="form-check-label lead" for="adolecMedidaSocioSim">Sim</label>
                             </div>
                             <div class="form-check form-check-inline">
                                 <input @if (array_search(2, $editPermissions) === false) disabled @endif
                                     @if (!$beneficiaria->presenca_adolec_medida_socio_educativa) checked @endif class="form-check-input questions"
-                                    type="radio" name="presenca_adolec_medida_socio_educativa" id="adolecMedidaSocioNão"
-                                    value="false">
+                                    type="radio" name="presenca_adolec_medida_socio_educativa"
+                                    id="adolecMedidaSocioNão" value="false">
                                 <label class="form-check-label lead" for="adolecMedidaSocioNão">Não</label>
                             </div>
                         </div>
 
 
-                        <h5 class="mt-2 mb-1"><span class="red">*</span>3 - MULHER BENEFICIÁRIA QUE ESTÁ EM CONDIÇÕES DE
+                        <h5 class="mt-2 mb-1"><span class="red">*</span>3 - MULHER BENEFICIÁRIA QUE ESTÁ EM CONDIÇÕES
+                            DE
                             INICIAR
                             O
                             PROCESSO DE DESACOLHIMENTO

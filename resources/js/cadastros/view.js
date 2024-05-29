@@ -105,4 +105,10 @@ $(() => {
             console.log(route);
         },
     });
+
+    axios
+        .get("https://brasilapi.com.br/api/banks/v1/" + $("#banco").val())
+        .then(({ data }) => {
+            $("#banco").val(data.name);
+        });
 });

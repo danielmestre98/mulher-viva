@@ -28,23 +28,82 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label for="nascimento">Data de nascimento</label>
                                 <input readonly type="text" class="form-control" id="nascimento" name="nascimento"
                                     value="{{ $dados['nascimento'] }}">
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label for="cpf">CPF</label>
                                 <input readonly type="text" class="form-control" id="cpf" name="cpf"
                                     value="{{ $dados['cpf'] }}">
                             </div>
                         </div>
+                        <div class="col-md-2">
+                            <label for="tipo_telefone"><span class="red">*</span> Tipo Telefone</label>
+                            <select class="form-select" id="tipo_telefone" name="tipo_telefone">
+                                <option value="">Selecione...</option>
+                                <option @if ($dados['tipo_telefone'] == 'RES') selected @endif value="RES">Residencial
+                                </option>
+                                <option @if ($dados['tipo_telefone'] == 'COM') selected @endif value="COM">Comercial</option>
+                                <option @if ($dados['tipo_telefone'] == 'CEL') selected @endif value="CEL">Celular</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="telefone"><span class="red">*</span> Telefone</label>
+                            <input type="text" class="form-control" id="telefone" name="telefone"
+                                value="{{ $dados['telefone'] }}">
+                        </div>
                     </div>
                 </div>
             </div>
+            <div class="card mt-3">
+                <div class="card-header form-card-header">
+                    <i class="fa-solid fa-dollar-sign"></i> Dados bancários
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="row">
+                            <div class="col-md-2">
+                                <label for="banco"><span class="red">*</span> Banco</label>
+                                <select name="banco" id="banco" class="form-select">
+                                    <option value="">Selecione...</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <label for="tipo_conta"><span class="red">*</span> Tipo conta</label>
+                                <select class="form-select" name="tipo_conta" id="tipo_conta">
+                                    <option value="">Selecione...</option>
+                                    <option value="Conta Corrente">Conta Corrente</option>
+                                    <option value="Poupança">Poupança</option>
+                                    <option value="Conta Salário">Conta Salário</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <label for="agencia"><span class="red">*</span> Agência</label>
+                                <input type="text" class="form-control" id="agencia" name="agencia">
+                            </div>
+                            <div class="col-md-2">
+                                <label for="conta"><span class="red">*</span> Conta</label>
+                                <input type="text" class="form-control" id="conta" name="conta">
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-check" style="margin-top: 30px">
+                                    <input class="form-check-input" type="checkbox" value="1" name="pix"
+                                        id="pix">
+                                    <label class="form-check-label" for="pix">
+                                        Possuí chave pix? (CPF)
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="card mt-3">
                 <div class="card-header form-card-header">
                     <i class="fa-solid fa-question fa-lg"></i> Questionário
@@ -68,7 +127,8 @@
                         </div>
                     </div>
 
-                    <h5 class="mt-2 mb-1"><span class="red">*</span>2 - EXISTE PRESENÇA NO NÚCLEO FAMILIAR DE ADOLESCENTE
+                    <h5 class="mt-2 mb-1"><span class="red">*</span>2 - EXISTE PRESENÇA NO NÚCLEO FAMILIAR DE
+                        ADOLESCENTE
                         EM
                         SITUAÇÃO DE CUMPRIMENTO DE
                         MEDIDA SÓCIO EDUCATIVA NA MODALIDADE INTERNAÇÃO?

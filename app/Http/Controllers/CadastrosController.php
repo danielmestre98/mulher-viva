@@ -176,7 +176,12 @@ class CadastrosController extends Controller
     function store(Request $request)
     {
         $dadosCadastroUnico = json_decode($request->jsonDados);
+        $dadosCadastroUnico->tipo_conta = $request->tipo_conta;
+        $dadosCadastroUnico->banco = $request->banco;
         $dadosCadastroUnico->presenca_jovem_sit_abrigamento = json_decode($request->criancaAbrig);
+        $dadosCadastroUnico->agencia = $request->agencia;
+        $dadosCadastroUnico->conta = $request->conta;
+        $dadosCadastroUnico->pix = json_decode($request->pix);
         $dadosCadastroUnico->presenca_adolec_medida_socio_educativa = json_decode($request->adolecMedidaSocio);
         $dadosCadastroUnico->inic_serv_acolh_institucional = json_decode($request->mulherCondDesacolh);
         $dadosCadastroUnico->particip_programas_transferencia_renda = json_decode($request->familiaTransfRenda);
@@ -185,7 +190,6 @@ class CadastrosController extends Controller
         $date = DateTime::createFromFormat('d/m/Y', $dadosCadastroUnico->nascimento);
         $dadosCadastroUnico->nascimento = $date->format('Y-m-d');
         $beneficiaria =  Beneficiarias::create(json_decode(json_encode($dadosCadastroUnico), true));
-        // dd($request);
         $request->file('anexoMedidaProt')->storeAs("uploads/" . $beneficiaria->id, "medidaProtetiva." . $request->file('anexoMedidaProt')->getClientOriginalExtension(), "public");
         $request->file('anexoExamePsico')->storeAs("uploads/" . $beneficiaria->id, "examePsicosocial." . $request->file('anexoExamePsico')->getClientOriginalExtension(), "public");
         Beneficiarias::verificarPosicoes($beneficiaria->municipio);

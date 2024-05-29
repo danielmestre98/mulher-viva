@@ -2,6 +2,7 @@ import $ from "jquery";
 import Inputmask from "inputmask";
 import "jquery-validation";
 import "../assets/validation-defaults";
+import axios from "axios";
 
 $(() => {
     var cpfIm = new Inputmask("999.999.999-99");
@@ -10,8 +11,30 @@ $(() => {
     cpfIm.mask("#cpf");
     // $("#nis").
 
+    axios.get("https://brasilapi.com.br/api/banks/v1").then(({ data }) => {
+        data.forEach((element) => {
+            if (element.code) {
+                $("#banco").append(
+                    `<option value="${element.code}">${element.fullName}</option>`
+                );
+            }
+        });
+    });
+
     $("#submit-benef").validate({
         rules: {
+            banco: {
+                required: true,
+            },
+            agencia: {
+                required: true,
+            },
+            conta: {
+                required: true,
+            },
+            tipo_conta: {
+                required: true,
+            },
             criancaAbrig: {
                 required: true,
             },
