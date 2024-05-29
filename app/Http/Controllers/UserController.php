@@ -46,10 +46,10 @@ class UserController extends Controller
         $user->cpf = str_replace("-", "",  str_replace(".", "",  $request->cpf));
         $user->municipio = $request->municipio;
         $user->email = $request->email;
-        $user->password = $request->password;
+        $user->password = str_replace("-", "",  str_replace(".", "",  $request->cpf));
         $user->save();
         $user->assignRole("municipio");
-        return redirect()->route("restrito.cadastros.beneficiarias");
+        return redirect()->route("restrito.usuarios");
     }
 
     function delete($userId)
