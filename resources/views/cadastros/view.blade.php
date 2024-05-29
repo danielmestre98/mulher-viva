@@ -67,22 +67,22 @@
                         <div class="row">
                             <div class="row">
                                 <div class="col-md-2">
-                                    <label for="banco"><span class="red">*</span> Banco</label>
+                                    <label for="banco"> Banco</label>
                                     <input readonly type="text" class="form-control" id="banco"
                                         value="{{ $beneficiaria->banco }}" name="banco">
                                 </div>
                                 <div class="col-md-2">
-                                    <label for="tipo_conta"><span class="red">*</span> Tipo conta</label>
+                                    <label for="tipo_conta"> Tipo conta</label>
                                     <input readonly type="text" value="{{ $beneficiaria->tipo_conta }}"
                                         class="form-control">
                                 </div>
                                 <div class="col-md-2">
-                                    <label for="agencia"><span class="red">*</span> Agência</label>
+                                    <label for="agencia"> Agência</label>
                                     <input readonly type="text" value="{{ $beneficiaria->agencia }}" class="form-control"
                                         id="agencia" name="agencia">
                                 </div>
                                 <div class="col-md-2">
-                                    <label for="conta"><span class="red">*</span> Conta</label>
+                                    <label for="conta"> Conta</label>
                                     <input readonly type="text" value="{{ $beneficiaria->conta }}" class="form-control"
                                         id="conta" name="conta">
                                 </div>

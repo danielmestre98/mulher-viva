@@ -23,18 +23,6 @@ $(() => {
 
     $("#submit-benef").validate({
         rules: {
-            banco: {
-                required: true,
-            },
-            agencia: {
-                required: true,
-            },
-            conta: {
-                required: true,
-            },
-            tipo_conta: {
-                required: true,
-            },
             criancaAbrig: {
                 required: true,
             },

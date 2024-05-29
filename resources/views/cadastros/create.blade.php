@@ -68,13 +68,13 @@
                     <div class="row">
                         <div class="row">
                             <div class="col-md-2">
-                                <label for="banco"><span class="red">*</span> Banco</label>
+                                <label for="banco"> Banco</label>
                                 <select name="banco" id="banco" class="form-select">
                                     <option value="">Selecione...</option>
                                 </select>
                             </div>
                             <div class="col-md-2">
-                                <label for="tipo_conta"><span class="red">*</span> Tipo conta</label>
+                                <label for="tipo_conta"> Tipo conta</label>
                                 <select class="form-select" name="tipo_conta" id="tipo_conta">
                                     <option value="">Selecione...</option>
                                     <option value="Conta Corrente">Conta Corrente</option>
@@ -83,11 +83,11 @@
                                 </select>
                             </div>
                             <div class="col-md-2">
-                                <label for="agencia"><span class="red">*</span> Agência</label>
+                                <label for="agencia"> Agência</label>
                                 <input type="text" class="form-control" id="agencia" name="agencia">
                             </div>
                             <div class="col-md-2">
-                                <label for="conta"><span class="red">*</span> Conta</label>
+                                <label for="conta"> Conta</label>
                                 <input type="text" class="form-control" id="conta" name="conta">
                             </div>
                             <div class="col-md-3">

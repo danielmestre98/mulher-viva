@@ -3365,18 +3365,6 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(function () {
   });
   jquery__WEBPACK_IMPORTED_MODULE_0___default()("#submit-benef").validate({
     rules: {
-      banco: {
-        required: true
-      },
-      agencia: {
-        required: true
-      },
-      conta: {
-        required: true
-      },
-      tipo_conta: {
-        required: true
-      },
       criancaAbrig: {
         required: true
       },
