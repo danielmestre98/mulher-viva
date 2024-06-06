@@ -58,7 +58,17 @@
             </div>
         @endcan
     </div>
-
+    @can('view all lists')
+        <div class="category-divider">Relatórios</div>
+        <div class="menu-group">
+            <div class="menu-item">
+                <a href="{{ route('restrito.lists') }}" class="menu-item-button">
+                    <span> <i class="fa-solid fa-list-check"></i>
+                        <span>Listas</span></span>
+                </a>
+            </div>
+        </div>
+    @endcan
     {{-- <div class="menu-item-dropdown">
             <button class="menu-item-button"><i class="fa-solid fa-user"></i> <span>Usuários</span> <i
                     class="fa-solid fa-chevron-right fa-sm"></i></button>
@@ -165,8 +175,8 @@
     </div>
 </div>
 @if (auth()->user()->reset_password == true)
-    <div class="modal fade" id="modalResetPassword" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-        aria-labelledby="modalResetPasswordLabel" aria-hidden="true">
+    <div class="modal fade" id="modalResetPassword" data-bs-backdrop="static" data-bs-keyboard="false"
+        tabindex="-1" aria-labelledby="modalResetPasswordLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">

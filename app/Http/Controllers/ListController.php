@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Beneficiarias;
+use App\Models\Drads;
 use App\Models\ListasBeneficiarias;
+use App\Models\Municipio;
 use App\Models\Vagas;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
@@ -41,6 +43,44 @@ class ListController extends Controller
         }
         $listaCompleta = $selecionadas->merge($jaAprovadas);
         return view("cadastros.lista", ["beneficiarias" => $listaCompleta, "mesReferencia" => $mesReferenciaDisplay, "approved" => $alreadyApproved]);
+    }
+
+    function listAll()
+    {
+        $drads = Drads::orderBy("nome", "ASC")->get();
+        $municipios = Municipio::orderBy("nome", "ASC")->get();
+        $mesesReferencia = ListasBeneficiarias::select("mes_referencia")->groupBy('mes_referencia')->get();
+        $lista = ListasBeneficiarias::all();
+        return view("cadastros.listas", ["referencias" => $mesesReferencia, "drads" => $drads, "municipios" => $municipios, "lista" => $lista]);
+    }
+
+    function listFilter(Request $request)
+    {
+        $drads = Drads::orderBy("nome", "ASC")->get();
+        $municipios = Municipio::orderBy("nome", "ASC")->get();
+        $mesesReferencia = ListasBeneficiarias::select("mes_referencia")->groupBy('mes_referencia')->get();
+        $listaBeneficiarias = ListasBeneficiarias::query();
+        if (!empty($request->municipio_filtro) || !empty($request->drads_filtro)) {
+            $municipio = Municipio::where("drads_id", $request->drads_filtro)->orWhere("id", $request->municipio_filtro)->pluck("id");
+            $listaBeneficiarias = $listaBeneficiarias->whereIn("municipio", $municipio);
+        }
+        if (!empty($request->mesReferencia)) {
+            $listaBeneficiarias = $listaBeneficiarias->where("mes_referencia", $request->mesReferencia);
+        }
+
+        $lista = $listaBeneficiarias->get();
+        return view("cadastros.listas", ["referencias" => $mesesReferencia, "drads" => $drads, "municipios" => $municipios, "lista" => $lista, "filtros" => [
+            "drads" => $request->drads_filtro,
+            "municipio" => $request->municipio_filtro,
+            "mesReferencia" => $request->mesReferencia,
+        ]]);
+    }
+
+    function getBeneficiarias($listId)
+    {
+        $lista = ListasBeneficiarias::with(["municipios", "users", "beneficiarias.statusCodes"])->find($listId);
+        $lista->beneficiarias;
+        return response()->json(["lista" => $lista]);
     }
 
     function approveList()

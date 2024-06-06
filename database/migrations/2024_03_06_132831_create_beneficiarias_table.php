@@ -31,7 +31,7 @@ return new class extends Migration
             $table->string('uf', 5)->nullable();
             $table->string('agencia', 20)->nullable();
             $table->string('conta', 20)->nullable();
-            $table->boolean('pix')->default(0);
+            $table->boolean('pix')->nullable();
             $table->string('tipo_conta', 20)->nullable();
             $table->string('banco', 20)->nullable();
             $table->string('sexo', 1)->nullable();

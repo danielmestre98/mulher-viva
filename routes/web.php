@@ -40,6 +40,10 @@ Route::middleware("auth")->group(function () {
 
     Route::get("/restrito/lista", [ListController::class, "index"])->name("restrito.list");
     Route::get("/restrito/lista/approve", [ListController::class, "approveList"])->name("restrito.list.approve");
+    Route::get("/restrito/listas", [ListController::class, "listAll"])->name("restrito.lists");
+    Route::post("/restrito/listas", [ListController::class, "listFilter"])->name("restrito.lists.filter");
+    Route::get("/restrito/listas/{listId}", [ListController::class, "getBeneficiarias"]);
+
 
     Route::get("/restrito/cadastros/judicializacoes", [JudicializacaoController::class, "index"])->name("restrito.judicializacoes");
     Route::get("/restrito/cadastros/judicializacoes/create", [JudicializacaoController::class, "create"])->name("restrito.judicializacoes.create");

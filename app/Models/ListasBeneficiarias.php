@@ -50,4 +50,14 @@ class ListasBeneficiarias extends Model
     {
         return $this->belongsToMany(Beneficiarias::class, 'lista_beneficiaria_relation', "listas", 'beneficiarias');
     }
+
+    public function municipios()
+    {
+        return $this->belongsTo(Municipio::class, "municipio", "id");
+    }
+
+    public function users()
+    {
+        return $this->belongsTo(User::class, "created_by", "id");
+    }
 }

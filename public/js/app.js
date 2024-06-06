@@ -3302,6 +3302,9 @@ if (window.location.href == "".concat("http://localhost:3000", "/restrito/cadast
 if (window.location.href == "".concat("http://localhost:3000", "/restrito/cadastros/judicializacoes/create")) {
   __webpack_require__(/*! ./judicializacao/create */ "./resources/js/judicializacao/create.js");
 }
+if (window.location.href == "".concat("http://localhost:3000", "/restrito/listas")) {
+  __webpack_require__(/*! ./cadastros/listAll */ "./resources/js/cadastros/listAll.js");
+}
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
@@ -3440,6 +3443,80 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(function () {
       });
     });
   }
+});
+
+/***/ }),
+
+/***/ "./resources/js/cadastros/listAll.js":
+/*!*******************************************!*\
+  !*** ./resources/js/cadastros/listAll.js ***!
+  \*******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _assets_axiosInstance__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../assets/axiosInstance */ "./resources/js/assets/axiosInstance.js");
+/* harmony import */ var bootstrap__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! bootstrap */ "./node_modules/bootstrap/dist/js/bootstrap.esm.js");
+/* harmony import */ var datatables_net_bs5__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! datatables.net-bs5 */ "./node_modules/datatables.net-bs5/js/dataTables.bootstrap5.mjs");
+/* harmony import */ var _assets_pt_BR_json__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../assets/pt-BR.json */ "./resources/js/assets/pt-BR.json");
+
+
+
+
+
+jquery__WEBPACK_IMPORTED_MODULE_0___default()(function () {
+  var formatDate = function formatDate(dateString) {
+    var date = new Date(dateString);
+    var day = String(date.getDate()).padStart(2, "0");
+    var month = String(date.getMonth() + 1).padStart(2, "0"); // Months are zero-based
+    var year = date.getFullYear();
+    var hours = String(date.getHours()).padStart(2, "0");
+    var minutes = String(date.getMinutes()).padStart(2, "0");
+    return "".concat(day, "/").concat(month, "/").concat(year, " ").concat(hours, ":").concat(minutes);
+  };
+  function formatCPF(cpf) {
+    // Remove any non-digit characters
+    cpf = cpf.replace(/\D/g, "");
+
+    // Apply the formatting
+    if (cpf.length === 11) {
+      return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
+    } else {
+      // Return the original input if it's not 11 digits long
+      return cpf;
+    }
+  }
+  var table = new datatables_net_bs5__WEBPACK_IMPORTED_MODULE_3__["default"]("#lista-table", {
+    language: _assets_pt_BR_json__WEBPACK_IMPORTED_MODULE_4__,
+    searching: true,
+    // Disable search input
+    lengthChange: false,
+    order: [[0, "desc"]]
+  });
+  jquery__WEBPACK_IMPORTED_MODULE_0___default()(".list-item").on("click", function (e) {
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()("#municipio-title").html("");
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()("#referencia-tile").html("");
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()("#data-aprovacao-title").html("");
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()("#created-by-title").html("");
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()("#lista-table-modal-benef tbody").html("");
+    var listId = jquery__WEBPACK_IMPORTED_MODULE_0___default()(e.currentTarget).attr("name");
+    console.log(listId);
+    var modal = new bootstrap__WEBPACK_IMPORTED_MODULE_2__.Modal("#modal-list");
+    _assets_axiosInstance__WEBPACK_IMPORTED_MODULE_1__["default"].get("".concat("http://localhost:3000", "/restrito/listas/").concat(listId)).then(function (_ref) {
+      var data = _ref.data;
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()("#municipio-title").html(data.lista.municipios.nome);
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()("#referencia-tile").html(data.lista.mes_referencia);
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()("#data-aprovacao-title").html(formatDate(data.lista.created_at));
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()("#created-by-title").html(data.lista.users.name);
+      data.lista.beneficiarias.forEach(function (item) {
+        console.log(item);
+        jquery__WEBPACK_IMPORTED_MODULE_0___default()("#lista-table-modal-benef tbody").append("\n                        <tr>\n                            <td>".concat(item.posicao, "</td>\n                            <td>").concat(item.nome, "</td>\n                            <td>").concat(formatCPF(item.cpf), "</td>\n                            <td>").concat(item.status_codes.name, "</td>\n                        </tr>\n                    "));
+      });
+    });
+    modal.show();
+  });
 });
 
 /***/ }),

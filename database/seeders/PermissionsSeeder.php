@@ -21,6 +21,7 @@ class PermissionsSeeder extends Seeder
         $viewBenef = Permission::create(['name' => 'view beneficiarias']);
         $viewMunicBenef = Permission::create(['name' => 'view municBeneficiarias']);
         $createBenef = Permission::create(['name' => 'create beneficiarias']);
+        $viewAllList = Permission::create(['name' => 'view all lists']);
         $approveList = Permission::create(['name' => 'approve list']);
         $cadOrdemJud = Permission::create(['name' => 'create ordemJud']);
         $giveEditPermissions = Permission::create(['name' => "give edit permissions"]);
@@ -37,7 +38,7 @@ class PermissionsSeeder extends Seeder
 
         $admin = Role::create(['name' => 'Super-Admin']);
         $adminCds = Role::create(['name' => 'Admin-CDS']);
-        $adminCds->givePermissionTo($viewBenef, $viewMunicBenef, $createBenef, $cadOrdemJud, $giveEditPermissions, $createUser, $editUser, $removeUser, $viewReports, $viewPontuacao, $judicializacao);
+        $adminCds->givePermissionTo($viewBenef, $viewMunicBenef, $createBenef, $cadOrdemJud, $giveEditPermissions, $createUser, $editUser, $removeUser, $viewReports, $viewPontuacao, $judicializacao, $viewAllList);
 
 
         $municipio = Role::create(['name' => 'municipio']);
