@@ -13,4 +13,9 @@ class Vagas extends Model
         'municipio',
         'vagas',
     ];
+
+    function municipios()
+    {
+        return $this->hasOne(Municipio::class, "id", "municipio");
+    }
 }

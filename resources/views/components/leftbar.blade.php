@@ -58,6 +58,18 @@
             </div>
         @endcan
     </div>
+    @can('transfer available')
+        <div class="category-divider">Operações</div>
+        <div class="menu-group">
+            <div class="menu-item">
+                <a href="{{ route('restrito.transferencia') }}" class="menu-item-button">
+                    <span> <i class="fa-solid fa-right-left"></i>
+                        <span>Transferência de vagas</span></span>
+                </a>
+            </div>
+        </div>
+    @endcan
+
     @can('view all lists')
         <div class="category-divider">Relatórios</div>
         <div class="menu-group">

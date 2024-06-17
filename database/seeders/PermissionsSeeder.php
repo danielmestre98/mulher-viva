@@ -33,12 +33,14 @@ class PermissionsSeeder extends Seeder
         $editUser = Permission::create(['name' => 'edit user']);
         $removeUser = Permission::create(['name' => 'remove user']);
 
+        $transferAvailableSpot = Permission::create(['name' => 'transfer available']);
+
         $viewReports = Permission::create(['name' => "view reports"]);
 
 
         $admin = Role::create(['name' => 'Super-Admin']);
         $adminCds = Role::create(['name' => 'Admin-CDS']);
-        $adminCds->givePermissionTo($viewBenef, $viewMunicBenef, $createBenef, $cadOrdemJud, $giveEditPermissions, $createUser, $editUser, $removeUser, $viewReports, $viewPontuacao, $judicializacao, $viewAllList);
+        $adminCds->givePermissionTo($viewBenef, $viewMunicBenef, $createBenef, $cadOrdemJud, $giveEditPermissions, $createUser, $editUser, $removeUser, $viewReports, $viewPontuacao, $judicializacao, $viewAllList, $transferAvailableSpot);
 
 
         $municipio = Role::create(['name' => 'municipio']);

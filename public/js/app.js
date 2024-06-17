@@ -3305,6 +3305,9 @@ if (window.location.href == "".concat("http://localhost:3000", "/restrito/cadast
 if (window.location.href == "".concat("http://localhost:3000", "/restrito/listas")) {
   __webpack_require__(/*! ./cadastros/listAll */ "./resources/js/cadastros/listAll.js");
 }
+if (window.location.href.includes("".concat("http://localhost:3000", "/restrito/operacoes/transferencia"))) {
+  __webpack_require__(/*! ./transferencia/vagas */ "./resources/js/transferencia/vagas.js");
+}
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
@@ -3980,6 +3983,136 @@ jquery__WEBPACK_IMPORTED_MODULE_2___default()(function () {
   //         },
   //     });
   // });
+});
+
+/***/ }),
+
+/***/ "./resources/js/transferencia/vagas.js":
+/*!*********************************************!*\
+  !*** ./resources/js/transferencia/vagas.js ***!
+  \*********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _assets_axiosInstance__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../assets/axiosInstance */ "./resources/js/assets/axiosInstance.js");
+/* harmony import */ var bootstrap__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! bootstrap */ "./node_modules/bootstrap/dist/js/bootstrap.esm.js");
+/* harmony import */ var datatables_net_bs5__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! datatables.net-bs5 */ "./node_modules/datatables.net-bs5/js/dataTables.bootstrap5.mjs");
+/* harmony import */ var _assets_pt_BR_json__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../assets/pt-BR.json */ "./resources/js/assets/pt-BR.json");
+
+
+
+
+
+jquery__WEBPACK_IMPORTED_MODULE_0___default()(function () {
+  var vagasTransferir = {};
+  var destino;
+  jquery__WEBPACK_IMPORTED_MODULE_0___default()(".options").on("click", ".plus:not(.disabled)", function (e) {
+    var totalSelected = parseInt(jquery__WEBPACK_IMPORTED_MODULE_0___default()("#total-selected").html());
+    var id = jquery__WEBPACK_IMPORTED_MODULE_0___default()(e.currentTarget).parent().parent().attr("id").replace("origem-", "");
+    var currentQuantity = parseInt(jquery__WEBPACK_IMPORTED_MODULE_0___default()(e.currentTarget).siblings(".quantity").html());
+    var name = jquery__WEBPACK_IMPORTED_MODULE_0___default()(e.currentTarget).parent().siblings().html();
+    var maxQuantity = parseInt(jquery__WEBPACK_IMPORTED_MODULE_0___default()(e.currentTarget).parent().siblings(".vagas-disp").html());
+    currentQuantity++;
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()(e.currentTarget).siblings(".quantity").html(currentQuantity);
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()(e.currentTarget).siblings(".minus").removeClass("disabled");
+    vagasTransferir[id] = {
+      qtd: currentQuantity,
+      name: name
+    };
+    if (currentQuantity == maxQuantity) {
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()(e.currentTarget).addClass("disabled");
+    }
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()("#total-selected").html(totalSelected + 1);
+  });
+  jquery__WEBPACK_IMPORTED_MODULE_0___default()(".options").on("click", ".minus:not(.disabled)", function (e) {
+    var totalSelected = parseInt(jquery__WEBPACK_IMPORTED_MODULE_0___default()("#total-selected").html());
+    var id = jquery__WEBPACK_IMPORTED_MODULE_0___default()(e.currentTarget).parent().parent().attr("id").replace("origem-", "");
+    var name = jquery__WEBPACK_IMPORTED_MODULE_0___default()(e.currentTarget).parent().siblings().html();
+    var currentQuantity = parseInt(jquery__WEBPACK_IMPORTED_MODULE_0___default()(e.currentTarget).siblings(".quantity").html());
+    currentQuantity--;
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()(e.currentTarget).siblings(".quantity").html(currentQuantity);
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()(e.currentTarget).siblings(".plus").removeClass("disabled");
+    vagasTransferir[id] = {
+      qtd: currentQuantity,
+      name: name
+    };
+    if (currentQuantity == 0) {
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()(e.currentTarget).addClass("disabled");
+      delete vagasTransferir[id];
+    }
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()("#total-selected").html(totalSelected - 1);
+  });
+  var tableOrigem = new datatables_net_bs5__WEBPACK_IMPORTED_MODULE_3__["default"]("#origem", {
+    language: _assets_pt_BR_json__WEBPACK_IMPORTED_MODULE_4__,
+    searching: true,
+    // Disable search input
+    lengthChange: false,
+    columnDefs: [{
+      targets: 2,
+      orderable: false,
+      searchable: false
+    }]
+  });
+  jquery__WEBPACK_IMPORTED_MODULE_0___default()("#searchOrigem").on("input", function () {
+    // Get value of search input
+    var searchValue = jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).val();
+
+    // Use DataTables API to search DataTable
+    tableOrigem.search(searchValue).draw();
+  });
+  var tableDestino = new datatables_net_bs5__WEBPACK_IMPORTED_MODULE_3__["default"]("#destino", {
+    language: _assets_pt_BR_json__WEBPACK_IMPORTED_MODULE_4__,
+    searching: true,
+    // Disable search input
+    lengthChange: false
+  });
+  jquery__WEBPACK_IMPORTED_MODULE_0___default()("#destino").on("click", "tbody tr", function (e) {
+    tableDestino.rows().nodes().each(function (node) {
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()(node).removeClass("selected");
+    });
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()(e.currentTarget).addClass("selected");
+  });
+  jquery__WEBPACK_IMPORTED_MODULE_0___default()("#searchDestino").on("input", function () {
+    // Get value of search input
+    var searchValue = jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).val();
+
+    // Use DataTables API to search DataTable
+    tableDestino.search(searchValue).draw();
+  });
+  jquery__WEBPACK_IMPORTED_MODULE_0___default()("#submit-transfer").on("click", function () {
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()("#origem-confirm ul").html("");
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()("#destino-confirm ul").html("");
+    var total = 0;
+    var modal = new bootstrap__WEBPACK_IMPORTED_MODULE_2__.Modal("#modalConfirmTransfer");
+    for (var key in vagasTransferir) {
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()("#origem-confirm ul").append("<li class=\"list-group-item\">".concat(vagasTransferir[key].name, ": ").concat(vagasTransferir[key].qtd, "</li>"));
+      total += vagasTransferir[key].qtd;
+    }
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()("#origem-confirm ul").append("<li class=\"list-group-item\"><b>Total: ".concat(total, "</b></li>"));
+    tableDestino.rows().nodes().each(function (node) {
+      if (jquery__WEBPACK_IMPORTED_MODULE_0___default()(node).hasClass("selected")) {
+        destino = parseInt(jquery__WEBPACK_IMPORTED_MODULE_0___default()(node).attr("id").replace("destino-", ""));
+        jquery__WEBPACK_IMPORTED_MODULE_0___default()("#destino-confirm ul").append("\n                    <li class=\"list-group-item\">".concat(jquery__WEBPACK_IMPORTED_MODULE_0___default()(node).children().html(), "</li>\n                    "));
+      }
+    });
+    if (destino == null || Object.keys(vagasTransferir).length == 0) {
+      alert("Transferencia inválida. Verifique as informações.");
+      return;
+    }
+    modal.show();
+  });
+  jquery__WEBPACK_IMPORTED_MODULE_0___default()("#confirmTransfer").on("click", function (e) {
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()(e.target).prop("disabled", true);
+    _assets_axiosInstance__WEBPACK_IMPORTED_MODULE_1__["default"].post("".concat("http://localhost:3000", "/restrito/operacoes/transferencia"), {
+      origens: vagasTransferir,
+      destino: destino
+    }).then(function () {
+      window.location.href = window.location.href + "?success=true";
+    });
+  });
 });
 
 /***/ }),

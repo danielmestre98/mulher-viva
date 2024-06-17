@@ -4,6 +4,7 @@
 @import "./leftbar.css";
 @import "./table.css";
 @import "./cadastro.css";
+@import "./transferenciaVagas.css";
 @import "../../node_modules/datatables.net-bs5/css/dataTables.bootstrap5.min.css";
 
 body {
@@ -35,4 +36,11 @@ button {
 
 .content {
     margin-left: 270px;
+}
+
+.no-select {
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none; /* Standard */
 }

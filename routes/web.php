@@ -5,6 +5,7 @@ use App\Http\Controllers\JudicializacaoController;
 use App\Http\Controllers\ListController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProtectedFilesController;
+use App\Http\Controllers\TransferenciaController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -43,6 +44,9 @@ Route::middleware("auth")->group(function () {
     Route::get("/restrito/listas", [ListController::class, "listAll"])->name("restrito.lists");
     Route::post("/restrito/listas", [ListController::class, "listFilter"])->name("restrito.lists.filter");
     Route::get("/restrito/listas/{listId}", [ListController::class, "getBeneficiarias"]);
+
+    Route::get("/restrito/operacoes/transferencia", [TransferenciaController::class, "index"])->name("restrito.transferencia");
+    Route::post("/restrito/operacoes/transferencia", [TransferenciaController::class, "efetuarTransferencia"]);
 
 
     Route::get("/restrito/cadastros/judicializacoes", [JudicializacaoController::class, "index"])->name("restrito.judicializacoes");

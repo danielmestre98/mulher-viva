@@ -74,6 +74,14 @@ if (window.location.href == `${process.env.APP_URL}/restrito/listas`) {
     require("./cadastros/listAll");
 }
 
+if (
+    window.location.href.includes(
+        `${process.env.APP_URL}/restrito/operacoes/transferencia`
+    )
+) {
+    require("./transferencia/vagas");
+}
+
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
  * for events that are broadcast by Laravel. Echo and event broadcasting
