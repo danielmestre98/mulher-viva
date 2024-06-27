@@ -11,7 +11,7 @@
                     <i class="fa-solid fa-user"></i> Informações básicas
                 </div>
                 <div class="card-body">
-                    <input id="userId" type="text" hidden value="{{ $user->id }}">
+                    <input id="userIdEdit" type="text" hidden value="{{ $user->id }}">
                     <div class="row">
                         <div class="form-group col-md-5">
                             <label for="nome"><span class="red">*</span> Nome</label>
@@ -41,21 +41,12 @@
                             <input disabled value="{{ $user->email }}" autocomplete="off" type="email"
                                 class="form-control" id="email" name="email">
                         </div>
-                        <div class="form-group col-md-4">
-                            <label for="password"><span class="red">*</span> Nova senha</label>
-                            <input autocomplete="off" type="password" class="form-control" id="password" name="password">
-                        </div>
-                        <div class="form-group col-md-4">
-                            <label for="confirmPassword"><span class="red">*</span> Confirmar nova senha</label>
-                            <input autocomplete="off" type="password" class="form-control" id="confirmPassword"
-                                name="confirmPassword">
-                        </div>
                     </div>
                 </div>
             </div>
             <div class="d-flex justify-content-between mt-3">
                 <a href="{{ route('restrito.usuarios') }}" class="btn btn-secondary">Voltar</a>
-                <button class="btn btn-primary">Salvar</button>
+                <button class="btn btn-warning">Resetar senha</button>
             </div>
         </form>
     </div>

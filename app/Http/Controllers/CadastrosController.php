@@ -6,6 +6,7 @@ use App\Models\Beneficiarias;
 use App\Models\Drads;
 use App\Models\EditPermission;
 use App\Models\ListasBeneficiarias;
+use App\Models\Log;
 use App\Models\StatusCodes;
 use App\Models\Municipio;
 use App\Models\Vagas;
@@ -169,7 +170,17 @@ class CadastrosController extends Controller
         $objeto->status = 4;
         $date = DateTime::createFromFormat('d/m/Y', $objeto->nascimento);
         $objeto->nascimento = $date->format('Y-m-d');
-        Beneficiarias::create(json_decode(json_encode($objeto), true));
+        $beneficiaria = Beneficiarias::create(json_decode(json_encode($objeto), true));
+        Log::create([
+            "user_id" => Auth::user()->id,
+            "target_id" => $beneficiaria->id,
+            "targeted_table" => "beneficiarias",
+            "beneficiaria" => $beneficiaria->id,
+            "action" => "create",
+            "comment" => "Cadastro de não elegível",
+            "new_data" => $beneficiaria->toJson(),
+            "old_data" => null
+        ]);
         return redirect()->route("restrito.cadastros.beneficiarias");
     }
 
@@ -190,6 +201,16 @@ class CadastrosController extends Controller
         $date = DateTime::createFromFormat('d/m/Y', $dadosCadastroUnico->nascimento);
         $dadosCadastroUnico->nascimento = $date->format('Y-m-d');
         $beneficiaria =  Beneficiarias::create(json_decode(json_encode($dadosCadastroUnico), true));
+        Log::create([
+            "user_id" => Auth::user()->id,
+            "target_id" => $beneficiaria->id,
+            "targeted_table" => "beneficiarias",
+            "beneficiaria" => $beneficiaria->id,
+            "action" => "create",
+            "comment" => "Cadastro de beneficiária",
+            "new_data" => $beneficiaria->toJson(),
+            "old_data" => null
+        ]);
         $request->file('anexoMedidaProt')->storeAs("uploads/" . $beneficiaria->id, "medidaProtetiva." . $request->file('anexoMedidaProt')->getClientOriginalExtension(), "public");
         $request->file('anexoExamePsico')->storeAs("uploads/" . $beneficiaria->id, "examePsicosocial." . $request->file('anexoExamePsico')->getClientOriginalExtension(), "public");
         Beneficiarias::verificarPosicoes($beneficiaria->municipio);
@@ -198,9 +219,8 @@ class CadastrosController extends Controller
 
     function editPermission(Request $request, $idBeneficiaria)
     {
-        $permissions = $request->except("_token");
-
-        foreach ($permissions as $key => $permission) {
+        $permissions = $request->all();
+        foreach ($permissions as $key => $value) {
             $option = intval(str_replace("opt", "", $key));
             EditPermission::create([
                 'beneficiaria' => $idBeneficiaria,
@@ -208,6 +228,16 @@ class CadastrosController extends Controller
                 'used' => false,
                 'created_by' => Auth::user()->id
             ]);
+            Log::create([
+                "user_id" => Auth::user()->id,
+                "target_id" => $idBeneficiaria,
+                "targeted_table" => "edit_permissions",
+                "action" => "create",
+                "comment" => "Dar permissão para editar perguntas",
+                "new_data" => '{"field": ' . $option . '}',
+                "old_data" => null
+            ]);
+            echo "oi";
         }
         return true;
     }
@@ -222,10 +252,37 @@ class CadastrosController extends Controller
         $beneficiaria = Beneficiarias::find($idBeneficiaria);
         if (!empty($request->file('medidaProtetiva'))) {
             $request->file('medidaProtetiva')->storeAs("uploads/" . $beneficiaria->id, "medidaProtetiva." . $request->file('medidaProtetiva')->getClientOriginalExtension(), "public");
+            Log::create([
+                "user_id" => Auth::user()->id,
+                "target_id" => $idBeneficiaria,
+                "targeted_table" => "local_files",
+                "action" => "update",
+                "comment" => "Atualização do arquivo de medida protetiva da beneficiaria",
+                "new_data" => null,
+                "old_data" => null
+            ]);
         }
         if (!empty($request->file('examePsicosocial'))) {
             $request->file('examePsicosocial')->storeAs("uploads/" . $beneficiaria->id, "examePsicosocial." . $request->file('examePsicosocial')->getClientOriginalExtension(), "public");
+            Log::create([
+                "user_id" => Auth::user()->id,
+                "target_id" => $idBeneficiaria,
+                "targeted_table" => "local_files",
+                "action" => "update",
+                "comment" => "Atualização do arquivo de exame psicosocial da beneficiaria",
+                "new_data" => null,
+                "old_data" => null
+            ]);
         }
+        Log::create([
+            "user_id" => Auth::user()->id,
+            "target_id" => $idBeneficiaria,
+            "targeted_table" => "beneficiarias",
+            "action" => "update",
+            "comment" => "Atualização de cadastro da beneficiária",
+            "new_data" => json_encode($inputs),
+            "old_data" => $beneficiaria->toJson()
+        ]);
         $beneficiaria->update($inputs);
         $pontuacaoNova = Beneficiarias::calcularPontuacao($beneficiaria);
         $beneficiaria->pontuacao = $pontuacaoNova;
@@ -246,12 +303,22 @@ class CadastrosController extends Controller
         }
         $mesReferencia = $mesReferencia->format("Y-m");
         $lista = ListasBeneficiarias::where("municipio", $beneficiaria->municipio)->where("mes_referencia", $mesReferencia)->first();
+        $oldStatus = $beneficiaria->status;
         $beneficiaria->status = 7;
         $beneficiaria->motivo_recusa = $request->motivo;
         $beneficiaria->save();
         if (!empty($lista)) {
             Beneficiarias::verificarPosicoes($beneficiaria->municipio);
         }
+        Log::create([
+            "user_id" => Auth::user()->id,
+            "target_id" => $idBeneficiaria,
+            "targeted_table" => "beneficiarias",
+            "action" => "delete",
+            "comment" => "Deletar beneficiária",
+            "new_data" => "{motivo_recusa: " . $request->motivo . ", status: 7}",
+            "old_data" => "{status: " . $oldStatus . "}"
+        ]);
         // $beneficiaria->delete();
         return true;
     }

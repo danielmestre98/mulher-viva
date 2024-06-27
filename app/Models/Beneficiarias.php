@@ -362,7 +362,7 @@ class Beneficiarias extends Model
     static function verificarPosicoes($municipioId)
     {
         $status = [5, 6];
-        $beneficiariasAprovadas = Beneficiarias::where('municipio', $municipioId)->orderBy("pontuacao", "DESC")->where("status", 1)->get();
+        $beneficiariasAprovadas = Beneficiarias::where('municipio', $municipioId)->orderBy("pontuacao", "DESC")->whereIn("status", [1, 8])->get();
         $beneficiarias = Beneficiarias::where('municipio', $municipioId)->orderBy("pontuacao", "DESC")->whereIn("status", $status)->get();
         $lista = new Collection();
         $posicao = 1;
@@ -374,6 +374,17 @@ class Beneficiarias extends Model
         }
 
         for ($i = 0; $i < count($beneficiarias); $i++) {
+            if ($beneficiarias[$i]->posicao != $posicao) {
+                Log::create([
+                    "user_id" => Auth::user()->id,
+                    "target_id" => $beneficiarias[$i]->id,
+                    "targeted_table" => "beneficiarias",
+                    "action" => "update",
+                    "comment" => "Ajuste de posição na lista",
+                    "new_data" => "{posicao:" . $posicao . "}",
+                    "old_data" => "{posicao:" . $beneficiarias[$i]->posicao . "}"
+                ]);
+            }
             $beneficiarias[$i]->posicao = $posicao;
             $beneficiarias[$i]->save();
             $lista->add($beneficiarias[$i]);

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Beneficiarias;
 use App\Models\Drads;
 use App\Models\ListasBeneficiarias;
+use App\Models\Log;
 use App\Models\Municipio;
 use App\Models\Vagas;
 use Carbon\Carbon;
@@ -29,7 +30,7 @@ class ListController extends Controller
         if (!empty($lista)) {
             $alreadyApproved = true;
         }
-        $jaAprovadas = Beneficiarias::where("status", 1)->where("municipio", $municipio)->get();
+        $jaAprovadas = Beneficiarias::whereIn("status", [1, 8])->where("municipio", $municipio)->get();
         $beneficiarias = Beneficiarias::whereIn("status", [5, 6])->where("municipio", $municipio)->orderBy("posicao", "ASC")->get();
         $vagas = Vagas::where("municipio", $municipio)->pluck("quantidade");
         $selecionadas = new Collection();
@@ -92,7 +93,7 @@ class ListController extends Controller
         }
         $mesReferencia = $mesReferencia->format("Y-m");
         $municipio = Auth::user()->municipio;
-        $jaAprovadas = Beneficiarias::where("status", 1)->where("municipio", Auth::user()->municipio)->pluck("id")->toArray();
+        $jaAprovadas = Beneficiarias::whereIn("status", [1, 8])->where("municipio", Auth::user()->municipio)->pluck("id")->toArray();
         $beneficiarias = Beneficiarias::whereIn("status", [5, 6])->where("municipio", Auth::user()->municipio)->orderBy("posicao", "ASC")->pluck("id");
         $vagas = Vagas::where("municipio", $municipio)->pluck("quantidade");
         $selecionadas = [];
@@ -113,6 +114,21 @@ class ListController extends Controller
             $lista->save();
         }
         $lista->beneficiarias()->sync($listaCompleta);
+        $beneficiariasLinkadas = [];
+
+        foreach ($lista->beneficiarias as $value) {
+            $beneficiariasLinkadas = $value->pivot;
+        }
+
+        Log::create([
+            "user_id" => Auth::user()->id,
+            "target_id" => $lista->id,
+            "targeted_table" => "listas_beneficiarias",
+            "action" => "create",
+            "comment" => "Aprovação de lista de beneficiárias",
+            "new_data" => "{lista:" . json_encode($lista->only("mes_referencia", "municipio", "created_by", "updated_at", "created_at")) . ", beneficiarias: " . json_encode($beneficiariasLinkadas) . "}",
+            "old_data" => null
+        ]);
         return true;
     }
 }

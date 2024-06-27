@@ -3275,7 +3275,7 @@ window.axios = axios__WEBPACK_IMPORTED_MODULE_0__["default"];
 
 window.axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
 __webpack_require__(/*! ./user/checkPassword */ "./resources/js/user/checkPassword.js");
-if (window.location.href === "".concat("http://localhost:3000", "/restrito/cadastros/beneficiarias") || window.location.href.includes("/restrito/cadastros/beneficiarias/fitro/") || window.location.href === "".concat("http://localhost:3000", "/restrito/cadastros/beneficiarias/filter")) {
+if (window.location.href === "".concat("http://localhost:3000", "/restrito/cadastros/beneficiarias") || window.location.href.includes("/restrito/cadastros/beneficiarias/fitro/") || window.location.href === "".concat("http://localhost:3000", "/restrito/cadastros/beneficiarias/filter") || window.location.href === "".concat("http://localhost:3000", "/restrito/cadastros/beneficiarias?action=success")) {
   __webpack_require__(/*! ./cadastros/pesquisa */ "./resources/js/cadastros/pesquisa.js");
 }
 if (window.location.href === "".concat("http://localhost:3000", "/restrito/lista")) {
@@ -4291,24 +4291,12 @@ __webpack_require__.r(__webpack_exports__);
 
 jquery__WEBPACK_IMPORTED_MODULE_0___default()(function () {
   jquery__WEBPACK_IMPORTED_MODULE_0___default()("#form-edit-user").validate({
-    rules: {
-      password: {
-        required: true,
-        minlength: 6
-      },
-      confirmPassword: {
-        required: true,
-        minlength: 6,
-        equalTo: "#password"
-      }
-    },
     submitHandler: function submitHandler() {
-      var formData = {
-        password: jquery__WEBPACK_IMPORTED_MODULE_0___default()("#password").val()
-      };
-      axios.put("".concat("http://localhost:3000", "/restrito/cadastros/usuarios/").concat(jquery__WEBPACK_IMPORTED_MODULE_0___default()("#userId").val()), formData).then(function () {
-        window.location.href = "http://localhost:3000" + "/restrito/cadastros/usuarios";
-      });
+      if (confirm("Deseja redefinir a senha desse usuário para o padrão (CPF)?")) {
+        axios.put("".concat("http://localhost:3000", "/restrito/cadastros/usuarios/").concat(jquery__WEBPACK_IMPORTED_MODULE_0___default()("#userIdEdit").val())).then(function () {
+          window.location.href = "http://localhost:3000" + "/restrito/cadastros/usuarios";
+        });
+      }
     }
   });
 });

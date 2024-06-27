@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Judicializacao;
+use App\Models\Log;
 use App\Models\Municipio;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Utils\StringOperations;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Auth;
 
 class JudicializacaoController extends Controller
 {
@@ -33,6 +35,16 @@ class JudicializacaoController extends Controller
         $pdfFile = Storage::get("judicializacoes/" . $beneficiaria->id . "/judicializacao.pdf");
         $encryptedFile = Judicializacao::encryptPdf($pdfFile);
         Storage::put("judicializacoes/" . $beneficiaria->id . "/judicializacao.pdf", $encryptedFile);
+        Log::create([
+            "user_id" => Auth::user()->id,
+            "target_id" => $beneficiaria->id,
+            "targeted_table" => "judicializacao",
+            "beneficiaria" => $beneficiaria->id,
+            "action" => "create",
+            "comment" => "Cadastro de beneficiária com judicialização",
+            "new_data" => $beneficiaria->toJson(),
+            "old_data" => null
+        ]);
         return redirect()->route("restrito.judicializacoes");
     }
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Log;
 use App\Models\Municipio;
 use App\Models\User;
 use Illuminate\Contracts\View\View;
@@ -20,9 +21,19 @@ class UserController extends Controller
     function changeSelfPassword(Request $request): mixed
     {
         $user = User::find(Auth::user()->id);
+        $oldPass = $user->password;
         $user->password = Hash::make($request->novaSenhaReset ?? $request->novaSenha);
         $user->reset_password = 0;
         $user->save();
+        Log::create([
+            "user_id" => Auth::user()->id,
+            "target_id" => $user->id,
+            "targeted_table" => "users",
+            "action" => "update",
+            "comment" => "Alteração de própria senha de usuário",
+            "new_data" => "{password:$user->password}",
+            "old_data" => "{password:$oldPass}",
+        ]);
         return redirect()->back();
     }
 
@@ -49,6 +60,15 @@ class UserController extends Controller
         $user->password = str_replace("-", "",  str_replace(".", "",  $request->cpf));
         $user->save();
         $user->assignRole("municipio");
+        Log::create([
+            "user_id" => Auth::user()->id,
+            "target_id" => $user->id,
+            "targeted_table" => "users",
+            "action" => "create",
+            "comment" => "Cadastro de usuário município",
+            "new_data" => $user->toJson(),
+            "old_data" => null
+        ]);
         return redirect()->route("restrito.usuarios");
     }
 
@@ -56,14 +76,33 @@ class UserController extends Controller
     {
         $user = User::find($userId);
         $user->delete();
+        Log::create([
+            "user_id" => Auth::user()->id,
+            "target_id" => $user->id,
+            "targeted_table" => "users",
+            "action" => "delete",
+            "comment" => "Deletar usuário",
+            "new_data" => "{deleted_at:$user->deleted_at}",
+            "old_data" => null
+        ]);
     }
 
     function update(Request $request, $id)
     {
         $user = User::find($id);
-        $user->password = bcrypt($request->password);
+        $oldPass = $user->password;
+        $user->password = bcrypt($user->cpf);
         $user->reset_password = 1;
         $user->save();
+        Log::create([
+            "user_id" => Auth::user()->id,
+            "target_id" => $user->id,
+            "targeted_table" => "users",
+            "action" => "update",
+            "comment" => "Redefinição de senha de usuário",
+            "new_data" => "{password:$user->password}",
+            "old_data" => "{password:$oldPass}",
+        ]);
         return  true;
     }
 

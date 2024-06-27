@@ -18,7 +18,9 @@ if (
         `${process.env.APP_URL}/restrito/cadastros/beneficiarias` ||
     window.location.href.includes("/restrito/cadastros/beneficiarias/fitro/") ||
     window.location.href ===
-        `${process.env.APP_URL}/restrito/cadastros/beneficiarias/filter`
+        `${process.env.APP_URL}/restrito/cadastros/beneficiarias/filter` ||
+    window.location.href ===
+        `${process.env.APP_URL}/restrito/cadastros/beneficiarias?action=success`
 ) {
     require("./cadastros/pesquisa");
 }

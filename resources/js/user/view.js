@@ -4,30 +4,24 @@ import "../assets/validation-defaults";
 
 $(() => {
     $("#form-edit-user").validate({
-        rules: {
-            password: {
-                required: true,
-                minlength: 6,
-            },
-            confirmPassword: {
-                required: true,
-                minlength: 6,
-                equalTo: "#password",
-            },
-        },
         submitHandler: () => {
-            const formData = { password: $("#password").val() };
-            axios
-                .put(
-                    `${process.env.APP_URL}/restrito/cadastros/usuarios/${$(
-                        "#userId"
-                    ).val()}`,
-                    formData
+            if (
+                confirm(
+                    "Deseja redefinir a senha desse usuário para o padrão (CPF)?"
                 )
-                .then(() => {
-                    window.location.href =
-                        process.env.APP_URL + "/restrito/cadastros/usuarios";
-                });
+            ) {
+                axios
+                    .put(
+                        `${process.env.APP_URL}/restrito/cadastros/usuarios/${$(
+                            "#userIdEdit"
+                        ).val()}`
+                    )
+                    .then(() => {
+                        window.location.href =
+                            process.env.APP_URL +
+                            "/restrito/cadastros/usuarios";
+                    });
+            }
         },
     });
 });

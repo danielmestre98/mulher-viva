@@ -84,6 +84,9 @@ class DatabaseSeeder extends Seeder
         StatusCodes::create([
             "name" => "Excluída",
         ]);
+        StatusCodes::create([
+            "name" => "Em análise",
+        ]);
 
         for ($i = 0; $i < 645; $i++) {
             Vagas::create(["municipio" => $i + 1]);
